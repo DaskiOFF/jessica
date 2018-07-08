@@ -115,7 +115,7 @@ func createTemplateFile() {
 	- %*%support%*%
 		- AppDelegate
 		- Info.plist and other .plist
-- %*%Project name Tests%*% – папка с тестами проекта
+- %*%{{ .projectName }}Tests%*% – папка с тестами проекта
 - %*%fastlane%*% – поддержка Fastlane
 - %*%Pods%*% – зависимости проекта`
 
