@@ -16,3 +16,7 @@ Create files if not exists
 
 Create or update
 - `README.md`
+
+## Optional
+- .project_struct.tpl.md
+- project struct folders in Project folder
