@@ -6,6 +6,8 @@ import (
 	"text/template"
 )
 
+const templateFileName = ".readme.tpl.md"
+
 func updateREADME() {
 	gemFile, _ := readGemfile()
 	gemFileDependencies := strings.Join(gemFile, "\n")
@@ -16,7 +18,7 @@ func updateREADME() {
 	xcodeVersion, _ := readXcodeVersion()
 	swiftVersion, _ := readSwiftVersion()
 
-	template, err := template.ParseFiles(".readme.tpl")
+	template, err := template.ParseFiles(templateFileName)
 	if err != nil {
 		panic(err)
 	}
@@ -74,7 +76,7 @@ func checkReadmeTpl() {
 
 	content = strings.Replace(content, "%%*%%", "```", -1)
 	content = strings.Replace(content, "%%**%%", "`", -1)
-	fileName := ".readme.tpl"
+	fileName := templateFileName
 	if !isFileExist(fileName) {
 		writeToFile(fileName, content)
 		printlnSuccessMessage(fileName + " successfully created")

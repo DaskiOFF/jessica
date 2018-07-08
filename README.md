@@ -10,7 +10,7 @@ go to iOS project folder
 Create files if not exists
 - `.xcode-version`
 - `.swift-version`
-- `.readme.tpl`
+- `.readme.tpl.md`
 - `Gemfile`
 - `Podfile`
 
