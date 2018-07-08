@@ -1,11 +1,13 @@
-package main
+package gemfile
 
 import (
 	"io/ioutil"
 	"regexp"
+
+	"github.com/daskioff/update_readme_ios/utils"
 )
 
-func readGemfile() ([]string, error) {
+func Read() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
 	fileContent, err := ioutil.ReadFile("Gemfile")
@@ -18,15 +20,15 @@ func readGemfile() ([]string, error) {
 	return matches, nil
 }
 
-func checkGemfile() {
+func Check() {
 	content := `source "https://rubygems.org"
 
 gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"`
 
 	fileName := "Gemfile"
-	if !isFileExist(fileName) {
-		writeToFile(fileName, content)
-		printlnSuccessMessage(fileName + " successfully created")
+	if !utils.IsFileExist(fileName) {
+		utils.WriteToFile(fileName, content)
+		utils.PrintlnSuccessMessage(fileName + " successfully created")
 	}
 }

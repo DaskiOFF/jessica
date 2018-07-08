@@ -1,4 +1,4 @@
-package main
+package versions
 
 import (
 	"bufio"
@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/daskioff/update_readme_ios/utils"
 )
 
 func readVersionFile(fileName string) (string, error) {
@@ -15,35 +17,35 @@ func readVersionFile(fileName string) (string, error) {
 	return content, err
 }
 
-func readXcodeVersion() (string, error) {
+func ReadXcodeVersion() (string, error) {
 	return readVersionFile(".xcode-version")
 }
 
-func readSwiftVersion() (string, error) {
+func ReadSwiftVersion() (string, error) {
 	return readVersionFile(".swift-version")
 }
 
-func checkVersionFiles() {
+func CheckVersionFiles() {
 	fileName := ".xcode-version"
 	var reader *bufio.Reader
-	if !isFileExist(fileName) {
+	if !utils.IsFileExist(fileName) {
 		reader = bufio.NewReader(os.Stdin)
 		fmt.Print("Enter xcode version: ")
 		xcodeVersion, _ := reader.ReadString('\n')
 
-		writeToFile(fileName, xcodeVersion)
-		printlnSuccessMessage(fileName + " successfully created")
+		utils.WriteToFile(fileName, xcodeVersion)
+		utils.PrintlnSuccessMessage(fileName + " successfully created")
 	}
 
 	fileName = ".swift-version"
-	if !isFileExist(fileName) {
+	if !utils.IsFileExist(fileName) {
 		if reader == nil {
 			reader = bufio.NewReader(os.Stdin)
 		}
 		fmt.Print("Enter Swift version: ")
 		swiftVersion, _ := reader.ReadString('\n')
 
-		writeToFile(fileName, swiftVersion)
-		printlnSuccessMessage(fileName + " successfully created")
+		utils.WriteToFile(fileName, swiftVersion)
+		utils.PrintlnSuccessMessage(fileName + " successfully created")
 	}
 }

@@ -1,11 +1,13 @@
-package main
+package podfile
 
 import (
 	"io/ioutil"
 	"regexp"
+
+	"github.com/daskioff/update_readme_ios/utils"
 )
 
-func readPodfile() ([]string, error) {
+func Read() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
 	fileContent, err := ioutil.ReadFile("Podfile")
@@ -18,7 +20,7 @@ func readPodfile() ([]string, error) {
 	return matches, nil
 }
 
-func checkPodfile() {
+func Check() {
 	content := `# Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 use_frameworks!
@@ -32,7 +34,7 @@ target 'YOUR_TARGET_NAME' do
 
 	# https://github.com/mac-cain13/R.swift
 	#
-	# RunScript: "$PODS_ROOT/R.swift/rswift" generate "$SRCROOT"
+	# RunScript: "$PODS_ROOT/R.swift/rswift" generate "$SRCROOT/$PROJECT_NAME/presentation/resources/r"
 	pod 'R.swift', '4.0.0'
 	
 	# https://github.com/jdg/MBProgressHUD
@@ -57,9 +59,9 @@ post_install do |installer|
 end`
 
 	fileName := "Podfile"
-	if !isFileExist(fileName) {
-		writeToFile(fileName, content)
-		printlnSuccessMessage(fileName + " successfully created")
-		printlnAttentionMessage("Update YOUR_TARGET_NAME in Podfile")
+	if !utils.IsFileExist(fileName) {
+		utils.WriteToFile(fileName, content)
+		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnAttentionMessage("Update YOUR_TARGET_NAME in Podfile")
 	}
 }
