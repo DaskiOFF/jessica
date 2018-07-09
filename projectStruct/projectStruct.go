@@ -11,6 +11,7 @@ import (
 
 const FileName = ".project_struct.tpl.md"
 
+// Check Проверяет наличие файла шаблона описывающего структуру проекта, если его нет, то предлагает создать его и структуру из папок
 func Check() {
 	var reader *bufio.Reader
 	if !utils.IsFileExist(FileName) {

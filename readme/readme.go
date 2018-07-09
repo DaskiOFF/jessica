@@ -16,6 +16,7 @@ import (
 
 const templateFileName = ".readme.tpl.md"
 
+// UpdateREADME Проверяет обновляет файл README.md согласно шаблону
 func UpdateREADME() {
 	gemFile, _ := gemfile.Read()
 	gemFileDependencies := strings.Join(gemFile, "\n")
@@ -75,6 +76,7 @@ func executeTemplate(templateFileName string, writer io.Writer, params map[strin
 	return nil
 }
 
+// CheckReadmeTpl Проверяет существование файла описывающего шаблон README, если его нет, то его создает и заполняет значением по умолчанию
 func CheckReadmeTpl() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)

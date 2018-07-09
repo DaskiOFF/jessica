@@ -17,14 +17,18 @@ func readVersionFile(fileName string) (string, error) {
 	return content, err
 }
 
+// ReadXcodeVersion Чтение версии xcode из файла .xcode-version
 func ReadXcodeVersion() (string, error) {
 	return readVersionFile(".xcode-version")
 }
 
+// ReadSwiftVersion Чтение версии swift из файла .swift-version
 func ReadSwiftVersion() (string, error) {
 	return readVersionFile(".swift-version")
 }
 
+// CheckVersionFiles Проверка существования файлов для версии xcode и swift, если их нет,
+// то пользователя спросят какие версии он использует, и эти версии будут сохранены в соответствующие файлы
 func CheckVersionFiles() {
 	fileName := ".xcode-version"
 	var reader *bufio.Reader

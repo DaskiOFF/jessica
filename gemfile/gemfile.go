@@ -7,6 +7,7 @@ import (
 	"github.com/daskioff/update_readme_ios/utils"
 )
 
+// Read Читает Gemfile и выбирает из него список зависимостей
 func Read() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
@@ -20,6 +21,7 @@ func Read() ([]string, error) {
 	return matches, nil
 }
 
+// Check Проверяет существование Gemfile, если его нет, то его создает и заполняет значением по умолчанию
 func Check() {
 	content := `source "https://rubygems.org"
 

@@ -7,6 +7,7 @@ import (
 	"github.com/daskioff/update_readme_ios/utils"
 )
 
+// Read Читает Podfile и выбирает из него список зависимостей для каждого таргета
 func Read() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
@@ -20,6 +21,7 @@ func Read() ([]string, error) {
 	return matches, nil
 }
 
+// Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
 func Check() {
 	content := `# Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
