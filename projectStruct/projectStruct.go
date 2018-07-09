@@ -53,6 +53,7 @@ func createProjectStruct() {
 
 	os.MkdirAll(projectName+"/presentation/resources/r", os.ModePerm)
 	os.MkdirAll(projectName+"/presentation/resources/localization", os.ModePerm)
+	os.MkdirAll(projectName+"/presentation/resources/fonts", os.ModePerm)
 	os.MkdirAll(projectName+"/presentation/flows", os.ModePerm)
 	os.MkdirAll(projectName+"/presentation/components/views", os.ModePerm)
 	os.MkdirAll(projectName+"/presentation/components/tableCells", os.ModePerm)
@@ -106,6 +107,7 @@ func createTemplateFile() {
 		- %*%resources%*%
 			- %*%r%*%
 			- %*%localization%*%
+			- %*%fonts%*%
 			- Assets, LaunchScreen
 		- %*%flows%*% – Flow приложения (координаторы)
 		- %*%components%*%
