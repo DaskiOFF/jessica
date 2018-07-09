@@ -38,6 +38,9 @@ func createProjectStruct() {
 
 	os.MkdirAll(projectName+"/config", os.ModePerm)
 
+	os.MkdirAll(projectName+"/di", os.ModePerm)
+	os.MkdirAll(projectName+"/di/factories", os.ModePerm)
+
 	os.MkdirAll(projectName+"/extensions", os.ModePerm)
 
 	os.MkdirAll(projectName+"/models", os.ModePerm)
@@ -81,6 +84,9 @@ func requestProjectName() string {
 func createTemplateFile() {
 	content := `### Структура проекта
 - %*%{{ .projectName }}%*% – папка проекта
+	- %*%di%*%
+		- Dependency Injection
+		- %*%factories%*%
 	- %*%config%*%
 		- AppConfig (protocol)
 		- AppConfigDev
