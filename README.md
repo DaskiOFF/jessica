@@ -3,8 +3,17 @@
 # Usage
 `go install`
 
-go to iOS project folder
-`jessica`
+go to iOS project folder and execute `jessica <command>`
+
+## Commands
+`jessica help <command>` - Помощь по команде
+
+|Command|Description|
+|----|---|
+|`hi`|Тестовая команда, которая поприветствует вас|
+|`readme`   |Создание необходимых файлов и шаблонов для генерации README.md файла|
+
+
 
 # Result
 Create files if not exists
