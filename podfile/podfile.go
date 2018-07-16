@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/daskioff/update_readme_ios/utils"
+	"github.com/daskioff/jessica/utils"
 )
 
 // Read Читает Podfile и выбирает из него список зависимостей для каждого таргета

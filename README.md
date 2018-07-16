@@ -4,7 +4,7 @@
 `go install`
 
 go to iOS project folder
-`update_readme_ios`
+`jessica`
 
 # Result
 Create files if not exists

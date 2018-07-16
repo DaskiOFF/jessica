@@ -7,11 +7,11 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/daskioff/update_readme_ios/gemfile"
-	"github.com/daskioff/update_readme_ios/podfile"
-	"github.com/daskioff/update_readme_ios/projectStruct"
-	"github.com/daskioff/update_readme_ios/utils"
-	"github.com/daskioff/update_readme_ios/versions"
+	"github.com/daskioff/jessica/gemfile"
+	"github.com/daskioff/jessica/podfile"
+	"github.com/daskioff/jessica/projectStruct"
+	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/versions"
 )
 
 const templateFileName = ".readme.tpl.md"

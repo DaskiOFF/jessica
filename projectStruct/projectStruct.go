@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/daskioff/update_readme_ios/utils"
+	"github.com/daskioff/jessica/utils"
 )
 
 const FileName = ".project_struct.tpl.md"

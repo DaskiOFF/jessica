@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/daskioff/update_readme_ios/utils"
+	"github.com/daskioff/jessica/utils"
 )
 
 func readVersionFile(fileName string) (string, error) {
