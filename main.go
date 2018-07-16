@@ -1,23 +1,24 @@
 package main
 
 import (
-	"github.com/daskioff/jessica/gemfile"
-	"github.com/daskioff/jessica/podfile"
-	"github.com/daskioff/jessica/projectStruct"
-	"github.com/daskioff/jessica/readme"
-	"github.com/daskioff/jessica/versions"
+	"os"
+
+	"github.com/daskioff/jessica/router"
+	"github.com/daskioff/jessica/utils"
 )
 
-func checkFiles() {
-	versions.CheckVersionFiles()
-	gemfile.Check()
-	podfile.Check()
-	readme.CheckReadmeTpl()
-	projectStruct.Check()
-}
-
 func main() {
-	checkFiles()
+	argsWithProg := os.Args
+	if len(argsWithProg) == 1 {
+		utils.PrintlnErrorMessage("Вы так и не сказали что делать")
+		return
+	}
 
-	readme.UpdateREADME()
+	argsWithoutProg := os.Args[1:]
+
+	router := router.NewRouter()
+	err := router.Handle(argsWithoutProg)
+	if err != nil {
+		utils.PrintlnErrorMessage(err.Error())
+	}
 }

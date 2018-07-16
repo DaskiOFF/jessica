@@ -2,30 +2,27 @@ package readme
 
 import (
 	"bufio"
+	"html/template"
 	"io"
 	"os"
 	"strings"
-	"text/template"
 
-	"github.com/daskioff/jessica/gemfile"
-	"github.com/daskioff/jessica/podfile"
-	"github.com/daskioff/jessica/projectStruct"
+	"github.com/daskioff/jessica/flows/projectStruct"
 	"github.com/daskioff/jessica/utils"
-	"github.com/daskioff/jessica/versions"
 )
 
 const templateFileName = ".readme.tpl.md"
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
-func UpdateREADME() {
-	gemFile, _ := gemfile.Read()
+func updateREADME() {
+	gemFile, _ := readGemfile()
 	gemFileDependencies := strings.Join(gemFile, "\n")
 
-	podFile, _ := podfile.Read()
+	podFile, _ := readPodfile()
 	podFileDependencies := strings.Join(podFile, "\n")
 
-	xcodeVersion, _ := versions.ReadXcodeVersion()
-	swiftVersion, _ := versions.ReadSwiftVersion()
+	xcodeVersion, _ := readXcodeVersion()
+	swiftVersion, _ := readSwiftVersion()
 
 	fileNameREADME := "README.md"
 	os.Remove(fileNameREADME)
@@ -77,7 +74,7 @@ func executeTemplate(templateFileName string, writer io.Writer, params map[strin
 }
 
 // CheckReadmeTpl Проверяет существование файла описывающего шаблон README, если его нет, то его создает и заполняет значением по умолчанию
-func CheckReadmeTpl() {
+func checkReadmeTpl() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 

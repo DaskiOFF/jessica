@@ -1,4 +1,4 @@
-package podfile
+package readme
 
 import (
 	"io/ioutil"
@@ -7,11 +7,13 @@ import (
 	"github.com/daskioff/jessica/utils"
 )
 
+const podFileName = "Podfile"
+
 // Read Читает Podfile и выбирает из него список зависимостей для каждого таргета
-func Read() ([]string, error) {
+func readPodfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
-	fileContent, err := ioutil.ReadFile("Podfile")
+	fileContent, err := ioutil.ReadFile(podFileName)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +24,7 @@ func Read() ([]string, error) {
 }
 
 // Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
-func Check() {
+func checkPodfile() {
 	content := `# Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 use_frameworks!
@@ -60,7 +62,7 @@ post_install do |installer|
 	end
 end`
 
-	fileName := "Podfile"
+	fileName := podFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
 		utils.PrintlnSuccessMessage(fileName + " successfully created")
