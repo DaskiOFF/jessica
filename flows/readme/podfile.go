@@ -26,6 +26,7 @@ func readPodfile() ([]string, error) {
 // Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
 func checkPodfile() {
 	content := `# Uncomment the next line to define a global platform for your project
+source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
@@ -44,11 +45,11 @@ target 'YOUR_TARGET_NAME' do
 	# https://github.com/jdg/MBProgressHUD
 	pod 'MBProgressHUD', '1.1.0'
 
-	pod 'RKKeyboardManager'
-	pod 'RKTableAdapter'
-	pod 'RKFoundationExtensions'
-	pod 'RKUIExtensions'
-	pod 'RKAutoLayout'
+	pod 'RKKeyboardManager', '~> 0.1'
+	pod 'RKTableAdapter', '~> 0.1'
+	pod 'RKFoundationExtensions', '~> 0.1'
+	pod 'RKUIExtensions', '~> 0.1'
+	pod 'RKAutoLayout', '~> 0.1'
 end
 
 post_install do |installer|
