@@ -11,6 +11,7 @@ go to iOS project folder and execute `jessica <command>`
 |Command|Description|
 |----|---|
 |`hi`|Тестовая команда, которая поприветствует вас|
+|`init`   |Первичная настройка файла конфигурации|
 |`readme`   |Создание необходимых файлов и шаблонов для генерации README.md файла|
 
 

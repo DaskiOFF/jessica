@@ -11,7 +11,7 @@ type SetupFlow struct {
 }
 
 func (flow *SetupFlow) Start(args []string) {
-	projName := projectName()
+	projectName()
 }
 
 func (flow *SetupFlow) Description() string {
