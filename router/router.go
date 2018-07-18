@@ -4,6 +4,7 @@ import (
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/hi"
 	"github.com/daskioff/jessica/flows/readme"
+	"github.com/daskioff/jessica/flows/setup"
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -15,6 +16,7 @@ func NewRouter() *Router {
 	mapFlows := make(map[string]flows.Flow)
 	mapFlows["hi"] = hi.NewFlow()
 	mapFlows["readme"] = readme.NewFlow()
+	mapFlows["init"] = setup.NewFlow()
 
 	router := Router{mapFlows: mapFlows}
 
