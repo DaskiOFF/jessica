@@ -1,6 +1,9 @@
 package router
 
 import (
+	"errors"
+
+	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/hi"
 	"github.com/daskioff/jessica/flows/readme"
@@ -16,7 +19,7 @@ func NewRouter() *Router {
 	mapFlows := make(map[string]flows.Flow)
 	mapFlows["hi"] = hi.NewFlow()
 	mapFlows["readme"] = readme.NewFlow()
-	mapFlows["init"] = setup.NewFlow()
+	mapFlows["setup"] = setup.NewFlow()
 
 	router := Router{mapFlows: mapFlows}
 
@@ -47,6 +50,13 @@ func (r *Router) Handle(args []string) error {
 	if isHelp {
 		utils.PrintlnInfoMessage(flow.Description())
 	} else {
+		if command != "setup" {
+			err := configs.ValidateProjectConfig()
+			if err != nil {
+				return errors.New("Для начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+			}
+		}
+
 		flow.Start(args[1:])
 	}
 

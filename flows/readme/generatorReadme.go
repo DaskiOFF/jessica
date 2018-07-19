@@ -2,10 +2,10 @@ package readme
 
 import (
 	"bufio"
-	"html/template"
 	"io"
 	"os"
 	"strings"
+	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/utils"
 )
@@ -59,7 +59,7 @@ func updateREADME() {
 }
 
 func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
-	structTemplate, err := template.ParseFiles(templateFileName)
+	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err
 	}
