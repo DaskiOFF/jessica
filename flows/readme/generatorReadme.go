@@ -7,6 +7,8 @@ import (
 	"strings"
 	textTemplate "text/template"
 
+	"github.com/daskioff/jessica/configs"
+
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -38,7 +40,7 @@ func updateREADME() {
 		"swiftVersion":        swiftVersion,
 		"gemFileDependencies": gemFileDependencies,
 		"podFileDependencies": podFileDependencies,
-		"projectName":         utils.ProjectName(),
+		"projectName":         configs.ProjectConfig.Get(configs.KeyProjectName),
 	}
 
 	err = executeTemplate(templateFileName, writer, params)
