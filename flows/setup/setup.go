@@ -1,8 +1,6 @@
 package setup
 
 import (
-	"strings"
-
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/utils"
@@ -17,12 +15,28 @@ func (flow *SetupFlow) Start(args []string) {
 		utils.PrintlnSuccessMessage("Файл уже сконфигурирован")
 		return
 	}
+	username := userName()
+	companyName := companyName()
 	projectName := projectName()
 
-	config := configs.ProjectConfig
-	config.Set(configs.KeyProjectName, projectName)
-	config.Set(configs.KeyProjectXcodeProjName, projectName+".xcodeproj")
-	config.WriteConfig()
+	localConfig := configs.ProjectConfig
+	globalConfig := configs.GlobalConfig
+
+	globalConfig.Set(configs.KeyUserName, username)
+
+	localConfig.Set(configs.KeyCompanyName, companyName)
+	localConfig.Set(configs.KeyProjectName, projectName)
+	localConfig.Set(configs.KeyProjectXcodeProjName, projectName+".xcodeproj")
+
+	err = localConfig.WriteConfig()
+	if err != nil {
+		utils.PrintlnErrorMessage("Ошибка сохранения локального файла конфигурации: " + err.Error())
+	}
+
+	err = globalConfig.WriteConfig()
+	if err != nil {
+		utils.PrintlnErrorMessage("Ошибка сохранения глобального файла конфигурации: " + err.Error())
+	}
 }
 
 func (flow *SetupFlow) Description() string {
@@ -39,28 +53,4 @@ func (flow *SetupFlow) Description() string {
 func NewFlow() flows.Flow {
 	flow := SetupFlow{}
 	return &flow
-}
-
-func projectName() string {
-	projectName := utils.ProjectName()
-	var answer string = "n"
-	if projectName != "" {
-		answer = utils.AskQuestionWithAnswers("Your project has name '"+projectName+"'? (y/n): ", []string{"y", "n", "Y", "N"})
-	}
-
-	if strings.ToLower(answer) == "n" {
-		for {
-			answer := utils.AskQuestion("Enter project name: ", true)
-			projectName = answer
-			if !strings.HasSuffix(answer, ".xcodeproj") {
-				projectName = answer + ".xcodeproj"
-			}
-			if utils.IsFileExist(projectName) {
-				break
-			}
-			utils.PrintlnInfoMessage("Файл '" + projectName + "' не найден")
-		}
-	}
-
-	return projectName
 }
