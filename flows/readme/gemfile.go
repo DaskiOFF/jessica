@@ -1,17 +1,19 @@
-package gemfile
+package readme
 
 import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/daskioff/update_readme_ios/utils"
+	"github.com/daskioff/jessica/utils"
 )
 
+const gemFileName = "Gemfile"
+
 // Read Читает Gemfile и выбирает из него список зависимостей
-func Read() ([]string, error) {
+func readGemfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
-	fileContent, err := ioutil.ReadFile("Gemfile")
+	fileContent, err := ioutil.ReadFile(gemFileName)
 	if err != nil {
 		return nil, err
 	}
@@ -22,13 +24,13 @@ func Read() ([]string, error) {
 }
 
 // Check Проверяет существование Gemfile, если его нет, то его создает и заполняет значением по умолчанию
-func Check() {
+func checkGemfile() {
 	content := `source "https://rubygems.org"
 
 gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"`
 
-	fileName := "Gemfile"
+	fileName := gemFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
 		utils.PrintlnSuccessMessage(fileName + " successfully created")
