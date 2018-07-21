@@ -28,15 +28,8 @@ func (flow *SetupFlow) Start(args []string) {
 	localConfig.Set(configs.KeyProjectName, projectName)
 	localConfig.Set(configs.KeyProjectXcodeProjName, projectName+".xcodeproj")
 
-	err = localConfig.WriteConfig()
-	if err != nil {
-		utils.PrintlnErrorMessage("Ошибка сохранения локального файла конфигурации: " + err.Error())
-	}
-
-	err = globalConfig.WriteConfig()
-	if err != nil {
-		utils.PrintlnErrorMessage("Ошибка сохранения глобального файла конфигурации: " + err.Error())
-	}
+	configs.WriteGlobal()
+	configs.WriteProject()
 }
 
 func (flow *SetupFlow) Description() string {

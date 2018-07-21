@@ -3,6 +3,7 @@ package configs
 import (
 	"os"
 
+	"github.com/daskioff/jessica/utils"
 	"github.com/spf13/viper"
 )
 
@@ -22,5 +23,19 @@ func init() {
 	GlobalConfig.SetConfigFile(os.Getenv("HOME") + "/" + configFileName)
 
 	if err := GlobalConfig.ReadInConfig(); err != nil {
+	}
+}
+
+func WriteGlobal() {
+	err := GlobalConfig.WriteConfig()
+	if err != nil {
+		utils.PrintlnErrorMessage("Ошибка сохранения глобального файла конфигурации: " + err.Error())
+	}
+}
+
+func WriteProject() {
+	err := ProjectConfig.WriteConfig()
+	if err != nil {
+		utils.PrintlnErrorMessage("Ошибка сохранения локального файла конфигурации: " + err.Error())
 	}
 }

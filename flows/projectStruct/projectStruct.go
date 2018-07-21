@@ -1,136 +1,220 @@
-package projectStruct
+package projectstruct
 
-// import (
-// 	"bufio"
-// 	"fmt"
-// 	"os"
-// 	"strings"
+import (
+	"os"
+	"path/filepath"
+	"strings"
 
-// 	"github.com/daskioff/jessica/utils"
-// )
+	"github.com/daskioff/jessica/configs"
 
-// const FileName = ".project_struct.tpl.md"
+	"github.com/daskioff/jessica/flows"
+	"github.com/daskioff/jessica/utils"
+)
 
-// // Check Проверяет наличие файла шаблона описывающего структуру проекта, если его нет, то предлагает создать его и структуру из папок
-// func Check() {
-// 	var reader *bufio.Reader
-// 	if !utils.IsFileExist(FileName) {
-// 		reader = bufio.NewReader(os.Stdin)
-// 		fmt.Print("Use custom project struct (y/n): ")
-// 		answer, _ := reader.ReadString('\n')
+const FileName = ".project_struct.tpl.md"
 
-// 		if len(answer) > 0 && answer[0] == 'y' {
-// 			createProjectStruct()
-// 			return
-// 		}
+type ProjectStructFlow struct {
+}
 
-// 		utils.PrintlnAttentionMessage("Skipped the creation of the project structure")
-// 	}
-// }
+func (flow *ProjectStructFlow) Start(args []string) {
+	useCustomStruct := configs.ProjectConfig.GetBool(configs.KeyUseCustomProjectStruct)
+	hasCustomStruct := configs.ProjectConfig.IsSet(configs.KeyCustomProjectStruct)
 
-// func createProjectStruct() {
-// 	createTemplateFile()
+	if len(args) > 0 && args[0] == "gen" {
+		if !useCustomStruct || !hasCustomStruct {
+			utils.PrintlnAttentionMessage("Необходимо сначала сконфигурировать с помощью команды `struct`")
+			return
+		}
 
-// 	projectName := requestProjectName()
-// 	if len(projectName) == 0 {
-// 		utils.PrintlnAttentionMessage("Skipped the creation of the project structure. Project name is empty")
-// 		return
-// 	}
+		generate()
 
-// 	os.MkdirAll(projectName+"/config", os.ModePerm)
+		createTemplateFile()
+		utils.PrintlnSuccessMessage("Отредактируйте файл " + FileName + ", чтобы описать вашу структуру")
+		return
+	}
 
-// 	os.MkdirAll(projectName+"/di", os.ModePerm)
-// 	os.MkdirAll(projectName+"/di/factories", os.ModePerm)
+	if !useCustomStruct {
+		useCustomStruct = requestUseCustomStruct()
+	}
 
-// 	os.MkdirAll(projectName+"/extensions", os.ModePerm)
+	if !useCustomStruct {
+		return
+	}
 
-// 	os.MkdirAll(projectName+"/models", os.ModePerm)
+	if hasCustomStruct {
+		showCurrentProjectStruct()
+	} else {
+		showExample()
+	}
+}
 
-// 	os.MkdirAll(projectName+"/services", os.ModePerm)
-// 	os.MkdirAll(projectName+"/services/api", os.ModePerm)
+func (flow *ProjectStructFlow) Description() string {
+	return `
+	--------------------------------------------------------------------------------
+	Генерация структуры файлов описаных в конфиге
+	--------------------------------------------------------------------------------
+	`
+}
 
-// 	os.MkdirAll(projectName+"/usecases", os.ModePerm)
+// ----------------------------------------------------------------------------
+func NewFlow() flows.Flow {
+	flow := ProjectStructFlow{}
+	return &flow
+}
 
-// 	os.MkdirAll(projectName+"/presentation/resources/r", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/resources/localization", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/resources/fonts", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/flows", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/components/views", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/components/tableCells", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/components/collectionCells", os.ModePerm)
-// 	os.MkdirAll(projectName+"/presentation/controllers/Main", os.ModePerm)
+// requestUseCustomStruct Проверяет наличие файла шаблона описывающего структуру проекта, если его нет, то предлагает создать его и структуру из папок
+func requestUseCustomStruct() (result bool) {
+	answer := utils.AskQuestionWithAnswers("Use custom project struct? (y/n)", []string{"y", "n", "Y", "N"})
+	if answer == "y" || answer == "Y" {
+		configs.ProjectConfig.Set(configs.KeyUseCustomProjectStruct, true)
+		result = true
+	} else {
+		configs.ProjectConfig.Set(configs.KeyUseCustomProjectStruct, false)
+		utils.PrintlnAttentionMessage("Skipped the creation of the project structure")
+		result = false
+	}
 
-// 	os.MkdirAll(projectName+"/support", os.ModePerm)
+	configs.WriteProject()
+	return
+}
 
-// 	utils.PrintlnSuccessMessage("Project structure created")
-// }
+func showExample() {
+	const exampleStruct = configs.KeyCustomProjectStruct + `:
+		- config
+		- di:
+			- factories
+		- extensions
+		- models
+		- services:
+			- api
+		- usecases
+		- presentation:
+			- resources:
+				- r
+				- localization
+				- fonts
+			- flows
+			- components:
+				- views
+				- tableCells
+				- collectionCells
+			- controllers
+		- support`
+	utils.PrintlnInfoMessage(`
+	Для создания генерируемой структуры вам необходимо описать ее в локальном файле конфигурации .jessica.yml
+	Описываемая файловая структура будет создаваться внутри папки проекта
+	
+	Например
+	` + exampleStruct)
+}
 
-// func requestProjectName() string {
+func showCurrentProjectStruct() {
+	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
+	info := getPathsString(projectStructure, "  ", "  ")
+	utils.PrintlnInfoMessage("Структура из файла конфигурации\n\n" + info)
+}
 
-// 	reader := bufio.NewReader(os.Stdin)
-// 	if len(projectName) > 0 {
-// 		fmt.Print("" + projectName + "? (y/n): ")
-// 		answer, _ := reader.ReadString('\n')
+func projectPaths() []string {
+	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
+	return getPaths(projectStructure)
+}
 
-// 		if len(answer) > 0 && answer[0] == 'y' {
-// 			return projectName
-// 		}
-// 	}
+func getPaths(in interface{}) []string {
+	switch v := in.(type) {
 
-// 	fmt.Print("Enter project name: ")
-// 	answer, _ := reader.ReadString('\n')
-// 	return strings.Replace(answer, "\n", "", -1)
-// }
+	case string:
+		return []string{v}
 
-// func createTemplateFile() {
-// 	content := `### Структура проекта
-// - %*%{{ .projectName }}%*% – папка проекта
-// 	- %*%di%*%
-// 		- Dependency Injection
-// 		- %*%factories%*%
-// 	- %*%config%*%
-// 		- AppConfig (protocol)
-// 		- AppConfigDev
-// 		- AppConfigRelease
-// 	- %*%extensions%*%
-// 		- Файл называем именем класса, для которого описываем extension
-// 		- Если расширение скорей всего понадобится в других проектах, то его надо вынести в RKFoundationExtensions или RKUIExtensions
-// 	- %*%models%*%
-// 	- %*%services%*%
-// 		- %*%api%*%
-// 		- Каждый сервис закрывается протоколом и имеет реализацию по умолчанию, например, %*%ServiceFilters%*% (protocol), %*%ServiceFilterUserDefault%*%
-// 		- Работа с какими-то сервисами и фреймворками iOS, например, %*%corelocation%*%
-// 	- %*%usecases%*%
-// 		- Разбивка по сущностям
-// 	- %*%presentation%*%
-// 		- %*%resources%*%
-// 			- %*%r%*%
-// 			- %*%localization%*%
-// 			- %*%fonts%*%
-// 			- Assets, LaunchScreen
-// 		- %*%flows%*% – Flow приложения (координаторы)
-// 		- %*%components%*%
-// 			- %*%views%*%
-// 			- %*%tableCells%*%
-// 			- %*%collectionCells%*%
-// 		- %*%controllers%*%
-// 			- Каждый контроллер создаем в папке с его именем без суффикса %*%VC%*%, компоненты, которые разрабатываются только для этого экрана создаются внутри этой папки
-// 			- Название контроллера содержит суффикс %*%VC%*%, например %*%MainVC%*%
-// 			- %*%Main%*% (Пример)
-// 				- %*%components%*%
-// 					- HeaderView
-// 				- MainVC
-// 	- %*%support%*%
-// 		- AppDelegate
-// 		- Info.plist and other .plist
-// - %*%{{ .projectName }}Tests%*% – папка с тестами проекта
-// - %*%fastlane%*% – поддержка Fastlane
-// - %*%Pods%*% – зависимости проекта`
+	case map[interface{}]interface{}:
+		response := make([]string, 0)
+		for s, b := range v {
+			prefix, _ := s.(string)
+			for _, path := range getPaths(b) {
+				response = append(response, filepath.Join(prefix, path))
+			}
+		}
+		return response
 
-// 	content = utils.FixBackQuotes(content)
-// 	fileName := FileName
-// 	if !utils.IsFileExist(fileName) {
-// 		utils.WriteToFile(fileName, content)
-// 		utils.PrintlnSuccessMessage(fileName + " successfully created")
-// 	}
-// }
+	case []string:
+		return v
+
+	case []interface{}:
+		response := make([]string, 0)
+		for _, b := range v {
+			for _, path := range getPaths(b) {
+				response = append(response, path)
+			}
+		}
+		return response
+
+	default:
+		return make([]string, 0)
+	}
+}
+
+func getPathsString(in interface{}, space string, currentSpace string) string {
+	switch v := in.(type) {
+
+	case string:
+		return currentSpace + "- " + v
+
+	case map[interface{}]interface{}:
+		response := ""
+		for s, b := range v {
+			prefix, _ := s.(string)
+			response = response + currentSpace + "- " + prefix + "\n"
+			response = response + getPathsString(b, currentSpace+space, space)
+		}
+		return strings.TrimSuffix(response, "\n")
+
+	case []string:
+		response := ""
+		for _, v := range v {
+			response = response + currentSpace + "- " + v + "\n"
+		}
+		return strings.TrimSuffix(response, "\n")
+
+	case []interface{}:
+		response := ""
+		for _, b := range v {
+			response = response + getPathsString(b, currentSpace, space) + "\n"
+		}
+		return response
+
+	default:
+		return ""
+	}
+}
+
+func generate() {
+	projectName := configs.ProjectConfig.GetString(configs.KeyProjectName)
+	if len(projectName) == 0 {
+		utils.PrintlnAttentionMessage("Skipped the creation of the project structure. Project name is empty")
+		return
+	}
+	paths := projectPaths()
+	for _, path := range paths {
+		resultPath := filepath.Join(projectName, path)
+
+		os.MkdirAll(resultPath, os.ModePerm)
+		utils.PrintlnInfoMessage(resultPath)
+	}
+
+	utils.PrintlnSuccessMessage("Project structure created")
+}
+
+func createTemplateFile() {
+	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
+	projectStructureString := getPathsString(projectStructure, "  ", "  ")
+
+	content := `### Структура проекта
+- %*%{{ .projectName }}%*% – папка проекта
+` + projectStructureString
+
+	content = utils.FixBackQuotes(content)
+	fileName := FileName
+	if !utils.IsFileExist(fileName) {
+		utils.WriteToFile(fileName, content)
+		utils.PrintlnSuccessMessage(fileName + " successfully created")
+	}
+}

@@ -8,6 +8,7 @@ import (
 	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/flows/projectstruct"
 
 	"github.com/daskioff/jessica/utils"
 )
@@ -47,10 +48,10 @@ func updateREADME() {
 	if err != nil {
 		panic(err)
 	}
-	// if utils.IsFileExist(projectStruct.FileName) {
-	// 	writer.WriteString("\n\n")
-	// 	executeTemplate(projectStruct.FileName, writer, params)
-	// }
+	if utils.IsFileExist(projectstruct.FileName) {
+		writer.WriteString("\n\n")
+		executeTemplate(projectstruct.FileName, writer, params)
+	}
 
 	err = writer.Flush()
 	if err != nil {

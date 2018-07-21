@@ -29,7 +29,7 @@ func AskQuestionWithAnswers(question string, answers []string) (answer string) {
 		answer, _ = reader.ReadString('\n')
 		answer = strings.TrimSpace(answer)
 
-		if len(strings.TrimSpace(answer)) > 0 && sliceContains(answers, answer) {
+		if len(answer) > 0 && sliceContains(answers, answer) {
 			return
 		}
 	}

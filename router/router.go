@@ -6,6 +6,7 @@ import (
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/hi"
+	"github.com/daskioff/jessica/flows/projectstruct"
 	"github.com/daskioff/jessica/flows/readme"
 	"github.com/daskioff/jessica/flows/setup"
 	"github.com/daskioff/jessica/utils"
@@ -20,6 +21,7 @@ func NewRouter() *Router {
 	mapFlows["hi"] = hi.NewFlow()
 	mapFlows["readme"] = readme.NewFlow()
 	mapFlows["setup"] = setup.NewFlow()
+	mapFlows["struct"] = projectstruct.NewFlow()
 
 	router := Router{mapFlows: mapFlows}
 
