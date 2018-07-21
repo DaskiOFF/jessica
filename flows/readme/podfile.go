@@ -1,17 +1,19 @@
-package podfile
+package readme
 
 import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/daskioff/update_readme_ios/utils"
+	"github.com/daskioff/jessica/utils"
 )
 
+const podFileName = "Podfile"
+
 // Read Читает Podfile и выбирает из него список зависимостей для каждого таргета
-func Read() ([]string, error) {
+func readPodfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
-	fileContent, err := ioutil.ReadFile("Podfile")
+	fileContent, err := ioutil.ReadFile(podFileName)
 	if err != nil {
 		return nil, err
 	}
@@ -22,8 +24,9 @@ func Read() ([]string, error) {
 }
 
 // Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
-func Check() {
+func checkPodfile() {
 	content := `# Uncomment the next line to define a global platform for your project
+source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'
 use_frameworks!
 
@@ -42,11 +45,11 @@ target 'YOUR_TARGET_NAME' do
 	# https://github.com/jdg/MBProgressHUD
 	pod 'MBProgressHUD', '1.1.0'
 
-	pod 'RKKeyboardManager'
-	pod 'RKTableAdapter'
-	pod 'RKFoundationExtensions'
-	pod 'RKUIExtensions'
-	pod 'RKAutoLayout'
+	pod 'RKKeyboardManager', '~> 0.1'
+	pod 'RKTableAdapter', '~> 0.1'
+	pod 'RKFoundationExtensions', '~> 0.1'
+	pod 'RKUIExtensions', '~> 0.1'
+	pod 'RKAutoLayout', '~> 0.1'
 end
 
 post_install do |installer|
@@ -60,7 +63,7 @@ post_install do |installer|
 	end
 end`
 
-	fileName := "Podfile"
+	fileName := podFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
 		utils.PrintlnSuccessMessage(fileName + " successfully created")

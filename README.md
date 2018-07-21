@@ -3,8 +3,18 @@
 # Usage
 `go install`
 
-go to iOS project folder
-`update_readme_ios`
+go to iOS project folder and execute `jessica <command>`
+
+## Commands
+`jessica help <command>` - Помощь по команде
+
+|Command|Description|
+|----|---|
+|`hi`|Тестовая команда, которая поприветствует вас|
+|`setup`   |Первичная настройка файла конфигурации|
+|`readme`   |Создание необходимых файлов и шаблонов для генерации README.md файла|
+
+
 
 # Result
 Create files if not exists
