@@ -1,25 +1,19 @@
 info_company_name: Kaerus
 project_name: qwe
 project_xcodeproj_name: qwe.xcodeproj
+structure_custom_templates_struct: true
 structure_use_custom_project_struct: true
 structure_custom_project_struct:
-  - config
-  - di:
-    - factories
-  - extensions
-  - models
-  - services:
-    - api
-  - usecases
-  - presentation:
-    - resources:
-      - r
-      - localization
-      - fonts
-    - flows
-    - components:
-        - views
-        - tableCells
-        - collectionCells
-    - controllers
-  - support
+  - Layers:
+    - ApplicationLayer:
+      - Config
+    - ServiceLayer
+    - DataLayer:
+      - Entities
+    - DomainLayer:
+      - Entities
+    - PresentationLayer:
+      - Components
+      - Flows:
+        - _AppCoordinator
+      - Resources

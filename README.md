@@ -13,8 +13,7 @@ go to iOS project folder and execute `jessica <command>`
 |`hi`|Тестовая команда, которая поприветствует вас|
 |`setup`   |Первичная настройка файла конфигурации|
 |`readme`   |Создание необходимых файлов и шаблонов для генерации README.md файла|
-
-
+|`struct`   |Конфигурация, создание и описание структуры проекта|
 
 # Result
 Create files if not exists
