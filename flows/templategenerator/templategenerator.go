@@ -7,12 +7,19 @@ import (
 	"github.com/daskioff/jessica/utils"
 )
 
+const TemplateExt = ".tpl"
+
 type TemplateGeneratorFlow struct {
 }
 
 func (flow *TemplateGeneratorFlow) Start(args []string) {
-	templates := searchTemplates()
+	err := Validate()
+	if err != nil {
+		utils.PrintlnErrorMessage(err.Error())
+		return
+	}
 
+	templates := searchTemplates()
 	if len(templates) == 0 {
 		utils.PrintlnAttentionMessage("Шаблоны не найдены")
 	} else {
