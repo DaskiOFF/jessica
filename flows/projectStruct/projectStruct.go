@@ -1,6 +1,8 @@
 package projectstruct
 
 import (
+	"os"
+
 	"github.com/daskioff/jessica/configs"
 
 	"github.com/daskioff/jessica/flows"
@@ -44,7 +46,7 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		utils.PrintlnSuccessMessage("Отредактируйте файл " + FileName + ", чтобы описать вашу структуру. Этот шаблон будет использоваться для генерации раздела структуры проекта в файле README.md")
 
 		if useTemplateStruct {
-			generateProjectStructInFolder(TemplatesFolderName)
+			os.Mkdir(TemplatesFolderName, os.ModeDir)
 		}
 
 	} else if args[0] == "setup" {

@@ -33,7 +33,7 @@ func setup() {
 }
 
 func requestUseCustomTemplatesStruct() bool {
-	answer := utils.AskQuestionWithAnswers("Use custom templates struct? (y/n)", []string{"y", "n", "Y", "N"})
+	answer := utils.AskQuestionWithAnswers("Use templates? (y/n)", []string{"y", "n", "Y", "N"})
 
 	if answer == "y" || answer == "Y" {
 		return true
