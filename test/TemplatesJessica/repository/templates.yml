@@ -1,5 +1,5 @@
-code_files:
-    - {name: Repository.swift, template_path: code/repository, output_path: Layers/DataLayer/Entities}
+code_files: 
+  - {name: Repository.swift, template_path: code/repository, output_path: Layers/DataLayer/Entities}
 
 #test_files:
 #    -
