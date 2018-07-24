@@ -1,19 +1,20 @@
-info_company_name: Kaerus
+info_company_name: f
 project_name: qwe
+project_tests_folder_name: qweTests
 project_xcodeproj_name: qwe.xcodeproj
-templates_struct: true
-structure_use_custom_project_struct: true
 structure_custom_project_struct:
-  - Layers:
-    - ApplicationLayer:
-      - Config
-    - ServiceLayer
-    - DataLayer:
-      - Entities
-    - DomainLayer:
-      - Entities
-    - PresentationLayer:
-      - Components
-      - Flows:
-        - _AppCoordinator
-      - Resources
+- Layers:
+  - ApplicationLayer:
+    - Config
+  - ServiceLayer
+  - DataLayer:
+    - Entities
+  - DomainLayer:
+    - Entities
+  - PresentationLayer:
+    - Components
+    - Flows:
+      - _AppCoordinator
+    - Resources
+structure_use_custom_project_struct: true
+templates_struct: true

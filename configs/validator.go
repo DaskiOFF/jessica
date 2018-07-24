@@ -7,7 +7,8 @@ func ValidateProjectConfig() error {
 
 	if !config.IsSet(KeyProjectName) ||
 		!config.IsSet(KeyProjectXcodeProjName) ||
-		!config.IsSet(KeyCompanyName) {
+		!config.IsSet(KeyCompanyName) ||
+		!config.IsSet(KeyProjectTestsFolderName) {
 		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле проекта")
 	}
 

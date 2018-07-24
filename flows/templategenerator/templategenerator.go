@@ -103,11 +103,13 @@ func generateTemplates(v *viper.Viper, templateName string, moduleName string) {
 
 		templateFileName := code["template_path"].(string)
 		templateFileName = strings.Replace(templateFileName, "{{.projectName}}", configs.ProjectConfig.GetString(configs.KeyProjectName), -1)
+		templateFileName = strings.Replace(templateFileName, "{{.projectTestsName}}", configs.ProjectConfig.GetString(configs.KeyProjectName), -1)
 		templateFileName = strings.Replace(templateFileName, "{{.moduleName}}", moduleName, -1)
 		templateFileName = filepath.Join(templatesRootPath(), templateName, templateFileName)
 
 		filePath := code["output_path"].(string)
 		filePath = strings.Replace(filePath, "{{.projectName}}", configs.ProjectConfig.GetString(configs.KeyProjectName), -1)
+		filePath = strings.Replace(filePath, "{{.projectTestsName}}", configs.ProjectConfig.GetString(configs.KeyProjectName), -1)
 		filePath = strings.Replace(filePath, "{{.moduleName}}", moduleName, -1)
 		filePath = filepath.Join(root, filePath)
 

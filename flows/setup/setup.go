@@ -18,6 +18,7 @@ func (flow *SetupFlow) Start(args []string) {
 	username := userName()
 	companyName := companyName()
 	projectName := projectName()
+	projectTestFolderName := projectTestsFolderName(projectName)
 
 	localConfig := configs.ProjectConfig
 	globalConfig := configs.GlobalConfig
@@ -26,6 +27,7 @@ func (flow *SetupFlow) Start(args []string) {
 
 	localConfig.Set(configs.KeyCompanyName, companyName)
 	localConfig.Set(configs.KeyProjectName, projectName)
+	localConfig.Set(configs.KeyProjectTestsFolderName, projectTestFolderName)
 	localConfig.Set(configs.KeyProjectXcodeProjName, projectName+".xcodeproj")
 
 	configs.WriteGlobal()
