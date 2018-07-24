@@ -78,7 +78,7 @@ func createTemplateProjectStructDescriptionFile() {
 	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
 	projectStructureString := projectStructToString(projectStructure, "  ", "  ")
 
-	content := `### Структура проекта
+	content := `# Структура проекта
 - %*%{{ .projectName }}%*% – папка проекта
 ` + projectStructureString
 
