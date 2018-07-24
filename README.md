@@ -16,6 +16,9 @@ go to iOS project folder and execute `jessica <command> <action> <args>`
 |`struct`   |Конфигурация, создание и описание структуры проекта|
 |`generator`   |Генерация файлов для проекта|
 
+# Example
+Пример находится в папке `_Example`
+
 # Setup
 Первичная конфигурация
 
@@ -113,6 +116,7 @@ jessica generator gen repository User --nomock
 Переменные использовать с помощью конструкции `{{.VariableName}}`. Подробнее, про используемый шаблонизатор можно прочитать [здесь](https://golang.org/pkg/text/template/)
 
 Список доступных переменных
+
 |VariableName|Type|Description|
 |----|---|---|
 |`fileName`|string|Имя Сгенерированного файла|
