@@ -9,11 +9,18 @@ import (
 	"github.com/daskioff/jessica/configs"
 )
 
+const (
+	rewriteRequest = iota
+	rewriteNo
+	rewriteYes
+)
+
 type templateFile struct {
 	name             string
 	templatePath     string
 	outputPathFolder string
 	outputPathFile   string
+	rewriteResult    int
 }
 
 func replaceTemplateVariableInPaths(inPath string, moduleName string) string {
@@ -43,6 +50,16 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string) 
 			template.name = strings.Replace(template.name, "{{.moduleName}}", moduleName, -1)
 		} else {
 			template.name = moduleName + template.name
+		}
+
+		template.rewriteResult = rewriteRequest
+		rewrite := code["rewrite"]
+		if rewrite != nil {
+			if rewrite.(bool) {
+				template.rewriteResult = rewriteYes
+			} else {
+				template.rewriteResult = rewriteNo
+			}
 		}
 
 		template.templatePath = code["template_path"].(string)

@@ -1,4 +1,4 @@
-map[year:2018 moduleInfo:map[nameCapitalize:User nameFirstLower:user name:User nameUppercase:USER nameLowercase:user] developer:map[name:r company_name:f] fileName:UserRepository.swift projectName:qwe date:24.07.2018]
+map[moduleInfo:map[nameUppercase:USER nameLowercase:user nameCapitalize:User nameFirstLower:user name:User] developer:map[name:Roman Kotov company_name:Kaerus] fileName:UserRepository.swift projectName:qwe date:24.07.2018 year:2018]
 
 sfsdf
 
@@ -7,8 +7,8 @@ qwe
 24.07.2018
 2018
 
-r
-f
+Roman Kotov
+Kaerus
 
 User
 User

@@ -1,1 +1,0 @@
-map[moduleInfo:map[name:UserModule nameUppercase:USERMODULE nameLowercase:usermodule nameCapitalize:UserModule nameFirstLower:userModule] developer:map[name:Roman Kotov company_name:Kaerus] fileName:MockUserModuleRepository.swift projectName:qwe date:24.07.2018 year:2018]

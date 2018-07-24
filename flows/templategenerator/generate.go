@@ -27,12 +27,14 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			panic(err)
 		}
 
-		if utils.IsFileExist(templateFile.outputPathFile) {
+		if templateFile.rewriteResult == rewriteRequest && utils.IsFileExist(templateFile.outputPathFile) {
 			utils.PrintlnAttentionMessage("Файл уже существует: " + templateFile.outputPathFile)
 			answer := utils.AskQuestionWithAnswers("Перезаписать файл? (y/n): ", []string{"y", "n", "Y", "N"})
 			if strings.ToLower(answer) == "n" {
 				continue
 			}
+		} else if templateFile.rewriteResult == rewriteNo {
+			continue
 		}
 
 		file, err := os.OpenFile(templateFile.outputPathFile, os.O_CREATE|os.O_WRONLY, os.ModePerm)
