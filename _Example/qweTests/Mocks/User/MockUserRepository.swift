@@ -1,0 +1,1 @@
+map[date:24.07.2018 year:2018 moduleInfo:map[nameCapitalize:User nameFirstLower:user name:User nameUppercase:USER nameLowercase:user] developer:map[name:r company_name:f] fileName:MockUserRepository.swift projectName:qwe]

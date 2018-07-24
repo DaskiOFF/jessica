@@ -1,0 +1,1 @@
+map[year:2018 moduleInfo:map[nameCapitalize:UserModule nameFirstLower:userModule name:UserModule nameUppercase:USERMODULE nameLowercase:usermodule] developer:map[name:Roman Kotov company_name:Kaerus] fileName:UserModuleRepositoryTests.swift projectName:qwe date:24.07.2018]

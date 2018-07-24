@@ -1,0 +1,8 @@
+code_files: 
+  - {name: Repository.swift, template_path: code/repository, output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}"}
+
+test_files: 
+  - {name: RepositoryTests.swift, template_path: tests/repository2, output_path: "{{.projectTestsName}}/Layers/DataLayer/Entities/{{.moduleName}}"}
+
+mock_files:
+  - {name: "Mock{{.moduleName}}Repository.swift", template_path: mocks/repository3, output_path: "{{.projectTestsName}}/Mocks/{{.moduleName}}"}

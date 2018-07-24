@@ -1,8 +1,0 @@
-code_files: 
-  - {name: Repository.swift, template_path: code/repository, output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}"}
-
-#test_files:
-#    -
-
-#mock_files:
-#    -

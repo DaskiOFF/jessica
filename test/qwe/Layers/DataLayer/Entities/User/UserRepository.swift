@@ -1,1 +1,0 @@
-map[xcodeVersion:7 swiftVersion:3 gemFileDependencies:4 podFileDependencies:5 projectName:qwe]
