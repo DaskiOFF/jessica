@@ -80,7 +80,7 @@ func checkReadmeTpl() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 
-**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl**
+**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl.md**
 
 # Описание проекта {{ .projectName }}
 

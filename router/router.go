@@ -9,6 +9,7 @@ import (
 	"github.com/daskioff/jessica/flows/projectstruct"
 	"github.com/daskioff/jessica/flows/readme"
 	"github.com/daskioff/jessica/flows/setup"
+	"github.com/daskioff/jessica/flows/templategenerator"
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -22,6 +23,7 @@ func NewRouter() *Router {
 	mapFlows["readme"] = readme.NewFlow()
 	mapFlows["setup"] = setup.NewFlow()
 	mapFlows["struct"] = projectstruct.NewFlow()
+	mapFlows["generator"] = templategenerator.NewFlow()
 
 	router := Router{mapFlows: mapFlows}
 
