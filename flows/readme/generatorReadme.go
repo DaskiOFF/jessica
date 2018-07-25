@@ -39,7 +39,7 @@ func updateREADME() {
 		"swiftVersion":        swiftVersion,
 		"gemFileDependencies": gemFileDependencies,
 		"podFileDependencies": podFileDependencies,
-		"projectName":         configs.ProjectConfig.Get(configs.KeyIOSXcodeprojFilename),
+		"projectName":         configs.ProjectConfig.Get(configs.KeyIOSProjectName),
 	}
 
 	err = executeTemplate(templateFileName(), writer, params)

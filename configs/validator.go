@@ -9,7 +9,6 @@ func ValidateProjectConfig() error {
 		!config.IsSet(KeyProjectType) ||
 		!config.IsSet(KeyReadmeTemplateFilename) ||
 		!config.IsSet(KeyCustomProjectStructUse) ||
-		!config.IsSet(KeyCustomProjectStructDescription) ||
 		!config.IsSet(KeyCustomProjectStructDescriptionTemplateFilename) ||
 		!config.IsSet(KeyTemplatesUse) ||
 		!config.IsSet(KeyTemplatesFolderName) {
@@ -20,10 +19,8 @@ func ValidateProjectConfig() error {
 				!config.IsSet(KeyIOSXcodeprojFilename) ||
 				!config.IsSet(KeyIOSTargetnameCode) ||
 				!config.IsSet(KeyIOSTargetnameUnitTests) ||
-				!config.IsSet(KeyIOSTargetnameUITests) ||
 				!config.IsSet(KeyIOSFolderNameCode) ||
-				!config.IsSet(KeyIOSFolderNameUnitTests) ||
-				!config.IsSet(KeyIOSFolderNameUITests) {
+				!config.IsSet(KeyIOSFolderNameUnitTests) {
 
 				return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для iOS проекта")
 			}

@@ -14,6 +14,6 @@ func installGemDependencies() error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("in all caps: %s\n", out.String())
+	fmt.Printf("%s\n", out.String())
 	return nil
 }

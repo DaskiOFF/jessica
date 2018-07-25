@@ -50,7 +50,7 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("in all caps: %s\n", out)
+	fmt.Printf("%s\n", out)
 
 	os.Remove("xcode.rb")
 }
