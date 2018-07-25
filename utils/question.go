@@ -89,11 +89,11 @@ func AskQuestionWithChooseFileAnswer(question string, fileExt string) string {
 	answers := []string{}
 	variants := []string{}
 	for i, fileName := range xcodeprojFiles {
-		answers = append(answers, string(i))
-		variants = append(variants, string(i)+". "+fileName)
+		answers = append(answers, strconv.Itoa(i))
+		variants = append(variants, strconv.Itoa(i)+". "+fileName)
 	}
 
-	question = question + "\n" + strings.Join(variants, "\n")
+	question = question + "\n" + strings.Join(variants, "\n") + "\nIndex: "
 	answer := AskQuestionWithAnswers(question, answers)
 
 	index, err := strconv.Atoi(answer)
@@ -110,31 +110,30 @@ func AskQuestionWithChooseFolderAnswer(question string) string {
 		log.Fatal(err)
 	}
 
-	folders := []string{"."}
+	folders := []string{".", "..Skip (command)"}
 	for _, f := range files {
 		if f.IsDir() {
 			folders = append(folders, f.Name())
 		}
 	}
 
-	count := len(folders)
-	if count == 1 {
-		return folders[0]
-	}
-
 	answers := []string{}
 	variants := []string{}
 	for i, folderName := range folders {
-		answers = append(answers, string(i))
-		variants = append(variants, string(i)+". "+folderName)
+		answers = append(answers, strconv.Itoa(i))
+		variants = append(variants, strconv.Itoa(i)+". "+folderName)
 	}
 
-	question = question + "\n" + strings.Join(variants, "\n")
+	question = question + "\n" + strings.Join(variants, "\n") + "\nIndex: "
 	answer := AskQuestionWithAnswers(question, answers)
 
 	index, err := strconv.Atoi(answer)
 	if err != nil {
 		index = 0
+	}
+
+	if index == 1 {
+		return ""
 	}
 
 	return variants[index]

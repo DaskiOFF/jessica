@@ -47,10 +47,10 @@ func setup() {
 	globalSection(globalConfig)
 
 	// project config
-	commonSection(localConfig)
-	readmeSection(localConfig)
-	customProjectStructSection(localConfig)
-	templatesSection(localConfig)
+	// commonSection(localConfig)
+	// readmeSection(localConfig)
+	// customProjectStructSection(localConfig)
+	// templatesSection(localConfig)
 	iosSection(localConfig)
 
 	configs.WriteGlobal()

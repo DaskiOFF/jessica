@@ -48,7 +48,6 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		}
 
 	} else if args[0] == "setup" {
-		setup()
 
 	} else {
 		utils.PrintlnAttentionMessage("Действие не найдено. Чтобы увидеть список действий воспользуйтесь командой help")
@@ -56,7 +55,6 @@ func (flow *ProjectStructFlow) Start(args []string) {
 }
 
 func (flow *ProjectStructFlow) Setup() {
-	setup()
 }
 
 func (flow *ProjectStructFlow) Description() string {

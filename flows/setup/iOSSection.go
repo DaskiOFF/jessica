@@ -13,7 +13,7 @@ func iosSection(config *viper.Viper) {
 	answer = utils.AskQuestionWithBoolAnswer("Use Podfile?")
 	config.Set(configs.KeyIOSDependenciesPodfileUse, answer)
 
-	xcodeprojFilename := utils.AskQuestionWithChooseFileAnswer("Choose .xcodeproj file:", "xcodeproj")
+	xcodeprojFilename := utils.AskQuestionWithChooseFileAnswer("Choose .xcodeproj file:", ".xcodeproj")
 	if xcodeprojFilename == "" {
 		utils.PrintlnAttentionMessage("Skip iOS project setup")
 		return
@@ -21,14 +21,21 @@ func iosSection(config *viper.Viper) {
 	config.Set(configs.KeyIOSXcodeprojFilename, xcodeprojFilename)
 
 	codeProjectFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project code folder: ")
+	if codeProjectFolderName == "" {
+		codeProjectFolderName = "."
+	}
 	config.Set(configs.KeyIOSFolderNameCode, codeProjectFolderName)
 	config.Set(configs.KeyIOSTargetnameCode, codeProjectFolderName)
 
-	unitTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project code folder: ")
-	config.Set(configs.KeyIOSFolderNameUnitTests, unitTestsFolderName)
-	config.Set(configs.KeyIOSFolderNameUnitTests, unitTestsFolderName)
+	unitTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project UNIT tests folder: ")
+	if unitTestsFolderName != "" {
+		config.Set(configs.KeyIOSFolderNameUnitTests, unitTestsFolderName)
+		config.Set(configs.KeyIOSTargetnameUnitTests, unitTestsFolderName)
+	}
 
-	uiTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project code folder: ")
-	config.Set(configs.KeyIOSFolderNameUITests, uiTestsFolderName)
-	config.Set(configs.KeyIOSFolderNameUITests, uiTestsFolderName)
+	uiTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project UI tests folder: ")
+	if uiTestsFolderName != "" {
+		config.Set(configs.KeyIOSFolderNameUITests, uiTestsFolderName)
+		config.Set(configs.KeyIOSTargetnameUITests, uiTestsFolderName)
+	}
 }
