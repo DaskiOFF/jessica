@@ -1,6 +1,8 @@
 package setup
 
 import (
+	"strings"
+
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils"
 	"github.com/spf13/viper"
@@ -19,6 +21,7 @@ func iosSection(config *viper.Viper) {
 		return
 	}
 	config.Set(configs.KeyIOSXcodeprojFilename, xcodeprojFilename)
+	config.Set(configs.KeyIOSProjectName, strings.Replace(xcodeprojFilename, ".xcodeproj", "", 1))
 
 	codeProjectFolderName := utils.AskQuestionWithChooseFolderAnswer("\nChoose project code folder: ")
 	if codeProjectFolderName == "" {

@@ -1,7 +1,0 @@
-ios_dependencies_gemfile_use: false
-ios_dependencies_podfile_use: false
-ios_folder_name_code: ExampleXcodeproj
-ios_folder_name_unit_tests: ExampleXcodeprojTests
-ios_target_name_code: ExampleXcodeproj
-ios_target_name_unit_tests: ExampleXcodeprojTests
-ios_xcodeproj_filename: ExampleXcodeproj.xcodeproj

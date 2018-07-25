@@ -14,9 +14,9 @@ func generateProjectStruct() {
 		return
 	}
 
-	projectName := configs.ProjectConfig.GetString(configs.KeyProjectName)
+	projectName := configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
 	if len(projectName) == 0 {
-		utils.PrintlnAttentionMessage("Skipped the creation of the project structure. Project name is empty")
+		utils.PrintlnAttentionMessage("Skipped the creation of the project structure. Project folder name is empty. See config key: " + configs.KeyIOSFolderNameCode)
 		return
 	}
 

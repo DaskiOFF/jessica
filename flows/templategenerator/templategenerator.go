@@ -11,7 +11,6 @@ import (
 	"github.com/daskioff/jessica/utils"
 )
 
-const TemplateExt = ".tpl"
 const TemplateDescriptionFileName = "templates.yml"
 
 type TemplateGeneratorFlow struct {
@@ -89,25 +88,25 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2])
 				}
 
-				xcodeproj([]XcodeProjAdded{
-					XcodeProjAdded{
-						configs.ProjectConfig.GetString(configs.KeyProjectXcodeProjName),
-						[]XcodeProjTargetAddedFiles{
-							XcodeProjTargetAddedFiles{
-								// TODO: Заменить на имя таргета для кода
-								configs.ProjectConfig.GetString(configs.KeyProjectName),
-								codeAddedFiles,
-							},
-							XcodeProjTargetAddedFiles{
-								// TODO: Заменить на имя таргета для тестов
-								configs.ProjectConfig.GetString(configs.KeyProjectTestsFolderName),
-								testCodeAddedFiles,
-							},
-							XcodeProjTargetAddedFiles{
-								// TODO: Заменить на имя таргета для моков
-								configs.ProjectConfig.GetString(configs.KeyProjectTestsFolderName),
-								mockCodeAddedFiles,
-							}}}})
+				if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
+					xcodeproj([]XcodeProjAdded{
+						XcodeProjAdded{
+							configs.ProjectConfig.GetString(configs.KeyIOSXcodeprojFilename),
+							[]XcodeProjTargetAddedFiles{
+								XcodeProjTargetAddedFiles{
+									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameCode),
+									codeAddedFiles,
+								},
+								XcodeProjTargetAddedFiles{
+									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameUnitTests),
+									testCodeAddedFiles,
+								},
+								XcodeProjTargetAddedFiles{
+									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameUnitTests),
+									mockCodeAddedFiles,
+								}}}})
+				}
+
 				utils.PrintlnSuccessMessage(templateName + " successfully generated")
 			}
 		}

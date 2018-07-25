@@ -1,6 +1,7 @@
 package readme
 
 import (
+	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
 )
 
@@ -37,9 +38,15 @@ func NewFlow() flows.Flow {
 }
 
 func checkFiles() {
-	checkXcodeVersionFile()
-	checkSwiftVersionFile()
-	checkGemfile()
-	checkPodfile()
-	checkReadmeTpl()
+	if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
+		checkXcodeVersionFile()
+		checkSwiftVersionFile()
+		if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) {
+			checkGemfile()
+		}
+		if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesPodfileUse) {
+			checkPodfile()
+		}
+		checkReadmeTpl()
+	}
 }

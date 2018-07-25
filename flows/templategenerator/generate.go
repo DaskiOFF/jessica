@@ -66,7 +66,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 				"company_name": configs.ProjectConfig.GetString(configs.KeyCompanyName),
 			},
 			"fileName":    templateFile.name,
-			"projectName": configs.ProjectConfig.Get(configs.KeyProjectName),
+			"projectName": configs.ProjectConfig.Get(configs.KeyIOSProjectName),
 			"date":        currentTime.Format("02.01.2006"),
 			"year":        currentTime.Year(),
 		}
