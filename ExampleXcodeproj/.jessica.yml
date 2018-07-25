@@ -1,4 +1,9 @@
-info_company_name: Kaerus
-project_name: ExampleXcodeproj
-project_tests_folder_name: ExampleXcodeprojTests
-project_xcodeproj_name: ExampleXcodeproj.xcodeproj
+company_name: w
+custom_project_struct_description_template_filename: .project_struct.tpl.md
+custom_project_struct_use: false
+ios_dependencies_gemfile_use: false
+ios_dependencies_podfile_use: false
+project_type: iOS
+readme_template_filename: .readme.tpl.md
+templates_folder_name: TeemplatesJessica
+templates_use: false

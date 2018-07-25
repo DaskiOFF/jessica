@@ -7,7 +7,7 @@ import (
 )
 
 func projectPaths() []string {
-	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
+	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStructDescription)
 	return projectStructToPaths(projectStructure)
 }
 

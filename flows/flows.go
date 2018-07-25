@@ -4,5 +4,7 @@ package flows
 type Flow interface {
 	Start(args []string)
 
+	Setup()
+
 	Description() string
 }

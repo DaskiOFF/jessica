@@ -13,6 +13,8 @@ func (flow *ReadmeFlow) Start(args []string) {
 	updateREADME()
 }
 
+func (flow *ReadmeFlow) Setup() {}
+
 func (flow *ReadmeFlow) Description() string {
 	return `
 	--------------------------------------------------------------------------------
