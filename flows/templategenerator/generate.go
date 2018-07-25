@@ -13,13 +13,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string) []AddedFile {
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys map[string]interface{}) []AddedFile {
 	codeTemplates := v.Get(key)
 	listCodeTemplates := codeTemplates.([]interface{})
-	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName)
+	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string) []AddedFile {
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys map[string]interface{}) []AddedFile {
 	addedFiles := []AddedFile{}
 
 	templateFiles := newTemplateFiles(list, templateName, moduleName)
@@ -54,6 +54,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 
 		writer := bufio.NewWriter(file)
 		params := map[string]interface{}{
+			"custom": customKeys,
 			"moduleInfo": map[string]interface{}{
 				"name":           moduleName,
 				"nameUppercase":  strings.ToUpper(moduleName),

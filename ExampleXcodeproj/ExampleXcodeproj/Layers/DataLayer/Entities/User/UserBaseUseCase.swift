@@ -6,7 +6,8 @@ protocol UserBaseUseCase: UseCase {
 
 class UserBaseUseCaseImpl: UseCaseBase, UserBaseUseCase {
     var userRepository: UserRepository
-    
+    // v
+    // v1
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
         super.init()

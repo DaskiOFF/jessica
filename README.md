@@ -89,17 +89,17 @@ go to iOS project folder and execute `jessica <command> <action> <args>`
 |Action|Description|
 |----|---|
 |`list`|Запрос первоначальных настроек|
-|`gen [template name] [module name] [args]`|Генерация|
+|`gen [template name] [module name] [args] [custom keys]`|Генерация|
 
 ## list
 Находит и выводит список всех доступных шаблонов из папки шаблонов доступных для генерации с помощью действия `gen`
 
 ## gen
-После указания действия `gen` необходимо указать имя шаблона и имя генерируемого модуля.
+После указания действия `gen` необходимо указать имя шаблона и имя генерируемого модуля. Далее перечисляются аргументы и кастомные ключи и значения, которые доступны в шаблоне по ключу `{{.custom.имя_переданного_ключа}}`
 
 Например
 ```
-jessica generator gen repository User --nomock
+jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:value2
 ```
 
 ### Описание файла описывающего шаблон
@@ -136,6 +136,11 @@ jessica generator gen repository User --nomock
 |`projectName`|string|Имя проекта для которого генерируется|
 |`date`|string|Текущая дата в формате dd.MM.yyyy|
 |`year`|int|Текущий год|
+
+#### Custom
+Использовать `{{.custom.VariableName}}`
+
+Содержит ключи и значения переданные при запуске
 
 #### ModuleInfo
 Использовать `{{.moduleInfo.VariableName}}`

@@ -2,6 +2,7 @@ package templategenerator
 
 import (
 	"path/filepath"
+	"strings"
 
 	"github.com/daskioff/jessica/configs"
 
@@ -62,11 +63,9 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					return
 				}
 
-				templateName := args[1]
-				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2])
-
 				needGenerateTests := true
 				needGenerateMocks := true
+				customKeys := map[string]interface{}{}
 				if len(args) > 3 {
 					for _, arg := range args[3:] {
 						if arg == "--notest" {
@@ -75,17 +74,26 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 						if arg == "--nomock" {
 							needGenerateMocks = false
 						}
+
+						// custom keys
+						splitResult := strings.Split(arg, ":")
+						if len(splitResult) == 2 {
+							customKeys[splitResult[0]] = splitResult[1]
+						}
 					}
 				}
 
+				templateName := args[1]
+				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2], customKeys)
+
 				testCodeAddedFiles := []AddedFile{}
 				if needGenerateTests {
-					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2])
+					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2], customKeys)
 				}
 
 				mockCodeAddedFiles := []AddedFile{}
 				if needGenerateMocks {
-					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2])
+					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2], customKeys)
 				}
 
 				if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
