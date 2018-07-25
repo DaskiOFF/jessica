@@ -57,7 +57,7 @@ func (r *Router) Handle(args []string) error {
 		if command != "setup" {
 			err := configs.ValidateProjectConfig()
 			if err != nil {
-				return errors.New("Для начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+				return errors.New(err.Error() + "\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
 			}
 		}
 

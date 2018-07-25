@@ -1,0 +1,20 @@
+code_files: 
+  - {name: BaseUseCase.swift, 
+    template_path: code/baseUseCase.swift, 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}", 
+    rewrite: false}
+  - {name: UseCase.swift, 
+    template_path: code/usecase.swift, 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}/usecases", 
+    rewrite: false}
+
+test_files: 
+  - {name: UseCaseImplTests.swift, 
+    template_path: tests/useCaseImplTests.swift, 
+    output_path: "{{.projectTestsName}}/Layers/DataLayer/Entities/{{.moduleName}}", 
+    rewrite: false}
+
+mock_files:
+  - {name: "PartialMock{{.moduleName}}Repository.swift", 
+    template_path: mocks/partialMockUseCaseImpl.swift, 
+    output_path: "{{.projectTestsName}}/Mocks/{{.moduleName}}"}

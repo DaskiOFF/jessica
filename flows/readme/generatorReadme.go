@@ -13,8 +13,6 @@ import (
 	"github.com/daskioff/jessica/utils"
 )
 
-const templateFileName = ".readme.tpl.md"
-
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
 func updateREADME() {
 	gemFile, _ := readGemfile()
@@ -41,10 +39,10 @@ func updateREADME() {
 		"swiftVersion":        swiftVersion,
 		"gemFileDependencies": gemFileDependencies,
 		"podFileDependencies": podFileDependencies,
-		"projectName":         configs.ProjectConfig.Get(configs.KeyProjectName),
+		"projectName":         configs.ProjectConfig.Get(configs.KeyIOSProjectName),
 	}
 
-	err = executeTemplate(templateFileName, writer, params)
+	err = executeTemplate(templateFileName(), writer, params)
 	if err != nil {
 		panic(err)
 	}
@@ -59,6 +57,10 @@ func updateREADME() {
 	}
 
 	utils.PrintlnSuccessMessage(fileNameREADME + " successfully updated")
+}
+
+func templateFileName() string {
+	return configs.ProjectConfig.GetString(configs.KeyReadmeTemplateFilename)
 }
 
 func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
@@ -104,7 +106,7 @@ func checkReadmeTpl() {
 %***%`
 
 	content = utils.FixBackQuotes(content)
-	fileName := templateFileName
+	fileName := templateFileName()
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
 		utils.PrintlnSuccessMessage(fileName + " successfully created")

@@ -25,18 +25,16 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		return
 	}
 
-	useCustomStruct = configs.ProjectConfig.GetBool(configs.KeyUseCustomProjectStruct)
-	hasCustomStruct = configs.ProjectConfig.IsSet(configs.KeyCustomProjectStruct)
-	useTemplateStruct = configs.ProjectConfig.GetBool(configs.KeyCustomTemplatesStruct)
+	updateFlags()
 
 	if args[0] == "gen" {
 		if !useCustomStruct {
-			utils.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + configs.KeyUseCustomProjectStruct + "'. Для конфигурации можно воспользоваться действием setup")
+			utils.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructUse + "'. Для конфигурации можно воспользоваться действием setup")
 			return
 		}
 
 		if !hasCustomStruct {
-			utils.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStruct + "'. Для конфигурации можно воспользоваться действием setup")
+			utils.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructDescription + "'. Для конфигурации можно воспользоваться действием setup")
 			return
 		}
 
@@ -50,11 +48,13 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		}
 
 	} else if args[0] == "setup" {
-		setup()
 
 	} else {
 		utils.PrintlnAttentionMessage("Действие не найдено. Чтобы увидеть список действий воспользуйтесь командой help")
 	}
+}
+
+func (flow *ProjectStructFlow) Setup() {
 }
 
 func (flow *ProjectStructFlow) Description() string {
@@ -74,8 +74,14 @@ func NewFlow() flows.Flow {
 	return &flow
 }
 
+func updateFlags() {
+	useCustomStruct = configs.ProjectConfig.GetBool(configs.KeyCustomProjectStructUse)
+	hasCustomStruct = configs.ProjectConfig.IsSet(configs.KeyCustomProjectStructDescription)
+	useTemplateStruct = configs.ProjectConfig.GetBool(configs.KeyTemplatesUse)
+}
+
 func createTemplateProjectStructDescriptionFile() {
-	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStruct)
+	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStructDescription)
 	projectStructureString := projectStructToString(projectStructure, "  ", "  ")
 
 	content := `# Структура проекта

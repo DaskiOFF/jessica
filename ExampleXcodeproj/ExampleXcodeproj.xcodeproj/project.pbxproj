@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07421F51009DA1763DFABFF5 /* UserModuleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69389F731A659AED652C746B /* UserModuleRepository.swift */; };
-		4CB462534857FFBCDB3C1F01 /* MockUserModuleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A2DA0A216EF90C5E8226C4 /* MockUserModuleRepository.swift */; };
-		56E2178E1A032DCD17015A9C /* UserModuleRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520A3150929CD9ED87F47BE /* UserModuleRepositoryTests.swift */; };
+		11EE963F76C103252282160E /* PartialMockUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636D9EE95CC873589D695E6C /* PartialMockUserRepository.swift */; };
+		427AA7A47E7DDF7C90F6C809 /* UserBaseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0B2FCDCE8EBC8C7E1838E3 /* UserBaseUseCase.swift */; };
 		BBDB0A5921073CF7006996BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB0A5821073CF7006996BF /* AppDelegate.swift */; };
 		BBDB0A5B21073CF7006996BF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB0A5A21073CF7006996BF /* ViewController.swift */; };
 		BBDB0A5E21073CF7006996BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBDB0A5C21073CF7006996BF /* Main.storyboard */; };
 		BBDB0A6021073CF8006996BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBDB0A5F21073CF8006996BF /* Assets.xcassets */; };
 		BBDB0A6321073CF8006996BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBDB0A6121073CF8006996BF /* LaunchScreen.storyboard */; };
 		BBDB0A6E21073CF8006996BF /* ExampleXcodeprojTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB0A6D21073CF8006996BF /* ExampleXcodeprojTests.swift */; };
+		EAFB01A4F4BC143C3393E777 /* UserUseCaseImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452A7F66ED74EAD915E0091E /* UserUseCaseImplTests.swift */; };
+		EF8CBADF3EA3BDDC41429275 /* UserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E88D79EA7207C65C851112 /* UserUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,9 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		27A2DA0A216EF90C5E8226C4 /* MockUserModuleRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockUserModuleRepository.swift; sourceTree = "<group>"; };
-		69389F731A659AED652C746B /* UserModuleRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserModuleRepository.swift; sourceTree = "<group>"; };
-		9520A3150929CD9ED87F47BE /* UserModuleRepositoryTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserModuleRepositoryTests.swift; sourceTree = "<group>"; };
+		452A7F66ED74EAD915E0091E /* UserUseCaseImplTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserUseCaseImplTests.swift; sourceTree = "<group>"; };
+		636D9EE95CC873589D695E6C /* PartialMockUserRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PartialMockUserRepository.swift; sourceTree = "<group>"; };
+		7E0B2FCDCE8EBC8C7E1838E3 /* UserBaseUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserBaseUseCase.swift; sourceTree = "<group>"; };
 		BBDB0A5521073CF7006996BF /* ExampleXcodeproj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleXcodeproj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBDB0A5821073CF7006996BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBDB0A5A21073CF7006996BF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +43,7 @@
 		BBDB0A6921073CF8006996BF /* ExampleXcodeprojTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleXcodeprojTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBDB0A6D21073CF8006996BF /* ExampleXcodeprojTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleXcodeprojTests.swift; sourceTree = "<group>"; };
 		BBDB0A6F21073CF8006996BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2E88D79EA7207C65C851112 /* UserUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,76 +64,77 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2976E46C19537E4B4BD85154 /* DataLayer */ = {
+		2FDC80F9B24D50BC9992528E /* User */ = {
 			isa = PBXGroup;
 			children = (
-				4F776E2BEAD8858DF3D08C48 /* Entities */,
+				636D9EE95CC873589D695E6C /* PartialMockUserRepository.swift */,
+			);
+			name = User;
+			path = User;
+			sourceTree = "<group>";
+		};
+		4473122A5FEE49D7A1EBEC8D /* DataLayer */ = {
+			isa = PBXGroup;
+			children = (
+				6A5BF2451D78CD2A4BCAAFF9 /* Entities */,
 			);
 			name = DataLayer;
 			path = DataLayer;
 			sourceTree = "<group>";
 		};
-		4563DE4DE589CA0E9D8A972E /* DataLayer */ = {
+		68920F24A8E12F52D96DD7C0 /* Layers */ = {
 			isa = PBXGroup;
 			children = (
-				F6A2E17627D50C9DD27168DC /* Entities */,
-			);
-			name = DataLayer;
-			path = DataLayer;
-			sourceTree = "<group>";
-		};
-		472DA788FE8BF018C49D189E /* Layers */ = {
-			isa = PBXGroup;
-			children = (
-				4563DE4DE589CA0E9D8A972E /* DataLayer */,
+				4473122A5FEE49D7A1EBEC8D /* DataLayer */,
 			);
 			name = Layers;
 			path = Layers;
 			sourceTree = "<group>";
 		};
-		4F776E2BEAD8858DF3D08C48 /* Entities */ = {
+		6A5BF2451D78CD2A4BCAAFF9 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				7B0FFD6D382E9512C97C5C00 /* UserModule */,
+				F59CE019137AC028AD32C0B1 /* User */,
 			);
 			name = Entities;
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		7B0FFD6D382E9512C97C5C00 /* UserModule */ = {
+		78A0D5AABB07986994281AED /* usecases */ = {
 			isa = PBXGroup;
 			children = (
-				69389F731A659AED652C746B /* UserModuleRepository.swift */,
+				E2E88D79EA7207C65C851112 /* UserUseCase.swift */,
 			);
-			name = UserModule;
-			path = UserModule;
+			name = usecases;
+			path = usecases;
 			sourceTree = "<group>";
 		};
-		7F854B7F3980A1F9473FE905 /* UserModule */ = {
+		7910C0C49A306D861B55A430 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				27A2DA0A216EF90C5E8226C4 /* MockUserModuleRepository.swift */,
+				2FDC80F9B24D50BC9992528E /* User */,
 			);
-			name = UserModule;
-			path = UserModule;
+			name = Mocks;
+			path = Mocks;
 			sourceTree = "<group>";
 		};
-		8C1213B86011D5253C05A923 /* Layers */ = {
+		A959E2C5CCC2BF0F46BFD9A7 /* Layers */ = {
 			isa = PBXGroup;
 			children = (
-				2976E46C19537E4B4BD85154 /* DataLayer */,
+				E4B5A83F64BCF5484A5B7492 /* DataLayer */,
 			);
 			name = Layers;
 			path = Layers;
 			sourceTree = "<group>";
 		};
-		9DBAC36D183EEF9123B9491E /* UserModule */ = {
+		AE3FADB75DB93BB735069FE0 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				9520A3150929CD9ED87F47BE /* UserModuleRepositoryTests.swift */,
+				7E0B2FCDCE8EBC8C7E1838E3 /* UserBaseUseCase.swift */,
+				78A0D5AABB07986994281AED /* usecases */,
 			);
-			name = UserModule;
-			path = UserModule;
+			name = User;
+			path = User;
 			sourceTree = "<group>";
 		};
 		BBDB0A4C21073CF7006996BF = {
@@ -161,7 +164,7 @@
 				BBDB0A5F21073CF8006996BF /* Assets.xcassets */,
 				BBDB0A6121073CF8006996BF /* LaunchScreen.storyboard */,
 				BBDB0A6421073CF8006996BF /* Info.plist */,
-				8C1213B86011D5253C05A923 /* Layers */,
+				A959E2C5CCC2BF0F46BFD9A7 /* Layers */,
 			);
 			path = ExampleXcodeproj;
 			sourceTree = "<group>";
@@ -171,28 +174,37 @@
 			children = (
 				BBDB0A6D21073CF8006996BF /* ExampleXcodeprojTests.swift */,
 				BBDB0A6F21073CF8006996BF /* Info.plist */,
-				472DA788FE8BF018C49D189E /* Layers */,
-				FD7DE4D8A523793FF903905F /* Mocks */,
+				68920F24A8E12F52D96DD7C0 /* Layers */,
+				7910C0C49A306D861B55A430 /* Mocks */,
 			);
 			path = ExampleXcodeprojTests;
 			sourceTree = "<group>";
 		};
-		F6A2E17627D50C9DD27168DC /* Entities */ = {
+		E4B5A83F64BCF5484A5B7492 /* DataLayer */ = {
 			isa = PBXGroup;
 			children = (
-				9DBAC36D183EEF9123B9491E /* UserModule */,
+				EE0772BFC36FCF6EF81678C4 /* Entities */,
+			);
+			name = DataLayer;
+			path = DataLayer;
+			sourceTree = "<group>";
+		};
+		EE0772BFC36FCF6EF81678C4 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				AE3FADB75DB93BB735069FE0 /* User */,
 			);
 			name = Entities;
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		FD7DE4D8A523793FF903905F /* Mocks */ = {
+		F59CE019137AC028AD32C0B1 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				7F854B7F3980A1F9473FE905 /* UserModule */,
+				452A7F66ED74EAD915E0091E /* UserUseCaseImplTests.swift */,
 			);
-			name = Mocks;
-			path = Mocks;
+			name = User;
+			path = User;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,7 +310,8 @@
 			files = (
 				BBDB0A5B21073CF7006996BF /* ViewController.swift in Sources */,
 				BBDB0A5921073CF7006996BF /* AppDelegate.swift in Sources */,
-				07421F51009DA1763DFABFF5 /* UserModuleRepository.swift in Sources */,
+				427AA7A47E7DDF7C90F6C809 /* UserBaseUseCase.swift in Sources */,
+				EF8CBADF3EA3BDDC41429275 /* UserUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,8 +320,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBDB0A6E21073CF8006996BF /* ExampleXcodeprojTests.swift in Sources */,
-				56E2178E1A032DCD17015A9C /* UserModuleRepositoryTests.swift in Sources */,
-				4CB462534857FFBCDB3C1F01 /* MockUserModuleRepository.swift in Sources */,
+				EAFB01A4F4BC143C3393E777 /* UserUseCaseImplTests.swift in Sources */,
+				11EE963F76C103252282160E /* PartialMockUserRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

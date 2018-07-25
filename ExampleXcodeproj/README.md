@@ -15,6 +15,7 @@
 ### Gemfile
 В `Gemfile` описаны зависимости инструментов. Для установки использовать команду `bundle install` ([Подробнее](https://bundler.io/))
 ```
+gem "xcodeproj"
 gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"
 ```

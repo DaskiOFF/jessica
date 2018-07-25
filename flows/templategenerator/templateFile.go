@@ -26,8 +26,9 @@ type templateFile struct {
 
 func replaceTemplateVariableInPaths(inPath string, moduleName string) string {
 	resultPath := inPath
-	resultPath = strings.Replace(resultPath, "{{.projectName}}", configs.ProjectConfig.GetString(configs.KeyProjectName), -1)
-	resultPath = strings.Replace(resultPath, "{{.projectTestsName}}", configs.ProjectConfig.GetString(configs.KeyProjectTestsFolderName), -1)
+	resultPath = strings.Replace(resultPath, "{{.projectName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode), -1)
+	resultPath = strings.Replace(resultPath, "{{.projectTestsName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUnitTests), -1)
+	resultPath = strings.Replace(resultPath, "{{.projectUITestsName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUITests), -1)
 	resultPath = strings.Replace(resultPath, "{{.moduleName}}", moduleName, -1)
 
 	return resultPath
