@@ -16,11 +16,12 @@ const (
 )
 
 type templateFile struct {
-	name             string
-	templatePath     string
-	outputPathFolder string
-	outputPathFile   string
-	rewriteResult    int
+	name              string
+	outputProjectPath string
+	templatePath      string
+	outputPathFolder  string
+	outputPathFile    string
+	rewriteResult     int
 }
 
 func replaceTemplateVariableInPaths(inPath string, moduleName string) string {
@@ -68,6 +69,7 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string) 
 
 		template.outputPathFolder = code["output_path"].(string)
 		template.outputPathFolder = replaceTemplateVariableInPaths(template.outputPathFolder, moduleName)
+		template.outputProjectPath = template.outputPathFolder
 		template.outputPathFolder = filepath.Join(root, template.outputPathFolder)
 
 		template.outputPathFile = filepath.Join(template.outputPathFolder, template.name)

@@ -27,6 +27,7 @@ func readGemfile() ([]string, error) {
 func checkGemfile() {
 	content := `source "https://rubygems.org"
 
+gem "xcodeproj"
 gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"`
 

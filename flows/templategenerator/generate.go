@@ -13,15 +13,22 @@ import (
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string) {
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string) []AddedFile {
 	codeTemplates := v.Get(key)
 	listCodeTemplates := codeTemplates.([]interface{})
-	generateTemplatesFromList(listCodeTemplates, templateName, moduleName)
+	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string) {
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string) []AddedFile {
+	addedFiles := []AddedFile{}
+
 	templateFiles := newTemplateFiles(list, templateName, moduleName)
 	for _, templateFile := range templateFiles {
+		addedFiles = append(addedFiles, AddedFile{
+			Path:     templateFile.outputProjectPath,
+			Filename: templateFile.name,
+		})
+
 		err := os.MkdirAll(templateFile.outputPathFolder, os.ModePerm)
 		if err != nil {
 			panic(err)
@@ -33,7 +40,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			if strings.ToLower(answer) == "n" {
 				continue
 			}
-		} else if templateFile.rewriteResult == rewriteNo {
+		} else if templateFile.rewriteResult == rewriteNo && utils.IsFileExist(templateFile.outputPathFile) {
 			continue
 		}
 
@@ -74,6 +81,8 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			panic(err)
 		}
 	}
+
+	return addedFiles
 }
 
 func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {

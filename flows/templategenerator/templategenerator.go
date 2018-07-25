@@ -3,6 +3,8 @@ package templategenerator
 import (
 	"path/filepath"
 
+	"github.com/daskioff/jessica/configs"
+
 	"github.com/spf13/viper"
 
 	"github.com/daskioff/jessica/flows"
@@ -62,7 +64,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				}
 
 				templateName := args[1]
-				generateTemplates(v, "code_files", templateName, args[2])
+				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2])
 
 				needGenerateTests := true
 				needGenerateMocks := true
@@ -77,14 +79,35 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					}
 				}
 
+				testCodeAddedFiles := []AddedFile{}
 				if needGenerateTests {
-					generateTemplates(v, "test_files", templateName, args[2])
+					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2])
 				}
 
+				mockCodeAddedFiles := []AddedFile{}
 				if needGenerateMocks {
-					generateTemplates(v, "mock_files", templateName, args[2])
+					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2])
 				}
 
+				xcodeproj([]XcodeProjAdded{
+					XcodeProjAdded{
+						configs.ProjectConfig.GetString(configs.KeyProjectXcodeProjName),
+						[]XcodeProjTargetAddedFiles{
+							XcodeProjTargetAddedFiles{
+								// TODO: Заменить на имя таргета для кода
+								configs.ProjectConfig.GetString(configs.KeyProjectName),
+								codeAddedFiles,
+							},
+							XcodeProjTargetAddedFiles{
+								// TODO: Заменить на имя таргета для тестов
+								configs.ProjectConfig.GetString(configs.KeyProjectTestsFolderName),
+								testCodeAddedFiles,
+							},
+							XcodeProjTargetAddedFiles{
+								// TODO: Заменить на имя таргета для моков
+								configs.ProjectConfig.GetString(configs.KeyProjectTestsFolderName),
+								mockCodeAddedFiles,
+							}}}})
 				utils.PrintlnSuccessMessage(templateName + " successfully generated")
 			}
 		}
