@@ -3,6 +3,7 @@ code_files:
     template_path: code/baseUseCase.swift, 
     output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}", 
     rewrite: true}
+    
   - {name: UseCase.swift, 
     template_path: code/usecase.swift, 
     output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}/usecases", 
