@@ -24,14 +24,25 @@ go to iOS project folder and execute `jessica <command> <action> <args>`
 
 Результатом команды являются два файла:
 - `~/.jessica.yml` – глобальный файл конфигурации
-    - `info_user_name` – Имя пользователя
+    - `user_name` – Имя пользователя
 - `[project_path]/.jessica.yml` – Файл конфигурации проекта
-    - `info_company_name` – Имя компании (Для шаблонов)
-    - `project_name` – Имя проекта
-    - `project_xcodeproj_name` – Имя xcodeproj файла проекта
-    - `templates_struct` – Будут ли использоваться шаблоны
-    - `structure_use_custom_project_struct` – Используется ли генерация структуры
-    - `structure_custom_project_struct` – Структура проекта
+    - `company_name` – Имя компании (Для шаблонов)
+    - `project_type` – Тип проекта [iOS|other]
+    - `readme_template_filename` – Имя файла для шаблона README файла
+    - `custom_project_struct_use` – Использовать или нет кастомную структуру проекта
+    - `custom_project_struct_description` – Описание структуры проекта
+    - `custom_project_struct_description_template_filename` – Имя файла с шаблоном описания структуры проекта
+    - `templates_use` – Использовать шаблоны или нет
+    - `templates_folder_name` – Имя папки содержащей шаблоны
+    - `ios_dependencies_gemfile_use` – Использовать Gemfile или нет
+    - `ios_dependencies_podfile_use` – Использовать Podfile или нет
+    - `ios_xcodeproj_filename` – Имя xcodeproj файла проекта
+    - `ios_target_name_code` – Название таргета кода проекта
+    - `ios_folder_name_code` – Имя папки с кодом проекта
+    - `ios_target_name_unit_tests` – Название таргета unit тестов проекта
+    - `ios_folder_name_unit_tests` – Имя папки unit тестов проекта
+    - `ios_target_name_ui_tests` – Название таргета ui тестов проекта
+    - `ios_folder_name_ui_tests` – Имя папки ui тестов проекта
 
 # Readme
 Поддержка актуальности `README.md` файла

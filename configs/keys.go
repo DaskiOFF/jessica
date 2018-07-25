@@ -24,8 +24,4 @@ const (
 	KeyIOSFolderNameCode         = "ios_folder_name_code"
 	KeyIOSFolderNameUnitTests    = "ios_folder_name_unit_tests"
 	KeyIOSFolderNameUITests      = "ios_folder_name_ui_tests"
-
-	KeyProjectName            = "project_name"
-	KeyProjectTestsFolderName = "project_tests_folder_name"
-	KeyProjectXcodeProjName   = "project_xcodeproj_name"
 )

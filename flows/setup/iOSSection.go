@@ -20,20 +20,20 @@ func iosSection(config *viper.Viper) {
 	}
 	config.Set(configs.KeyIOSXcodeprojFilename, xcodeprojFilename)
 
-	codeProjectFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project code folder: ")
+	codeProjectFolderName := utils.AskQuestionWithChooseFolderAnswer("\nChoose project code folder: ")
 	if codeProjectFolderName == "" {
 		codeProjectFolderName = "."
 	}
 	config.Set(configs.KeyIOSFolderNameCode, codeProjectFolderName)
 	config.Set(configs.KeyIOSTargetnameCode, codeProjectFolderName)
 
-	unitTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project UNIT tests folder: ")
+	unitTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("\nChoose project UNIT tests folder: ")
 	if unitTestsFolderName != "" {
 		config.Set(configs.KeyIOSFolderNameUnitTests, unitTestsFolderName)
 		config.Set(configs.KeyIOSTargetnameUnitTests, unitTestsFolderName)
 	}
 
-	uiTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("Choose project UI tests folder: ")
+	uiTestsFolderName := utils.AskQuestionWithChooseFolderAnswer("\nChoose project UI tests folder: ")
 	if uiTestsFolderName != "" {
 		config.Set(configs.KeyIOSFolderNameUITests, uiTestsFolderName)
 		config.Set(configs.KeyIOSTargetnameUITests, uiTestsFolderName)

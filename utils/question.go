@@ -62,17 +62,14 @@ func AskQuestionWithBoolAnswer(question string) bool {
 }
 
 func AskQuestionWithChooseFileAnswer(question string, fileExt string) string {
-	fmt.Println("question")
 	files, err := ioutil.ReadDir("./")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(files)
 	xcodeprojFiles := []string{}
 	for _, f := range files {
 		extension := filepath.Ext(f.Name())
-		fmt.Println(f.Name() + "   " + extension)
 		if extension == fileExt {
 			xcodeprojFiles = append(xcodeprojFiles, f.Name())
 		}
@@ -101,7 +98,7 @@ func AskQuestionWithChooseFileAnswer(question string, fileExt string) string {
 		index = 0
 	}
 
-	return variants[index]
+	return xcodeprojFiles[index]
 }
 
 func AskQuestionWithChooseFolderAnswer(question string) string {
@@ -136,5 +133,5 @@ func AskQuestionWithChooseFolderAnswer(question string) string {
 		return ""
 	}
 
-	return variants[index]
+	return folders[index]
 }
