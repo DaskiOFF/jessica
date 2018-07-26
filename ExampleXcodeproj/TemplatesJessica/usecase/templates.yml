@@ -1,16 +1,4 @@
 questions:
-  - {key: versionApi,
-    text: "Enter API version: ",
-    required: true}
-
-  - {key: entryPoint,
-    text: "Enter Entry point: ",
-    required: true}
-
-  - {key: entityName,
-    text: "Enter Entity name: ",
-    required: true}
-
   - {key: suffix,
     text: "Enter suffix for module name: ",
     required: false}

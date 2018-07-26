@@ -109,9 +109,20 @@ custom_project_struct_description:
 |----|---|
 |`list`|Список шаблонов|
 |`gen [template name] [module name] [args] [custom keys]`|Генерация|
+|`pull git_url [branch]`|Клонирование репозитория в папку шаблонов|
 
 ## list
 Находит и выводит список всех доступных шаблонов из папки шаблонов доступных для генерации с помощью действия `gen`
+
+## pull
+Пример использования
+```
+jessica generator pull github.com/daskioff/jessica_templates
+or
+jessica generator pull github.com/daskioff/jessica_templates fit
+or
+jessica generator pull https://github.com/daskioff/jessica_templates.git
+```
 
 ## gen
 После указания действия `gen` необходимо указать имя шаблона и имя генерируемого модуля. Далее перечисляются аргументы, кастомные ключи и значения, которые доступны в шаблоне по ключу `{{.custom.имя_переданного_ключа}}`
