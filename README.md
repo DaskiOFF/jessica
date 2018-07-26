@@ -109,20 +109,23 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 - `text` – [string] текст вопроса
 - `required` – [bool] обязательно ли требуется не пустой ответ на вопрос
 
-Каждая секция описывающая файлы может содержать список генерируемых файлов. Описание каждого файла содержит:
+Каждая секция описывающая файлы может содержать список генерируемых файлов. В значениях можно использовать значения описанные ниже в разделе "Шаблонные значения". Описание каждого файла содержит:
 - `name` – [string] Суффикс генерируемого файла, префиксом будет переданное имя модуля (Если позиция названия модуля не указана явно)
-    - `{{.moduleName}}` – Имя модуля, которое было передано при вызове действия
 - `template_path` – [string] путь внутри папки шаблона, относительно файла описывающего шаблон
 - `output_path` – [string] выходной путь сгенерированного файла, возможно использование переменных
-    - `{{.projectName}}` – Имя проекта из файла конфигурации
-    - `{{.projectTestsName}}` – Имя папки с тестами проекта из файла конфигурации
-    - `{{.projectUITestsName}}` – Имя папки с ui тестами проекта из файла конфигурации
-    - `{{.moduleName}}` – Имя модуля, которое было передано при вызове действия
 - `rewrite` – [bool] Значение true или false, означающее стоит ли перезаписывать генерируемый файл, если файл с таким именем по сохраняемому пути существует, если ключ не указан, то будет запрошено во время выполнения
 
 По умолчанию генерируются все секции, `code_files` является обязательной всегда. Другие можно отключить передав `args`:
 - `--notest` – для отключения генерации секции `test_files`
 - `--nomock` – для отключения генерации секции `mock_files`
+
+#### Шаблонные значения
+- Все значения из ключа **Custom** описаного ниже для файлов шаблонов
+- Все значения из ключа **Answers** описаного ниже для файлов шаблонов
+- Все значения из ключа **ModuleInfo** описаного ниже для файлов шаблонов
+- `projectName` – Имя проекта из файла конфигурации
+- `projectTestsName` – Имя папки с тестами проекта из файла конфигурации
+- `projectUITestsName` – Имя папки с ui тестами проекта из файла конфигурации
 
 #### Пример файла описывающего шаблон
 ```yml
@@ -139,26 +142,30 @@ questions:
     text: "Enter Entity name: ",
     required: true}
 
+  - {key: suffix,
+    text: "Enter suffix for module name: ",
+    required: false}
+
 code_files: 
   - {name: BaseUseCase.swift, 
     template_path: code/baseUseCase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}", 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}", 
     rewrite: true}
 
-  - {name: UseCase.swift, 
+  - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCase.swift", 
     template_path: code/usecase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleName}}/usecases", 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}/usecases", 
     rewrite: false}
 
 test_files: 
-  - {name: UseCaseImplTests.swift, 
+  - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCaseImplTests.swift",
     template_path: tests/useCaseImplTests.swift, 
-    output_path: "{{.projectTestsName}}/Layers/DataLayer/Entities/{{.moduleName}}"}
+    output_path: "{{.projectTestsName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}"}
 
 mock_files:
-  - {name: "PartialMock{{.moduleName}}Repository.swift", 
+  - {name: "PartialMock{{.moduleInfo.name}}Repository.swift", 
     template_path: mocks/partialMockUseCaseImpl.swift, 
-    output_path: "{{.projectTestsName}}/Mocks/{{.moduleName}}"}
+    output_path: "{{.projectTestsName}}/Mocks/{{.moduleInfo.name}}"}
 ```
 
 ### Описание генерируемого файла

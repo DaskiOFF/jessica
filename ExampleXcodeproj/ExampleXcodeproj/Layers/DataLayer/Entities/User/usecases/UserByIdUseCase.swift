@@ -1,10 +1,10 @@
 import Foundation
 import UseCase
 
-protocol {{ .moduleInfo.name }}{{.answers.suffix}}UseCase: {{ .moduleInfo.name }}BaseUseCase {
+protocol UserByIdUseCase: UserBaseUseCase {
 }
 
-class {{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl: {{ .moduleInfo.name }}BaseUseCaseImpl, {{ .moduleInfo.name }}UseCase {
+class UserByIdUseCaseImpl: UserBaseUseCaseImpl, UserUseCase {
     
      // MARK: - observe
 //    override func observe() {

@@ -5,7 +5,7 @@ import Mirage
 @testable import {{ .projectName }}
 import UseCase
 
-class PartialMock{{ .moduleInfo.name }}UseCaseImpl: {{ .moduleInfo.name }}UseCaseImpl, PartialMock {
+class PartialMock{{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl: {{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl, PartialMock {
     
     lazy var mockManager: MockManager = MockManager(self, callRealFuncClosure: { [weak self] (funcName, args) -> Any? in
         guard let __self = self else { return nil }
@@ -28,7 +28,7 @@ class PartialMock{{ .moduleInfo.name }}UseCaseImpl: {{ .moduleInfo.name }}UseCas
         }
     }
     
-    // MARK: - {{ .moduleInfo.name }}UseCaseImpl
+    // MARK: - {{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl
     
     // MARK: - UseCaseImpl
     let sel_shouldExecute = "sel_shouldExecute"

@@ -5,7 +5,7 @@ import Mirage
 @testable import ExampleXcodeproj
 import UseCase
 
-class PartialMockUserUseCaseImpl: UserUseCaseImpl, PartialMock {
+class PartialMockUsertUseCaseImpl: UsertUseCaseImpl, PartialMock {
     
     lazy var mockManager: MockManager = MockManager(self, callRealFuncClosure: { [weak self] (funcName, args) -> Any? in
         guard let __self = self else { return nil }
@@ -28,7 +28,7 @@ class PartialMockUserUseCaseImpl: UserUseCaseImpl, PartialMock {
         }
     }
     
-    // MARK: - UserUseCaseImpl
+    // MARK: - UsertUseCaseImpl
     
     // MARK: - UseCaseImpl
     let sel_shouldExecute = "sel_shouldExecute"

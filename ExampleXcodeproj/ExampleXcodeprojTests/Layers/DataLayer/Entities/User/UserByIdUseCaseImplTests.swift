@@ -6,10 +6,10 @@ import UseCase
 
 class UserUseCaseImplTests: XCTestCase {
 
-    // 2.1
-    // api
-    // users
-    var sut: PartialMockUserUseCaseImpl!
+    // 1
+    // 2
+    // 3
+    var sut: PartialMockUserByIdUseCaseImpl!
     
     var mockRepository: MockUserRepository!
     
@@ -19,7 +19,7 @@ class UserUseCaseImplTests: XCTestCase {
         
         mockRepository = MockUserRepository()
         
-        sut = PartialMockUserUseCaseImpl(mockRepository: MockUserRepository)
+        sut = PartialMockUserByIdUseCaseImpl(mockRepository: MockUserRepository)
     }
     
     override func tearDown() {

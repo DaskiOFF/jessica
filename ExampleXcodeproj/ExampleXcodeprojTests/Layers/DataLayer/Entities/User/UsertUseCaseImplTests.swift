@@ -2,24 +2,24 @@ import XCTest
 import Mirage
 
 import UseCase
-@testable import {{ .projectName }}
+@testable import ExampleXcodeproj
 
-class {{ .moduleInfo.name }}UseCaseImplTests: XCTestCase {
+class UserUseCaseImplTests: XCTestCase {
 
-    // {{.answers.versionApi}}
-    // {{.answers.entryPoint}}
-    // {{.answers.entityName}}
-    var sut: PartialMock{{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl!
+    // 1
+    // 2
+    // 3
+    var sut: PartialMockUsertUseCaseImpl!
     
-    var mockRepository: Mock{{ .moduleInfo.name }}Repository!
+    var mockRepository: MockUserRepository!
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        mockRepository = Mock{{ .moduleInfo.name }}Repository()
+        mockRepository = MockUserRepository()
         
-        sut = PartialMock{{ .moduleInfo.name }}{{.answers.suffix}}UseCaseImpl(mockRepository: Mock{{ .moduleInfo.name }}Repository)
+        sut = PartialMockUsertUseCaseImpl(mockRepository: MockUserRepository)
     }
     
     override func tearDown() {
@@ -133,7 +133,7 @@ class {{ .moduleInfo.name }}UseCaseImplTests: XCTestCase {
         
         //  when
         XCTAssertThrowsError(try sut.validateParams(), "") { (error) in
-            XCTAssert(error is {{ .moduleInfo.name }}UseCaseNilParamError)
+            XCTAssert(error is UserUseCaseNilParamError)
         }
         
         //  then

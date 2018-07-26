@@ -13,16 +13,27 @@ import (
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys map[string]interface{}, answers map[string]interface{}) []AddedFile {
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
 	codeTemplates := v.Get(key)
 	listCodeTemplates := codeTemplates.([]interface{})
 	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys map[string]interface{}, answers map[string]interface{}) []AddedFile {
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
 	addedFiles := []AddedFile{}
 
-	templateFiles := newTemplateFiles(list, templateName, moduleName)
+	currentTime := time.Now()
+	templateInfoParams := params(moduleName, customKeys, answers)
+	params := templateInfoParams
+	params["developer"] = MapKeys{
+		"name":        configs.GlobalConfig.GetString(configs.KeyUserName),
+		"companyName": configs.ProjectConfig.GetString(configs.KeyCompanyName),
+	}
+	params["projectName"] = configs.ProjectConfig.Get(configs.KeyIOSProjectName)
+	params["date"] = currentTime.Format("02.01.2006")
+	params["year"] = currentTime.Year()
+
+	templateFiles := newTemplateFiles(list, templateName, moduleName, params)
 	for _, templateFile := range templateFiles {
 		addedFiles = append(addedFiles, AddedFile{
 			Path:     templateFile.outputProjectPath,
@@ -50,28 +61,8 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 		}
 		defer file.Close()
 
-		currentTime := time.Now()
-
 		writer := bufio.NewWriter(file)
-		params := map[string]interface{}{
-			"custom":  customKeys,
-			"answers": answers,
-			"moduleInfo": map[string]interface{}{
-				"name":           moduleName,
-				"nameUppercase":  strings.ToUpper(moduleName),
-				"nameLowercase":  strings.ToLower(moduleName),
-				"nameCapitalize": strings.Title(moduleName),
-				"nameFirstLower": strings.ToLower(moduleName[:1]) + moduleName[1:],
-			},
-			"developer": map[string]interface{}{
-				"name":        configs.GlobalConfig.GetString(configs.KeyUserName),
-				"companyName": configs.ProjectConfig.GetString(configs.KeyCompanyName),
-			},
-			"fileName":    templateFile.name,
-			"projectName": configs.ProjectConfig.Get(configs.KeyIOSProjectName),
-			"date":        currentTime.Format("02.01.2006"),
-			"year":        currentTime.Year(),
-		}
+		params["fileName"] = templateFile.name
 
 		err = executeTemplate(templateFile.templatePath, writer, params)
 		if err != nil {
@@ -87,7 +78,21 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 	return addedFiles
 }
 
-func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
+func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
+	return MapKeys{
+		"custom":  customKeys,
+		"answers": answers,
+		"moduleInfo": MapKeys{
+			"name":           moduleName,
+			"nameUppercase":  strings.ToUpper(moduleName),
+			"nameLowercase":  strings.ToLower(moduleName),
+			"nameCapitalize": strings.Title(moduleName),
+			"nameFirstLower": strings.ToLower(moduleName[:1]) + moduleName[1:],
+		},
+	}
+}
+
+func executeTemplate(templateFileName string, writer io.Writer, params MapKeys) error {
 	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err

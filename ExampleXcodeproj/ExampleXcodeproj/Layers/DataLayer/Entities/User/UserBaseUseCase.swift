@@ -6,7 +6,7 @@ protocol UserBaseUseCase: UseCase {
 
 class UserBaseUseCaseImpl: UseCaseBase, UserBaseUseCase {
     var userRepository: UserRepository
-    // <no value>
+    // Roman
     // <no value>
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
@@ -16,5 +16,8 @@ class UserBaseUseCaseImpl: UseCaseBase, UserBaseUseCase {
     override func cancel() {
         fatalError("not implemented")
     }
+ 
+}
+
  
 }

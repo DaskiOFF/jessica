@@ -1,10 +1,13 @@
 package templategenerator
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/configs"
 )
@@ -24,18 +27,12 @@ type templateFile struct {
 	rewriteResult     int
 }
 
-func replaceTemplateVariableInPaths(inPath string, moduleName string) string {
-	resultPath := inPath
-	resultPath = strings.Replace(resultPath, "{{.projectName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode), -1)
-	resultPath = strings.Replace(resultPath, "{{.projectTestsName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUnitTests), -1)
-	resultPath = strings.Replace(resultPath, "{{.projectUITestsName}}", configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUITests), -1)
-	resultPath = strings.Replace(resultPath, "{{.moduleName}}", moduleName, -1)
-
-	return resultPath
-}
-
-func newTemplateFiles(in []interface{}, templateName string, moduleName string) []templateFile {
+func newTemplateFiles(in []interface{}, templateName string, moduleName string, params MapKeys) []templateFile {
 	templateFiles := []templateFile{}
+
+	params["projectName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
+	params["projectTestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUnitTests)
+	params["projectUITestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUITests)
 
 	root, err := os.Getwd()
 	if err != nil {
@@ -45,38 +42,59 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string) 
 
 	for _, codeInterface := range in {
 		code := codeInterface.(map[interface{}]interface{})
-		template := templateFile{}
+		templateFileResult := templateFile{}
 
-		template.name = code["name"].(string)
-		if strings.Contains(template.name, "{{.moduleName}}") {
-			template.name = strings.Replace(template.name, "{{.moduleName}}", moduleName, -1)
+		templateFileResult.name = code["name"].(string)
+		if strings.Contains(templateFileResult.name, "{{") {
+			templateFileResult.name = executeStringTemplate("generator template name", templateFileResult.name, params)
 		} else {
-			template.name = moduleName + template.name
+			templateFileResult.name = moduleName + templateFileResult.name
 		}
 
-		template.rewriteResult = rewriteRequest
+		templateFileResult.rewriteResult = rewriteRequest
 		rewrite := code["rewrite"]
 		if rewrite != nil {
 			if rewrite.(bool) {
-				template.rewriteResult = rewriteYes
+				templateFileResult.rewriteResult = rewriteYes
 			} else {
-				template.rewriteResult = rewriteNo
+				templateFileResult.rewriteResult = rewriteNo
 			}
 		}
 
-		template.templatePath = code["template_path"].(string)
-		template.templatePath = replaceTemplateVariableInPaths(template.templatePath, moduleName)
-		template.templatePath = filepath.Join(templatesRootPath(), templateName, template.templatePath)
+		templateFileResult.templatePath = code["template_path"].(string)
+		if strings.Contains(templateFileResult.templatePath, "{{") {
+			templateFileResult.templatePath = executeStringTemplate("generator template templatePath", templateFileResult.templatePath, params)
+		}
+		templateFileResult.templatePath = filepath.Join(templatesRootPath(), templateName, templateFileResult.templatePath)
 
-		template.outputPathFolder = code["output_path"].(string)
-		template.outputPathFolder = replaceTemplateVariableInPaths(template.outputPathFolder, moduleName)
-		template.outputProjectPath = template.outputPathFolder
-		template.outputPathFolder = filepath.Join(root, template.outputPathFolder)
+		templateFileResult.outputPathFolder = code["output_path"].(string)
+		if strings.Contains(templateFileResult.outputPathFolder, "{{") {
+			templateFileResult.outputPathFolder = executeStringTemplate("generator template outputPathFolder", templateFileResult.outputPathFolder, params)
+		}
+		templateFileResult.outputProjectPath = templateFileResult.outputPathFolder
+		templateFileResult.outputPathFolder = filepath.Join(root, templateFileResult.outputPathFolder)
 
-		template.outputPathFile = filepath.Join(template.outputPathFolder, template.name)
+		templateFileResult.outputPathFile = filepath.Join(templateFileResult.outputPathFolder, templateFileResult.name)
 
-		templateFiles = append(templateFiles, template)
+		templateFiles = append(templateFiles, templateFileResult)
 	}
 
 	return templateFiles
+}
+
+func executeStringTemplate(name string, stringTemplate string, params interface{}) string {
+	t, err := textTemplate.New(name).Parse(stringTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	var tpl bytes.Buffer
+	writer := bufio.NewWriter(&tpl)
+	err = t.Execute(writer, params)
+	if err != nil {
+		panic(err)
+	}
+
+	writer.Flush()
+	return tpl.String()
 }

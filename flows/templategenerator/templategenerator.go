@@ -12,6 +12,8 @@ import (
 	"github.com/daskioff/jessica/utils"
 )
 
+type MapKeys map[string]interface{}
+
 const TemplateDescriptionFileName = "templates.yml"
 
 type TemplateGeneratorFlow struct {
