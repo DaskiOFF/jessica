@@ -25,6 +25,38 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		return
 	}
 
+	if args[0] == "pull" {
+		args := args[1:]
+
+		if len(args) == 0 {
+			utils.PrintlnErrorMessage("Вы не указали URL git репозитория")
+			return
+		} else {
+			url := args[0]
+			args := args[1:]
+
+			if !strings.HasPrefix(url, "http") {
+				url = "https://" + url
+			}
+
+			if !strings.HasSuffix(url, ".git") {
+				url = url + ".git"
+			}
+
+			branch := ""
+			if len(args) > 0 {
+				branch = args[0]
+			}
+
+			path := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
+			out, err := utils.GitClone(url, branch, path)
+			if err != nil {
+				panic(err)
+			}
+			utils.PrintlnInfoMessage(out)
+		}
+	}
+
 	err := Validate()
 	if err != nil {
 		utils.PrintlnErrorMessage(err.Error())
@@ -132,6 +164,9 @@ func (flow *TemplateGeneratorFlow) Description() string {
 	return `
 --------------------------------------------------------------------------------
 	Генерация шаблонов
+		- list – Список шаблонов
+		- gen – Генерация шаблона
+		- pull – Скачать шаблоны с репозитория
 --------------------------------------------------------------------------------`
 }
 
