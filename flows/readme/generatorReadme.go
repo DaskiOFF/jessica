@@ -8,12 +8,9 @@ import (
 	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/configs"
-	"github.com/daskioff/jessica/flows/projectstruct"
 
 	"github.com/daskioff/jessica/utils"
 )
-
-const templateFileName = ".readme.tpl.md"
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
 func updateREADME() {
@@ -41,16 +38,18 @@ func updateREADME() {
 		"swiftVersion":        swiftVersion,
 		"gemFileDependencies": gemFileDependencies,
 		"podFileDependencies": podFileDependencies,
-		"projectName":         configs.ProjectConfig.Get(configs.KeyProjectName),
+		"projectName":         configs.ProjectConfig.Get(configs.KeyIOSProjectName),
 	}
 
-	err = executeTemplate(templateFileName, writer, params)
+	err = executeTemplate(templateFileName(), writer, params)
 	if err != nil {
 		panic(err)
 	}
-	if utils.IsFileExist(projectstruct.FileName) {
+
+	projectStructTemplateFilename := configs.ProjectConfig.GetString(configs.KeyCustomProjectStructDescriptionTemplateFilename)
+	if utils.IsFileExist(projectStructTemplateFilename) {
 		writer.WriteString("\n\n")
-		executeTemplate(projectstruct.FileName, writer, params)
+		executeTemplate(projectStructTemplateFilename, writer, params)
 	}
 
 	err = writer.Flush()
@@ -58,7 +57,11 @@ func updateREADME() {
 		panic(err)
 	}
 
-	utils.PrintlnSuccessMessage(fileNameREADME + " successfully updated")
+	utils.PrintlnSuccessMessage(fileNameREADME + " обновлен")
+}
+
+func templateFileName() string {
+	return configs.ProjectConfig.GetString(configs.KeyReadmeTemplateFilename)
 }
 
 func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
@@ -80,7 +83,7 @@ func checkReadmeTpl() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 
-**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl**
+**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl.md**
 
 # Описание проекта {{ .projectName }}
 
@@ -104,9 +107,9 @@ func checkReadmeTpl() {
 %***%`
 
 	content = utils.FixBackQuotes(content)
-	fileName := templateFileName
+	fileName := templateFileName()
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnSuccessMessage(fileName + " создан")
 	}
 }

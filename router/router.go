@@ -9,6 +9,7 @@ import (
 	"github.com/daskioff/jessica/flows/projectstruct"
 	"github.com/daskioff/jessica/flows/readme"
 	"github.com/daskioff/jessica/flows/setup"
+	"github.com/daskioff/jessica/flows/templategenerator"
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -22,6 +23,7 @@ func NewRouter() *Router {
 	mapFlows["readme"] = readme.NewFlow()
 	mapFlows["setup"] = setup.NewFlow()
 	mapFlows["struct"] = projectstruct.NewFlow()
+	mapFlows["generator"] = templategenerator.NewFlow()
 
 	router := Router{mapFlows: mapFlows}
 
@@ -55,7 +57,7 @@ func (r *Router) Handle(args []string) error {
 		if command != "setup" {
 			err := configs.ValidateProjectConfig()
 			if err != nil {
-				return errors.New("Для начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+				return errors.New(err.Error() + "\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
 			}
 		}
 

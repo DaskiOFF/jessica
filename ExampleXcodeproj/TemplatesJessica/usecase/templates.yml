@@ -1,0 +1,37 @@
+questions:
+  - {key: versionApi,
+    text: "Enter API version: ",
+    required: true}
+
+  - {key: entryPoint,
+    text: "Enter Entry point: ",
+    required: true}
+
+  - {key: entityName,
+    text: "Enter Entity name: ",
+    required: true}
+
+  - {key: suffix,
+    text: "Enter suffix for module name: ",
+    required: false}
+
+code_files: 
+  - {name: BaseUseCase.swift, 
+    template_path: code/baseUseCase.swift, 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}", 
+    rewrite: true}
+
+  - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCase.swift", 
+    template_path: code/usecase.swift, 
+    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}/usecases", 
+    rewrite: false}
+
+test_files: 
+  - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCaseImplTests.swift",
+    template_path: tests/useCaseImplTests.swift, 
+    output_path: "{{.projectTestsName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}"}
+
+mock_files:
+  - {name: "PartialMock{{.moduleInfo.name}}Repository.swift", 
+    template_path: mocks/partialMockUseCaseImpl.swift, 
+    output_path: "{{.projectTestsName}}/Mocks/{{.moduleInfo.name}}"}

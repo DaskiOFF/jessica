@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"regexp"
 
+	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -27,12 +28,17 @@ func readGemfile() ([]string, error) {
 func checkGemfile() {
 	content := `source "https://rubygems.org"
 
+gem "xcodeproj"
 gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"`
 
 	fileName := gemFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnSuccessMessage(fileName + " создан")
+	}
+
+	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && utils.IsFileExist("Gemfile") {
+		utils.InstallGemDependencies()
 	}
 }

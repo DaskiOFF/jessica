@@ -1,0 +1,15 @@
+company_name: K
+custom_project_struct_description_template_filename: .project_struct.tpl.md
+custom_project_struct_use: false
+ios_dependencies_gemfile_use: true
+ios_dependencies_podfile_use: true
+ios_folder_name_code: ExampleXcodeproj
+ios_folder_name_unit_tests: ExampleXcodeprojTests
+ios_project_name: ExampleXcodeproj
+ios_target_name_code: ExampleXcodeproj
+ios_target_name_unit_tests: ExampleXcodeprojTests
+ios_xcodeproj_filename: ExampleXcodeproj.xcodeproj
+project_type: iOS
+readme_template_filename: .readme.tpl.md
+templates_folder_name: TemplatesJessica
+templates_use: false
