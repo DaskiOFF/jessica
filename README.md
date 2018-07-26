@@ -4,6 +4,11 @@
 ```
 brew tap daskioff/jessica
 brew install daskioff/jessica/jessica
+
+brew upgrade daskioff/jessica/jessica
+
+brew reinstall daskioff/jessica/jessica
+brew uninstall --force daskioff/jessica/jessica
 ```
 
 Переходим в папку проекта и вызываем `jessica <command> <action> <args>`
