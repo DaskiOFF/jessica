@@ -54,7 +54,7 @@ func (r *Router) Handle(args []string) error {
 	if isHelp {
 		utils.PrintlnInfoMessage(flow.Description())
 	} else {
-		if command != "setup" {
+		if command != "setup" && command != "hi" {
 			err := configs.ValidateProjectConfig()
 			if err != nil {
 				return errors.New(err.Error() + "\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
