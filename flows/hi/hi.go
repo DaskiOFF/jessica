@@ -10,7 +10,7 @@ type HiFlow struct {
 }
 
 func (flow *HiFlow) Start(args []string) {
-	fmt.Println("Привет, моя версия 1.2")
+	fmt.Println("Привет, моя версия 1.3.1")
 }
 
 func (flow *HiFlow) Setup() {}

@@ -1,4 +1,5 @@
 # Jessica
+Last version: 1.3.1
 
 # Usage
 ```
@@ -19,10 +20,10 @@ brew uninstall --force daskioff/jessica/jessica
 |Command|Description|
 |----|---|
 |`hi`|Тестовая команда, которая поприветствует вас и напишет свою версию|
-|`setup`   |Первичная настройка файла конфигурации|
-|`readme`   |Создание необходимых файлов и шаблонов для генерации `README.md` файла|
-|`struct`   |Создание и описание структуры проекта|
-|`generator`   |Генерация файлов для проекта|
+|[setup](#Setup)|Первичная настройка файла конфигурации|
+|[readme](#Readme)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
+|[struct](#Struct)|Создание и описание структуры проекта|
+|[generator](#Generatorp)|Генерация файлов для проекта|
 
 # Example
 Пример находится в папке `ExampleXcodeProj` 
@@ -58,23 +59,22 @@ brew uninstall --force daskioff/jessica/jessica
 Пока есть недостающие данные – они будут запрашиваться, все последующие вызовы будут просто обновлять файл `README.md` по шаблону
 
 Будут запрошены:
-- Версия xcode, с которой проект последний раз собирался
-- Версия swift
-- Имя проекта (xcodeproj файла)
+- Версия xcode, с которой проект последний раз собирался. Ответ будет сохранен в файл `.xcode-version`
+- Версия swift. Ответ будет сохранен в файл `.swift-version`
 
 Будут созданы:
 - Файл `Gemfile` с первоначальными зависимостями
 - Файл `Podfile` с первоначальными зависимостями
-- Файл `.readme.tpl.md`(имя файла хранится в конфиге) описывающий шаблон резльтирующего файла `README.md`
+- Файл [readme_template_filename](#Setup) описывающий шаблон резльтирующего файла `README.md`
 
-Переменные используемые при генерации `README.md` из шаблона `.readme.tpl.md`(имя файла хранится в конфиге):
+Переменные используемые при генерации `README.md` из шаблона [readme_template_filename](#Setup):
 - `xcodeVersion` – Версия xcode из файла
 - `swiftVersion` – Версия swift из файла
 - `gemFileDependencies` – Список зависимостей Gemfile
 - `podFileDependencies` – Список зависимостей проекта Podfile
 - `projectName` – Имя проекта
 
-При существовании шаблона описывающего структуру проекта `.project_struct.tpl.md`(имя файла хранится в конфиге), он подключается в конец файла `.readme.tpl.md`(имя файла хранится в конфиге)
+При существовании шаблона описывающего структуру проекта [templates_folder_name](#Setup), он подключается в конец файла [readme_template_filename](#Setup)
 
 # Struct
 |Action|Description|
@@ -83,7 +83,7 @@ brew uninstall --force daskioff/jessica/jessica
 
 ## gen
 - Генерация структуры проекта
-- Создание шаблона `.project_struct.tpl.md`(имя файла хранится в конфиге) описания структуры проекта. В шаблоне доступны все теже переменные, что и для `.readme.tpl.md`(имя файла хранится в конфиге) файла
+- Создание шаблона [templates_folder_name](#Setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#Setup) файла
 - Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
 
 ### Пример описания структуры проекта
@@ -118,9 +118,13 @@ custom_project_struct_description:
 Пример использования
 ```
 jessica generator pull github.com/daskioff/jessica_templates
-or
+```
+или
+```
 jessica generator pull github.com/daskioff/jessica_templates fit
-or
+```
+или
+```
 jessica generator pull https://github.com/daskioff/jessica_templates.git
 ```
 
@@ -133,9 +137,9 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 ```
 
 ### Описание файла описывающего шаблон
-Файл описывающий шаблон должен иметь имя `templates.yml` и находиться в корне папки с файлами шаблона
+Название шаблона – это имя папки с файлом `templates.yml`, которая находится в общей папке шаблонов проекта [templates_folder_name](#Setup).
 
-Доступно 4 секции:
+Структура файла `templates.yml`. Доступно 4 секции:
 1. `questions`
 1. `code_files`
 1. `test_files`
@@ -245,3 +249,11 @@ mock_files:
 |----|---|---|
 |`name`|string|Имя разработчика из глобального файла конфигурации|
 |`companyName`|string|Имя компании из локального файла конфигурации|
+
+# Changelog
+### 1.3.1
+  - Обновлен номер версии
+  - Обновлен README.md файл. Добавлены ссылки на разделы.
+
+### 1.3
+  - Добавлено действие `pull` для `generator`. [Подробнее](##pull).
