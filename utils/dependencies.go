@@ -1,4 +1,4 @@
-package templategenerator
+package utils
 
 import (
 	"bytes"
@@ -6,7 +6,12 @@ import (
 	"os/exec"
 )
 
-func installGemDependencies() error {
+func ExecCmd(name string, arg ...string) (string, error) {
+	out, err := exec.Command(name, arg...).Output()
+	return string(out), err
+}
+
+func InstallGemDependencies() error {
 	cmd := exec.Command("sh", "-c", "sudo bundle install")
 	var out bytes.Buffer
 	cmd.Stdout = &out

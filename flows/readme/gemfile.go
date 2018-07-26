@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"regexp"
 
+	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -34,6 +35,10 @@ gem "cocoapods", "~> 1.5"`
 	fileName := gemFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnSuccessMessage(fileName + " создан")
+	}
+
+	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && utils.IsFileExist("Gemfile") {
+		utils.InstallGemDependencies()
 	}
 }

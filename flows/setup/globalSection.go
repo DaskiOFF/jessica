@@ -7,6 +7,6 @@ import (
 )
 
 func globalSection(config *viper.Viper) {
-	username := utils.AskQuestion("Your name (global): ", true)
+	username := utils.AskQuestion("Ваше имя (для глобального): ", true)
 	config.Set(configs.KeyUserName, username)
 }

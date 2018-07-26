@@ -42,11 +42,11 @@ func checkXcodeVersionFile() {
 
 	if !utils.IsFileExist(fileName) {
 		reader = bufio.NewReader(os.Stdin)
-		fmt.Print("Enter xcode version: ")
+		fmt.Print("Введите используемую версию Xcode: ")
 		xcodeVersion, _ := reader.ReadString('\n')
 
 		utils.WriteToFile(fileName, xcodeVersion)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnSuccessMessage(fileName + " создан")
 	}
 }
 
@@ -60,10 +60,10 @@ func checkSwiftVersionFile() {
 		if reader == nil {
 			reader = bufio.NewReader(os.Stdin)
 		}
-		fmt.Print("Enter Swift version: ")
+		fmt.Print("Введите используемую версию Swift: ")
 		swiftVersion, _ := reader.ReadString('\n')
 
 		utils.WriteToFile(fileName, swiftVersion)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
+		utils.PrintlnSuccessMessage(fileName + " создан")
 	}
 }

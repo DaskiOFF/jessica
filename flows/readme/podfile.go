@@ -66,7 +66,7 @@ end`
 	fileName := podFileName
 	if !utils.IsFileExist(fileName) {
 		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " successfully created")
-		utils.PrintlnAttentionMessage("Update YOUR_TARGET_NAME in Podfile")
+		utils.PrintlnSuccessMessage(fileName + " создан")
+		utils.PrintlnAttentionMessage("Обновите имя таргета в Podfile")
 	}
 }

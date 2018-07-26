@@ -6,7 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/daskioff/jessica/flows/projectstruct"
+	"github.com/daskioff/jessica/configs"
+
 	"github.com/daskioff/jessica/utils"
 )
 
@@ -16,7 +17,9 @@ func templatesRootPath() string {
 		fmt.Println(err.Error())
 		return ""
 	}
-	return filepath.Join(templatesRoot, projectstruct.TemplatesFolderName)
+
+	templatesFolderName := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
+	return filepath.Join(templatesRoot, templatesFolderName)
 }
 
 func searchTemplates() []string {
@@ -37,6 +40,7 @@ func searchTemplates() []string {
 func folders(root string) []string {
 	files, err := ioutil.ReadDir(root)
 	if err != nil {
+		fmt.Println(err)
 		return []string{}
 	}
 

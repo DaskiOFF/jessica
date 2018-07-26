@@ -7,9 +7,9 @@ import (
 )
 
 func commonSection(config *viper.Viper) {
-	companyName := utils.AskQuestion("Your company name (for project): ", false)
+	companyName := utils.AskQuestion("Название комании (для проекта): ", false)
 	config.Set(configs.KeyCompanyName, companyName)
 
-	projectType := utils.AskQuestionWithAnswers("Project type is [iOS, other]: ", []string{"iOS", "other"})
+	projectType := utils.AskQuestionWithAnswers("Введите тип проекта [iOS, other]: ", []string{"iOS", "other"})
 	config.Set(configs.KeyProjectType, projectType)
 }
