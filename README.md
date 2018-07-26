@@ -1,7 +1,15 @@
 # Jessica
 
 # Usage
-`go install`
+```
+brew tap daskioff/jessica
+brew install daskioff/jessica/jessica
+
+brew upgrade daskioff/jessica/jessica
+
+brew reinstall daskioff/jessica/jessica
+brew uninstall --force daskioff/jessica/jessica
+```
 
 Переходим в папку проекта и вызываем `jessica <command> <action> <args>`
 
@@ -10,7 +18,7 @@
 
 |Command|Description|
 |----|---|
-|`hi`|Тестовая команда, которая поприветствует вас|
+|`hi`|Тестовая команда, которая поприветствует вас и напишет свою версию|
 |`setup`   |Первичная настройка файла конфигурации|
 |`readme`   |Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |`struct`   |Создание и описание структуры проекта|
@@ -79,7 +87,22 @@
 - Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
 
 ### Пример описания структуры проекта
-
+```yml
+custom_project_struct_description:
+- Layers:
+  - ApplicationLayer:
+    - Config
+  - ServiceLayer
+  - DataLayer:
+    - Entities
+  - DomainLayer:
+    - Entities
+  - PresentationLayer:
+    - Components
+    - Flows:
+      - _AppCoordinator
+    - Resources
+```
 
 # Generator
 |Action|Description|
