@@ -13,13 +13,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys map[string]interface{}) []AddedFile {
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys map[string]interface{}, answers map[string]interface{}) []AddedFile {
 	codeTemplates := v.Get(key)
 	listCodeTemplates := codeTemplates.([]interface{})
-	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys)
+	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys map[string]interface{}) []AddedFile {
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys map[string]interface{}, answers map[string]interface{}) []AddedFile {
 	addedFiles := []AddedFile{}
 
 	templateFiles := newTemplateFiles(list, templateName, moduleName)
@@ -36,8 +36,8 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 
 		if templateFile.rewriteResult == rewriteRequest && utils.IsFileExist(templateFile.outputPathFile) {
 			utils.PrintlnAttentionMessage("Файл уже существует: " + templateFile.outputPathFile)
-			answer := utils.AskQuestionWithAnswers("Перезаписать файл? (y/n): ", []string{"y", "n", "Y", "N"})
-			if strings.ToLower(answer) == "n" {
+			answer := utils.AskQuestionWithBoolAnswer("Перезаписать файл?")
+			if !answer {
 				continue
 			}
 		} else if templateFile.rewriteResult == rewriteNo && utils.IsFileExist(templateFile.outputPathFile) {
@@ -54,7 +54,8 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 
 		writer := bufio.NewWriter(file)
 		params := map[string]interface{}{
-			"custom": customKeys,
+			"custom":  customKeys,
+			"answers": answers,
 			"moduleInfo": map[string]interface{}{
 				"name":           moduleName,
 				"nameUppercase":  strings.ToUpper(moduleName),
@@ -63,8 +64,8 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 				"nameFirstLower": strings.ToLower(moduleName[:1]) + moduleName[1:],
 			},
 			"developer": map[string]interface{}{
-				"name":         configs.GlobalConfig.GetString(configs.KeyUserName),
-				"company_name": configs.ProjectConfig.GetString(configs.KeyCompanyName),
+				"name":        configs.GlobalConfig.GetString(configs.KeyUserName),
+				"companyName": configs.ProjectConfig.GetString(configs.KeyCompanyName),
 			},
 			"fileName":    templateFile.name,
 			"projectName": configs.ProjectConfig.Get(configs.KeyIOSProjectName),

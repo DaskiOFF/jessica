@@ -6,6 +6,9 @@ import UseCase
 
 class UserUseCaseImplTests: XCTestCase {
 
+    // 2.1
+    // api
+    // users
     var sut: PartialMockUserUseCaseImpl!
     
     var mockRepository: MockUserRepository!

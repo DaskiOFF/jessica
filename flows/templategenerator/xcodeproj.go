@@ -6,6 +6,8 @@ import (
 	"html/template"
 	"log"
 	"os"
+
+	"github.com/daskioff/jessica/utils"
 )
 
 type AddedFile struct {
@@ -34,7 +36,7 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) {
 
 	err = t.Execute(writer, addedTargetFiles)
 	if err != nil {
-		log.Println("executing template:", err)
+		log.Println("Генерация шаблона:", err)
 	}
 
 	err = writer.Flush()
@@ -42,11 +44,11 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) {
 		panic(err)
 	}
 
-	out, err := execCmd("chmod", "+x", "xcode.rb")
+	out, err := utils.ExecCmd("chmod", "+x", "xcode.rb")
 	if err != nil {
 		panic(err)
 	}
-	out, err = execCmd("./xcode.rb")
+	out, err = utils.ExecCmd("./xcode.rb")
 	if err != nil {
 		panic(err)
 	}

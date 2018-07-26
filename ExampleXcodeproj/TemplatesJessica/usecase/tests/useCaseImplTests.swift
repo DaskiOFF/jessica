@@ -6,6 +6,9 @@ import UseCase
 
 class {{ .moduleInfo.name }}UseCaseImplTests: XCTestCase {
 
+    // {{.answers.versionApi}}
+    // {{.answers.entryPoint}}
+    // {{.answers.entityName}}
     var sut: PartialMock{{ .moduleInfo.name }}UseCaseImpl!
     
     var mockRepository: Mock{{ .moduleInfo.name }}Repository!

@@ -83,17 +83,20 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					}
 				}
 
+				questions := newQuestions(v.Get("questions").([]interface{}))
+				answers := askQuestions(questions)
+
 				templateName := args[1]
-				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2], customKeys)
+				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2], customKeys, answers)
 
 				testCodeAddedFiles := []AddedFile{}
 				if needGenerateTests {
-					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2], customKeys)
+					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2], customKeys, answers)
 				}
 
 				mockCodeAddedFiles := []AddedFile{}
 				if needGenerateMocks {
-					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2], customKeys)
+					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2], customKeys, answers)
 				}
 
 				if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
@@ -115,7 +118,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 								}}}})
 				}
 
-				utils.PrintlnSuccessMessage(templateName + " successfully generated")
+				utils.PrintlnSuccessMessage(templateName + " сгенерирован")
 			}
 		}
 	}

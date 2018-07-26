@@ -10,19 +10,19 @@ import (
 
 func generateProjectStruct() {
 	if !useCustomStruct || !hasCustomStruct {
-		utils.PrintlnAttentionMessage("Необходимо сначала сконфигурировать с помощью команды `struct setup`")
+		utils.PrintlnAttentionMessage("Необходима конфигурация с помощью команды `struct setup`")
 		return
 	}
 
 	projectName := configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
 	if len(projectName) == 0 {
-		utils.PrintlnAttentionMessage("Skipped the creation of the project structure. Project folder name is empty. See config key: " + configs.KeyIOSFolderNameCode)
+		utils.PrintlnAttentionMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + configs.KeyIOSFolderNameCode)
 		return
 	}
 
 	generateProjectStructInFolder(projectName)
 
-	utils.PrintlnSuccessMessage("Project structure created")
+	utils.PrintlnSuccessMessage("Структура проекта создана")
 }
 
 func generateProjectStructInFolder(root string) {
