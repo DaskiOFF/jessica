@@ -88,7 +88,7 @@ brew uninstall --force daskioff/jessica/jessica
 
 ### Пример описания структуры проекта
 ```yml
-structure_custom_project_struct:
+custom_project_struct_description:
 - Layers:
   - ApplicationLayer:
     - Config
