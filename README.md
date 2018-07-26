@@ -79,7 +79,22 @@
 - Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
 
 ### Пример описания структуры проекта
-
+```yml
+structure_custom_project_struct:
+- Layers:
+  - ApplicationLayer:
+    - Config
+  - ServiceLayer
+  - DataLayer:
+    - Entities
+  - DomainLayer:
+    - Entities
+  - PresentationLayer:
+    - Components
+    - Flows:
+      - _AppCoordinator
+    - Resources
+```
 
 # Generator
 |Action|Description|
