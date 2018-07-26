@@ -17,7 +17,7 @@
 |`generator`   |Генерация файлов для проекта|
 
 # Example
-Пример находится в папке `_ExampleXcodeProj` 
+Пример находится в папке `ExampleXcodeProj` 
 
 # Setup
 Первичная конфигурация
