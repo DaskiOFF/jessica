@@ -1,6 +1,20 @@
 company_name: K
 custom_project_struct_description_template_filename: .project_struct.tpl.md
-custom_project_struct_use: false
+custom_project_struct_use: true
+custom_project_struct_description:
+- Layers:
+  - ApplicationLayer:
+    - Config
+  - ServiceLayer
+  - DataLayer:
+    - Entities
+  - DomainLayer:
+    - Entities
+  - PresentationLayer:
+    - Components
+    - Flows:
+      - _AppCoordinator
+    - Resources
 ios_dependencies_gemfile_use: true
 ios_dependencies_podfile_use: true
 ios_folder_name_code: ExampleXcodeproj

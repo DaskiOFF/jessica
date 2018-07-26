@@ -45,3 +45,19 @@ target 'YOUR_TARGET_NAME' do
 	pod 'RKAutoLayout', '~> 0.1'
 end
 ```
+
+# Структура проекта
+- `ExampleXcodeproj` – папка проекта
+  - Layers
+    - ApplicationLayer
+      - Config
+    - ServiceLayer
+    - DataLayer
+      - Entities
+    - DomainLayer
+      - Entities
+    - PresentationLayer
+      - Components
+      - Flows
+        - _AppCoordinator
+      - Resources
