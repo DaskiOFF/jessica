@@ -15,6 +15,10 @@ import (
 
 func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
 	codeTemplates := v.Get(key)
+	if codeTemplates == nil {
+		return []AddedFile{}
+	}
+
 	listCodeTemplates := codeTemplates.([]interface{})
 	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
 }

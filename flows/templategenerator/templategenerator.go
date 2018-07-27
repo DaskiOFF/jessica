@@ -117,8 +117,13 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					}
 				}
 
-				questions := newQuestions(v.Get("questions").([]interface{}))
-				answers := askQuestions(questions)
+				questionsInterface := v.Get("questions")
+				questions := []question{}
+				answers := make(map[string]interface{}, 0)
+				if questionsInterface != nil {
+					questions = newQuestions(questionsInterface.([]interface{}))
+					answers = askQuestions(questions)
+				}
 
 				templateName := args[1]
 				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2], customKeys, answers)
