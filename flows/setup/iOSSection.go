@@ -5,6 +5,8 @@ import (
 
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
 	"github.com/spf13/viper"
 )
 
@@ -17,7 +19,7 @@ func iosSection(config *viper.Viper) {
 
 	xcodeprojFilename := utils.AskQuestionWithChooseFileAnswer("Выберите .xcodeproj файл:", ".xcodeproj")
 	if xcodeprojFilename == "" {
-		utils.PrintlnAttentionMessage("Пропущена настройка iOS проекта")
+		print.PrintlnAttentionMessage("Пропущена настройка iOS проекта")
 		return
 	}
 	config.Set(configs.KeyIOSXcodeprojFilename, xcodeprojFilename)
@@ -42,7 +44,7 @@ func iosSection(config *viper.Viper) {
 		config.Set(configs.KeyIOSTargetnameUITests, uiTestsFolderName)
 	}
 
-	if config.GetBool(configs.KeyIOSDependenciesGemfileUse) && utils.IsFileExist("Gemfile") {
+	if config.GetBool(configs.KeyIOSDependenciesGemfileUse) && files.IsFileExist("Gemfile") {
 		utils.InstallGemDependencies()
 	}
 }

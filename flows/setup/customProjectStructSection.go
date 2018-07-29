@@ -3,6 +3,7 @@ package setup
 import (
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/print"
 	"github.com/spf13/viper"
 )
 
@@ -26,7 +27,7 @@ func customProjectStructSection(config *viper.Viper) {
 		- Flows
   - Support`
 
-	utils.PrintlnInfoMessage(`
+	print.PrintlnInfoMessage(`
 Для создания генерируемой структуры вам необходимо описать ее в локальном файле конфигурации .jessica.yml
 Описываемая файловая структура будет создаваться внутри папки проекта
 	

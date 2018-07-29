@@ -1,4 +1,4 @@
-package utils
+package print
 
 import "fmt"
 
@@ -9,15 +9,15 @@ func PrintlnInfoMessage(message string) {
 
 // PrintlnSuccessMessage Выводит сообщение успеха в лог
 func PrintlnSuccessMessage(message string) {
-	fmt.Println(message + "  🎉")
+	fmt.Println("🎉 " + message)
 }
 
 // PrintlnErrorMessage Выводит сообщение ошибки в лог
 func PrintlnErrorMessage(message string) {
-	fmt.Println("❌  " + message + "  ❌")
+	fmt.Println("❌  " + message)
 }
 
 // PrintlnAttentionMessage Выводит сообщение заслуживающее внимания в лог
 func PrintlnAttentionMessage(message string) {
-	fmt.Println("🔶  " + message + "  🔶")
+	fmt.Println("🔶  " + message)
 }

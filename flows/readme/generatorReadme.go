@@ -8,6 +8,8 @@ import (
 	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/daskioff/jessica/utils"
 )
@@ -47,7 +49,7 @@ func updateREADME() {
 	}
 
 	projectStructTemplateFilename := configs.ProjectConfig.GetString(configs.KeyCustomProjectStructDescriptionTemplateFilename)
-	if utils.IsFileExist(projectStructTemplateFilename) {
+	if files.IsFileExist(projectStructTemplateFilename) {
 		writer.WriteString("\n\n")
 		executeTemplate(projectStructTemplateFilename, writer, params)
 	}
@@ -57,7 +59,7 @@ func updateREADME() {
 		panic(err)
 	}
 
-	utils.PrintlnSuccessMessage(fileNameREADME + " обновлен")
+	print.PrintlnSuccessMessage(fileNameREADME + " обновлен")
 }
 
 func templateFileName() string {
@@ -108,8 +110,8 @@ func checkReadmeTpl() {
 
 	content = utils.FixBackQuotes(content)
 	fileName := templateFileName()
-	if !utils.IsFileExist(fileName) {
-		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " создан")
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
 	}
 }

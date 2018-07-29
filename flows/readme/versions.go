@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 const xcodeVersionFileName = ".xcode-version"
@@ -40,13 +41,13 @@ func checkXcodeVersionFile() {
 	fileName := xcodeVersionFileName
 	var reader *bufio.Reader
 
-	if !utils.IsFileExist(fileName) {
+	if !files.IsFileExist(fileName) {
 		reader = bufio.NewReader(os.Stdin)
 		fmt.Print("Введите используемую версию Xcode: ")
 		xcodeVersion, _ := reader.ReadString('\n')
 
-		utils.WriteToFile(fileName, xcodeVersion)
-		utils.PrintlnSuccessMessage(fileName + " создан")
+		files.WriteToFile(fileName, xcodeVersion)
+		print.PrintlnSuccessMessage(fileName + " создан")
 	}
 }
 
@@ -56,14 +57,14 @@ func checkSwiftVersionFile() {
 	fileName := swiftVersionFileName
 	var reader *bufio.Reader
 
-	if !utils.IsFileExist(fileName) {
+	if !files.IsFileExist(fileName) {
 		if reader == nil {
 			reader = bufio.NewReader(os.Stdin)
 		}
 		fmt.Print("Введите используемую версию Swift: ")
 		swiftVersion, _ := reader.ReadString('\n')
 
-		utils.WriteToFile(fileName, swiftVersion)
-		utils.PrintlnSuccessMessage(fileName + " создан")
+		files.WriteToFile(fileName, swiftVersion)
+		print.PrintlnSuccessMessage(fileName + " создан")
 	}
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/daskioff/jessica/flows/readme"
 	"github.com/daskioff/jessica/flows/setup"
 	"github.com/daskioff/jessica/flows/templategenerator"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 type Router struct {
@@ -52,7 +52,7 @@ func (r *Router) Handle(args []string) error {
 	}
 
 	if isHelp {
-		utils.PrintlnInfoMessage(flow.Description())
+		print.PrintlnInfoMessage(flow.Description())
 	} else {
 		if command != "setup" && command != "hi" {
 			err := configs.ValidateProjectConfig()
