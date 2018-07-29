@@ -21,9 +21,9 @@ brew uninstall --force daskioff/jessica/jessica
 |----|---|
 |`hi`|Тестовая команда, которая поприветствует вас и напишет свою версию|
 |[setup](#setup)|Первичная настройка файла конфигурации|
-|[readme](#readme)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
+|[readme](#readme-command)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |[struct](#struct)|Создание и описание структуры проекта|
-|[generator](#generatorp)|Генерация файлов для проекта|
+|[generator](#generator)|Генерация файлов для проекта|
 
 # Example
 Пример находится в папке `ExampleXcodeProj` 
@@ -53,7 +53,7 @@ brew uninstall --force daskioff/jessica/jessica
     - `ios_target_name_ui_tests` – Название таргета ui тестов проекта
     - `ios_folder_name_ui_tests` – Имя папки ui тестов проекта
 
-# Readme
+# Readme command
 Поддержка актуальности `README.md` файла
 
 Пока есть недостающие данные – они будут запрашиваться, все последующие вызовы будут просто обновлять файл `README.md` по шаблону
