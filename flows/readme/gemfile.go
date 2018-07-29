@@ -5,7 +5,9 @@ import (
 	"regexp"
 
 	"github.com/daskioff/jessica/configs"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/bundle"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 const gemFileName = "Gemfile"
@@ -33,12 +35,12 @@ gem "fastlane", ">= 2.96.1", "<= 3.0.0"
 gem "cocoapods", "~> 1.5"`
 
 	fileName := gemFileName
-	if !utils.IsFileExist(fileName) {
-		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " создан")
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
 	}
 
-	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && utils.IsFileExist("Gemfile") {
-		utils.InstallGemDependencies()
+	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && files.IsFileExist("Gemfile") {
+		bundle.Install()
 	}
 }

@@ -7,10 +7,11 @@ import (
 )
 
 type HiFlow struct {
+	version string
 }
 
 func (flow *HiFlow) Start(args []string) {
-	fmt.Println("Привет, моя версия 1.3.2")
+	fmt.Println("Привет, моя версия " + flow.version)
 }
 
 func (flow *HiFlow) Setup() {}
@@ -20,7 +21,7 @@ func (flow *HiFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
-	flow := HiFlow{}
+func NewFlow(version string) flows.Flow {
+	flow := HiFlow{version}
 	return &flow
 }

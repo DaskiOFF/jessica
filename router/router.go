@@ -5,13 +5,11 @@ import (
 
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/flows/hi"
-	"github.com/daskioff/jessica/flows/projectstruct"
-	"github.com/daskioff/jessica/flows/readme"
-	"github.com/daskioff/jessica/flows/setup"
-	"github.com/daskioff/jessica/flows/templategenerator"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/flows/factory"
+	"github.com/daskioff/jessica/utils/print"
 )
+
+const version = "1.3.3"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
@@ -19,11 +17,11 @@ type Router struct {
 
 func NewRouter() *Router {
 	mapFlows := make(map[string]flows.Flow)
-	mapFlows["hi"] = hi.NewFlow()
-	mapFlows["readme"] = readme.NewFlow()
-	mapFlows["setup"] = setup.NewFlow()
-	mapFlows["struct"] = projectstruct.NewFlow()
-	mapFlows["generator"] = templategenerator.NewFlow()
+	mapFlows["hi"] = factory.Hi(version)
+	mapFlows["readme"] = factory.Readme()
+	mapFlows["setup"] = factory.Setup()
+	mapFlows["struct"] = factory.Struct()
+	mapFlows["generator"] = factory.Generator()
 
 	router := Router{mapFlows: mapFlows}
 
@@ -37,6 +35,11 @@ func (r *Router) Handle(args []string) error {
 	}
 
 	command := args[0]
+	if command == "version" {
+		print.PrintlnInfoMessage(version)
+		return nil
+	}
+
 	isHelp := false
 	if command == "help" {
 		if len(args) < 2 {
@@ -52,7 +55,7 @@ func (r *Router) Handle(args []string) error {
 	}
 
 	if isHelp {
-		utils.PrintlnInfoMessage(flow.Description())
+		print.PrintlnInfoMessage(flow.Description())
 	} else {
 		if command != "setup" && command != "hi" {
 			err := configs.ValidateProjectConfig()

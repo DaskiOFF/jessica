@@ -1,4 +1,4 @@
-package utils
+package question
 
 import (
 	"bufio"
@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/daskioff/jessica/utils/slices"
 )
 
 func AskQuestion(question string, answerIsRequired bool) (answer string) {
@@ -33,7 +35,7 @@ func AskQuestionWithAnswers(question string, answers []string) (answer string) {
 		answer, _ = reader.ReadString('\n')
 		answer = strings.TrimSpace(answer)
 
-		if len(answer) > 0 && sliceContains(answers, answer) {
+		if len(answer) > 0 && slices.Contains(answers, answer) {
 			return
 		}
 	}
@@ -53,9 +55,9 @@ func AskQuestionWithBoolAnswer(question string) bool {
 		answer = strings.TrimSpace(answer)
 		answer = strings.ToLower(answer)
 
-		if sliceContains(positiveAnswers, answer) {
+		if slices.Contains(positiveAnswers, answer) {
 			return true
-		} else if sliceContains(negativeAnswers, answer) {
+		} else if slices.Contains(negativeAnswers, answer) {
 			return false
 		}
 	}

@@ -4,7 +4,8 @@ import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 const podFileName = "Podfile"
@@ -64,9 +65,9 @@ post_install do |installer|
 end`
 
 	fileName := podFileName
-	if !utils.IsFileExist(fileName) {
-		utils.WriteToFile(fileName, content)
-		utils.PrintlnSuccessMessage(fileName + " создан")
-		utils.PrintlnAttentionMessage("Обновите имя таргета в Podfile")
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
+		print.PrintlnAttentionMessage("Обновите имя таргета в Podfile")
 	}
 }

@@ -3,7 +3,7 @@ package setup
 import (
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 type SetupFlow struct {
@@ -36,7 +36,7 @@ func NewFlow() flows.Flow {
 func setup() {
 	err := configs.ValidateProjectConfig()
 	if err == nil {
-		utils.PrintlnSuccessMessage("Файл уже сконфигурирован")
+		print.PrintlnSuccessMessage("Файл уже сконфигурирован")
 		return
 	}
 
