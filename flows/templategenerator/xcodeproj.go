@@ -22,38 +22,47 @@ type XcodeProjAdded struct {
 	TargetFiles       []XcodeProjTargetAddedFiles
 }
 
-func xcodeproj(addedTargetFiles []XcodeProjAdded) {
+func xcodeproj(addedTargetFiles []XcodeProjAdded) error {
+	err := command.Execute("which xcodeproj")
+	if err != nil {
+		err = command.Execute("sudo gem install xcodeproj")
+		if err != nil {
+			return err
+		}
+	}
+
 	templateString := templateRubyFile()
 	t := template.Must(template.New("ruby").Parse(templateString))
 
 	file, err := os.OpenFile("xcode.rb", os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 	writer := bufio.NewWriter(file)
 
 	err = t.Execute(writer, addedTargetFiles)
 	if err != nil {
-		log.Println("Генерация шаблона:", err)
+		log.Println("Генерация шаблона: ", err)
 	}
 
 	err = writer.Flush()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = command.Execute("chmod +x xcode.rb")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	err = command.Execute("./xcode.rb")
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	os.Remove("xcode.rb")
+	return nil
 }
 
 func templateRubyFile() string {
