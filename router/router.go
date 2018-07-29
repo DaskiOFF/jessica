@@ -5,11 +5,7 @@ import (
 
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/flows/hi"
-	"github.com/daskioff/jessica/flows/projectstruct"
-	"github.com/daskioff/jessica/flows/readme"
-	"github.com/daskioff/jessica/flows/setup"
-	"github.com/daskioff/jessica/flows/templategenerator"
+	"github.com/daskioff/jessica/flows/factory"
 	"github.com/daskioff/jessica/utils/print"
 )
 
@@ -19,11 +15,11 @@ type Router struct {
 
 func NewRouter() *Router {
 	mapFlows := make(map[string]flows.Flow)
-	mapFlows["hi"] = hi.NewFlow()
-	mapFlows["readme"] = readme.NewFlow()
-	mapFlows["setup"] = setup.NewFlow()
-	mapFlows["struct"] = projectstruct.NewFlow()
-	mapFlows["generator"] = templategenerator.NewFlow()
+	mapFlows["hi"] = factory.Hi()
+	mapFlows["readme"] = factory.Readme()
+	mapFlows["setup"] = factory.Setup()
+	mapFlows["struct"] = factory.Struct()
+	mapFlows["generator"] = factory.Generator()
 
 	router := Router{mapFlows: mapFlows}
 
