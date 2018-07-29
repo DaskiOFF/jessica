@@ -9,13 +9,15 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
+const version = "1.3.3"
+
 type Router struct {
 	mapFlows map[string]flows.Flow
 }
 
 func NewRouter() *Router {
 	mapFlows := make(map[string]flows.Flow)
-	mapFlows["hi"] = factory.Hi()
+	mapFlows["hi"] = factory.Hi(version)
 	mapFlows["readme"] = factory.Readme()
 	mapFlows["setup"] = factory.Setup()
 	mapFlows["struct"] = factory.Struct()
@@ -33,6 +35,11 @@ func (r *Router) Handle(args []string) error {
 	}
 
 	command := args[0]
+	if command == "version" {
+		print.PrintlnInfoMessage(version)
+		return nil
+	}
+
 	isHelp := false
 	if command == "help" {
 		if len(args) < 2 {

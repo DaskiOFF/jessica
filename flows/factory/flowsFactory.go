@@ -9,8 +9,8 @@ import (
 	"github.com/daskioff/jessica/flows/templategenerator"
 )
 
-func Hi() flows.Flow {
-	return hi.NewFlow()
+func Hi(version string) flows.Flow {
+	return hi.NewFlow(version)
 }
 
 func Struct() flows.Flow {
