@@ -7,8 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/daskioff/jessica/configs"
-
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/files"
 )
 
 func templatesRootPath() string {
@@ -29,7 +28,7 @@ func searchTemplates() []string {
 	templatesFolders := make([]string, 0)
 	for _, folder := range folders {
 		path := filepath.Join(templatesRoot, folder, TemplateDescriptionFileName)
-		if utils.IsFileExist(path) {
+		if files.IsFileExist(path) {
 			templatesFolders = append(templatesFolders, folder)
 		}
 	}

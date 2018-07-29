@@ -5,11 +5,13 @@ import (
 	"strings"
 
 	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/git"
+	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/spf13/viper"
 
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/utils"
 )
 
 type MapKeys map[string]interface{}
@@ -21,7 +23,7 @@ type TemplateGeneratorFlow struct {
 
 func (flow *TemplateGeneratorFlow) Start(args []string) {
 	if len(args) == 0 {
-		utils.PrintlnAttentionMessage("Необходимо указать какое действие вы хотите выполнить. Чтобы увидеть список действий воспользуйтесь командой help")
+		print.PrintlnAttentionMessage("Необходимо указать какое действие вы хотите выполнить. Чтобы увидеть список действий воспользуйтесь командой help")
 		return
 	}
 
@@ -29,7 +31,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		args := args[1:]
 
 		if len(args) == 0 {
-			utils.PrintlnErrorMessage("Вы не указали URL git репозитория")
+			print.PrintlnErrorMessage("Вы не указали URL git репозитория")
 			return
 		} else {
 			url := args[0]
@@ -49,24 +51,23 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 			}
 
 			path := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
-			out, err := utils.GitClone(url, branch, path)
+			err := git.Clone(url, branch, path)
 			if err != nil {
 				panic(err)
 			}
-			utils.PrintlnInfoMessage(out)
 		}
 	}
 
 	err := Validate()
 	if err != nil {
-		utils.PrintlnErrorMessage(err.Error())
+		print.PrintlnErrorMessage(err.Error())
 		return
 	}
 
 	templates := searchTemplates()
 	if args[0] == "list" {
 		if len(templates) == 0 {
-			utils.PrintlnAttentionMessage("Шаблоны не найдены")
+			print.PrintlnAttentionMessage("Шаблоны не найдены")
 		} else {
 			list := ""
 			for _, template := range templates {
@@ -76,24 +77,24 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 					list = list + "\n" + template
 				}
 			}
-			utils.PrintlnInfoMessage(list)
+			print.PrintlnInfoMessage(list)
 		}
 	} else if args[0] == "gen" {
 		if len(args) == 1 {
-			utils.PrintlnAttentionMessage("Не указано имя шаблона для генерации")
+			print.PrintlnAttentionMessage("Не указано имя шаблона для генерации")
 		} else {
 			templatePath := filepath.Join(templatesRootPath(), args[1], TemplateDescriptionFileName)
-			if !utils.IsFileExist(templatePath) {
-				utils.PrintlnErrorMessage("Шаблон с данным именем не найден")
+			if !files.IsFileExist(templatePath) {
+				print.PrintlnErrorMessage("Шаблон с данным именем не найден")
 			} else if len(args) < 3 {
-				utils.PrintlnErrorMessage("Не указано имя генерируемого модуля")
+				print.PrintlnErrorMessage("Не указано имя генерируемого модуля")
 			} else {
 				v := viper.New()
 				v.SetConfigFile(templatePath)
 
 				err = v.ReadInConfig()
 				if err != nil {
-					utils.PrintlnErrorMessage(err.Error())
+					print.PrintlnErrorMessage(err.Error())
 					return
 				}
 
@@ -118,7 +119,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				}
 
 				questionsInterface := v.Get("questions")
-				questions := []question{}
+				questions := []quest{}
 				answers := make(map[string]interface{}, 0)
 				if questionsInterface != nil {
 					questions = newQuestions(questionsInterface.([]interface{}))
@@ -157,7 +158,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 								}}}})
 				}
 
-				utils.PrintlnSuccessMessage(templateName + " сгенерирован")
+				print.PrintlnSuccessMessage(templateName + " сгенерирован")
 			}
 		}
 	}

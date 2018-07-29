@@ -4,13 +4,13 @@ import (
 	"os"
 
 	"github.com/daskioff/jessica/router"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/print"
 )
 
 func main() {
 	argsWithProg := os.Args
 	if len(argsWithProg) == 1 {
-		utils.PrintlnErrorMessage("Вы так и не сказали что делать")
+		print.PrintlnErrorMessage("Вы так и не сказали что делать")
 		return
 	}
 
@@ -19,6 +19,6 @@ func main() {
 	router := router.NewRouter()
 	err := router.Handle(argsWithoutProg)
 	if err != nil {
-		utils.PrintlnErrorMessage(err.Error())
+		print.PrintlnErrorMessage(err.Error())
 	}
 }
