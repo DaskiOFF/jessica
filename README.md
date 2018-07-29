@@ -20,10 +20,10 @@ brew uninstall --force daskioff/jessica/jessica
 |Command|Description|
 |----|---|
 |`hi`|Тестовая команда, которая поприветствует вас и напишет свою версию|
-|[setup](#Setup)|Первичная настройка файла конфигурации|
-|[readme](#Readme)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
-|[struct](#Struct)|Создание и описание структуры проекта|
-|[generator](#Generatorp)|Генерация файлов для проекта|
+|[setup](#setup)|Первичная настройка файла конфигурации|
+|[readme](#readme)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
+|[struct](#struct)|Создание и описание структуры проекта|
+|[generator](#generatorp)|Генерация файлов для проекта|
 
 # Example
 Пример находится в папке `ExampleXcodeProj` 
@@ -65,16 +65,16 @@ brew uninstall --force daskioff/jessica/jessica
 Будут созданы:
 - Файл `Gemfile` с первоначальными зависимостями
 - Файл `Podfile` с первоначальными зависимостями
-- Файл [readme_template_filename](#Setup) описывающий шаблон резльтирующего файла `README.md`
+- Файл [readme_template_filename](#setup) описывающий шаблон резльтирующего файла `README.md`
 
-Переменные используемые при генерации `README.md` из шаблона [readme_template_filename](#Setup):
+Переменные используемые при генерации `README.md` из шаблона [readme_template_filename](#setup):
 - `xcodeVersion` – Версия xcode из файла
 - `swiftVersion` – Версия swift из файла
 - `gemFileDependencies` – Список зависимостей Gemfile
 - `podFileDependencies` – Список зависимостей проекта Podfile
 - `projectName` – Имя проекта
 
-При существовании шаблона описывающего структуру проекта [templates_folder_name](#Setup), он подключается в конец файла [readme_template_filename](#Setup)
+При существовании шаблона описывающего структуру проекта [templates_folder_name](#setup), он подключается в конец файла [readme_template_filename](#setup)
 
 # Struct
 |Action|Description|
@@ -83,7 +83,7 @@ brew uninstall --force daskioff/jessica/jessica
 
 ## gen
 - Генерация структуры проекта
-- Создание шаблона [templates_folder_name](#Setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#Setup) файла
+- Создание шаблона [templates_folder_name](#setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#setup) файла
 - Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
 
 ### Пример описания структуры проекта
@@ -137,7 +137,7 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 ```
 
 ### Описание файла описывающего шаблон
-Название шаблона – это имя папки с файлом `templates.yml`, которая находится в общей папке шаблонов проекта [templates_folder_name](#Setup).
+Название шаблона – это имя папки с файлом `templates.yml`, которая находится в общей папке шаблонов проекта [templates_folder_name](#setup).
 
 Структура файла `templates.yml`. Доступно 4 секции:
 1. `questions`
@@ -259,4 +259,4 @@ mock_files:
   - Обновлен README.md файл. Добавлены ссылки на разделы.
 
 ### 1.3
-  - Добавлено действие `pull` для `generator`. [Подробнее](##pull).
+  - Добавлено действие `pull` для `generator`. [Подробнее](#pull).
