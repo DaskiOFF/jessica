@@ -3,10 +3,10 @@ package projectstruct
 import (
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/utils"
 )
 
 var useCustomStruct bool
@@ -79,7 +79,7 @@ func createTemplateProjectStructDescriptionFile() {
 - %*%{{ .projectName }}%*% – папка проекта
 ` + projectStructureString
 
-	content = utils.FixBackQuotes(content)
+	content = jstrings.FixBackQuotes(content)
 	fileName := templateFileName()
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)

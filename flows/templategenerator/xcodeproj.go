@@ -2,12 +2,11 @@ package templategenerator
 
 import (
 	"bufio"
-	"fmt"
 	"html/template"
 	"log"
 	"os"
 
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/command"
 )
 
 type AddedFile struct {
@@ -44,15 +43,15 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) {
 		panic(err)
 	}
 
-	out, err := utils.ExecCmd("chmod", "+x", "xcode.rb")
+	err = command.Execute("chmod +x xcode.rb")
 	if err != nil {
 		panic(err)
 	}
-	out, err = utils.ExecCmd("./xcode.rb")
+
+	err = command.Execute("./xcode.rb")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s\n", out)
 
 	os.Remove("xcode.rb")
 }

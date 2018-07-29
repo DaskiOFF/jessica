@@ -1,42 +1,42 @@
 package templategenerator
 
-import "github.com/daskioff/jessica/utils"
+import "github.com/daskioff/jessica/utils/question"
 
-type question struct {
+type quest struct {
 	key        string
 	text       string
 	isRequired bool
 }
 
-func newQuestions(in []interface{}) []question {
-	questions := []question{}
+func newQuestions(in []interface{}) []quest {
+	questions := []quest{}
 
 	for _, questionInterface := range in {
 		questionMap := questionInterface.(map[interface{}]interface{})
-		question := question{}
+		quest := quest{}
 
-		question.key = questionMap["key"].(string)
-		question.text = questionMap["text"].(string)
+		quest.key = questionMap["key"].(string)
+		quest.text = questionMap["text"].(string)
 
 		isRequired := questionMap["required"]
 		if isRequired == nil {
-			question.isRequired = false
+			quest.isRequired = false
 		} else {
-			question.isRequired = isRequired.(bool)
+			quest.isRequired = isRequired.(bool)
 		}
 
-		questions = append(questions, question)
+		questions = append(questions, quest)
 	}
 
 	return questions
 }
 
-func askQuestions(questions []question) map[string]interface{} {
+func askQuestions(questions []quest) map[string]interface{} {
 	answers := make(map[string]interface{}, 0)
 
-	for _, question := range questions {
-		answer := utils.AskQuestion(question.text, question.isRequired)
-		answers[question.key] = answer
+	for _, quest := range questions {
+		answer := question.AskQuestion(quest.text, quest.isRequired)
+		answers[quest.key] = answer
 	}
 
 	return answers

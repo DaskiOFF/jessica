@@ -5,7 +5,7 @@ import (
 	"regexp"
 
 	"github.com/daskioff/jessica/configs"
-	"github.com/daskioff/jessica/utils"
+	"github.com/daskioff/jessica/utils/bundle"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 )
@@ -41,6 +41,6 @@ gem "cocoapods", "~> 1.5"`
 	}
 
 	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && files.IsFileExist("Gemfile") {
-		utils.InstallGemDependencies()
+		bundle.Install()
 	}
 }

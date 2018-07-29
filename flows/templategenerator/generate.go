@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/daskioff/jessica/configs"
-	"github.com/daskioff/jessica/utils"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/utils/question"
 	"github.com/spf13/viper"
 )
 
@@ -53,7 +53,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 
 		if templateFile.rewriteResult == rewriteRequest && files.IsFileExist(templateFile.outputPathFile) {
 			print.PrintlnAttentionMessage("Файл уже существует: " + templateFile.outputPathFile)
-			answer := utils.AskQuestionWithBoolAnswer("Перезаписать файл?")
+			answer := question.AskQuestionWithBoolAnswer("Перезаписать файл?")
 			if !answer {
 				continue
 			}

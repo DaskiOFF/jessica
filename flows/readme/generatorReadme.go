@@ -9,9 +9,8 @@ import (
 
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
-
-	"github.com/daskioff/jessica/utils"
 )
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
@@ -108,7 +107,7 @@ func checkReadmeTpl() {
 {{ .podFileDependencies }}
 %***%`
 
-	content = utils.FixBackQuotes(content)
+	content = jstrings.FixBackQuotes(content)
 	fileName := templateFileName()
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)

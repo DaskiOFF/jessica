@@ -2,13 +2,13 @@ package setup
 
 import (
 	"github.com/daskioff/jessica/configs"
-	"github.com/daskioff/jessica/utils"
 	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/utils/question"
 	"github.com/spf13/viper"
 )
 
 func customProjectStructSection(config *viper.Viper) {
-	answer := utils.AskQuestionWithBoolAnswer("Use custom project struct?")
+	answer := question.AskQuestionWithBoolAnswer("Use custom project struct?")
 	config.Set(configs.KeyCustomProjectStructUse, answer)
 
 	config.Set(configs.KeyCustomProjectStructDescriptionTemplateFilename, ".project_struct.tpl.md")

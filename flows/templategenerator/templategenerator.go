@@ -6,12 +6,12 @@ import (
 
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/git"
 	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/spf13/viper"
 
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/utils"
 )
 
 type MapKeys map[string]interface{}
@@ -51,11 +51,10 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 			}
 
 			path := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
-			out, err := utils.GitClone(url, branch, path)
+			err := git.Clone(url, branch, path)
 			if err != nil {
 				panic(err)
 			}
-			print.PrintlnInfoMessage(out)
 		}
 	}
 
@@ -120,7 +119,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				}
 
 				questionsInterface := v.Get("questions")
-				questions := []question{}
+				questions := []quest{}
 				answers := make(map[string]interface{}, 0)
 				if questionsInterface != nil {
 					questions = newQuestions(questionsInterface.([]interface{}))
