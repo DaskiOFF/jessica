@@ -11,7 +11,7 @@ import (
 const podFileName = "Podfile"
 
 // Read Читает Podfile и выбирает из него список зависимостей для каждого таргета
-func readPodfile() ([]string, error) {
+func (flow *ReadmeFlow) readPodfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
 	fileContent, err := ioutil.ReadFile(podFileName)
@@ -25,7 +25,7 @@ func readPodfile() ([]string, error) {
 }
 
 // Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
-func checkPodfile() {
+func (flow *ReadmeFlow) checkPodfile() {
 	content := `# Uncomment the next line to define a global platform for your project
 source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'

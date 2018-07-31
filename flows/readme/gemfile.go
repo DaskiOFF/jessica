@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/bundle"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
@@ -13,7 +12,7 @@ import (
 const gemFileName = "Gemfile"
 
 // Read Читает Gemfile и выбирает из него список зависимостей
-func readGemfile() ([]string, error) {
+func (flow *ReadmeFlow) readGemfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
 	fileContent, err := ioutil.ReadFile(gemFileName)
@@ -27,7 +26,7 @@ func readGemfile() ([]string, error) {
 }
 
 // Check Проверяет существование Gemfile, если его нет, то его создает и заполняет значением по умолчанию
-func checkGemfile() {
+func (flow *ReadmeFlow) checkGemfile() {
 	content := `source "https://rubygems.org"
 
 gem "xcodeproj"
@@ -40,7 +39,7 @@ gem "cocoapods", "~> 1.5"`
 		print.PrintlnSuccessMessage(fileName + " создан")
 	}
 
-	if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) && files.IsFileExist("Gemfile") {
+	if flow.iosConfig.GetGemfileUse() && files.IsFileExist("Gemfile") {
 		bundle.Install()
 	}
 }

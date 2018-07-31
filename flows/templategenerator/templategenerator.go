@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/git"
 	"github.com/daskioff/jessica/utils/print"
@@ -19,6 +19,9 @@ type MapKeys map[string]interface{}
 const TemplateDescriptionFileName = "templates.yml"
 
 type TemplateGeneratorFlow struct {
+	globalConfig  *models.ConfigGlobal
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
 }
 
 func (flow *TemplateGeneratorFlow) Start(args []string) {
@@ -50,7 +53,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				branch = args[0]
 			}
 
-			path := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
+			path := flow.projectConfig.GetTemplatesFolderName()
 			err := git.Clone(url, branch, path)
 			if err != nil {
 				panic(err)
@@ -58,13 +61,13 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		}
 	}
 
-	err := Validate()
+	err := flow.Validate()
 	if err != nil {
 		print.PrintlnErrorMessage(err.Error())
 		return
 	}
 
-	templates := searchTemplates()
+	templates := flow.searchTemplates()
 	if args[0] == "list" {
 		if len(templates) == 0 {
 			print.PrintlnAttentionMessage("Шаблоны не найдены")
@@ -83,7 +86,7 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		if len(args) == 1 {
 			print.PrintlnAttentionMessage("Не указано имя шаблона для генерации")
 		} else {
-			templatePath := filepath.Join(templatesRootPath(), args[1], TemplateDescriptionFileName)
+			templatePath := filepath.Join(flow.templatesRootPath(), args[1], TemplateDescriptionFileName)
 			if !files.IsFileExist(templatePath) {
 				print.PrintlnErrorMessage("Шаблон с данным именем не найден")
 			} else if len(args) < 3 {
@@ -122,38 +125,38 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				questions := []quest{}
 				answers := make(map[string]interface{}, 0)
 				if questionsInterface != nil {
-					questions = newQuestions(questionsInterface.([]interface{}))
-					answers = askQuestions(questions)
+					questions = flow.newQuestions(questionsInterface.([]interface{}))
+					answers = flow.askQuestions(questions)
 				}
 
 				templateName := args[1]
-				codeAddedFiles := generateTemplates(v, "code_files", templateName, args[2], customKeys, answers)
+				codeAddedFiles := flow.generateTemplates(v, "code_files", templateName, args[2], customKeys, answers)
 
 				testCodeAddedFiles := []AddedFile{}
 				if needGenerateTests {
-					testCodeAddedFiles = generateTemplates(v, "test_files", templateName, args[2], customKeys, answers)
+					testCodeAddedFiles = flow.generateTemplates(v, "test_files", templateName, args[2], customKeys, answers)
 				}
 
 				mockCodeAddedFiles := []AddedFile{}
 				if needGenerateMocks {
-					mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, args[2], customKeys, answers)
+					mockCodeAddedFiles = flow.generateTemplates(v, "mock_files", templateName, args[2], customKeys, answers)
 				}
 
-				if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
-					xcodeproj([]XcodeProjAdded{
+				if flow.projectConfig.GetProjectType() == "iOS" {
+					flow.xcodeproj([]XcodeProjAdded{
 						XcodeProjAdded{
-							configs.ProjectConfig.GetString(configs.KeyIOSXcodeprojFilename),
+							flow.iosConfig.GetXcodeprojFilename(),
 							[]XcodeProjTargetAddedFiles{
 								XcodeProjTargetAddedFiles{
-									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameCode),
+									flow.iosConfig.GetTargetNameCode(),
 									codeAddedFiles,
 								},
 								XcodeProjTargetAddedFiles{
-									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameUnitTests),
+									flow.iosConfig.GetTargetNameUnitTests(),
 									testCodeAddedFiles,
 								},
 								XcodeProjTargetAddedFiles{
-									configs.ProjectConfig.GetString(configs.KeyIOSTargetnameUnitTests),
+									flow.iosConfig.GetTargetNameUITests(),
 									mockCodeAddedFiles,
 								}}}})
 				}
@@ -177,7 +180,11 @@ func (flow *TemplateGeneratorFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
+func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
 	flow := TemplateGeneratorFlow{}
+	flow.globalConfig = globalConfig
+	flow.projectConfig = projectConfig
+	flow.iosConfig = iosConfig
+
 	return &flow
 }

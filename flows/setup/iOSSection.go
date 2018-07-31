@@ -3,49 +3,48 @@ package setup
 import (
 	"strings"
 
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/bundle"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
-	"github.com/spf13/viper"
 )
 
-func iosSection(config *viper.Viper) {
+func (flow *SetupFlow) iosSection(config *models.ConfigIOS) {
 	answer := question.AskQuestionWithBoolAnswer("Использовать Gemfile?")
-	config.Set(configs.KeyIOSDependenciesGemfileUse, answer)
+	config.SetGemfileUse(answer)
 
 	answer = question.AskQuestionWithBoolAnswer("Использовать Podfile?")
-	config.Set(configs.KeyIOSDependenciesPodfileUse, answer)
+	config.SetPodfileUse(answer)
 
 	xcodeprojFilename := question.AskQuestionWithChooseFileAnswer("Выберите .xcodeproj файл:", ".xcodeproj")
 	if xcodeprojFilename == "" {
 		print.PrintlnAttentionMessage("Пропущена настройка iOS проекта")
 		return
 	}
-	config.Set(configs.KeyIOSXcodeprojFilename, xcodeprojFilename)
-	config.Set(configs.KeyIOSProjectName, strings.Replace(xcodeprojFilename, ".xcodeproj", "", 1))
+	config.SetXcodeprojFilename(xcodeprojFilename)
+	config.SetProjectName(strings.Replace(xcodeprojFilename, ".xcodeproj", "", 1))
 
 	codeProjectFolderName := question.AskQuestionWithChooseFolderAnswer("\nВыберите папку с кодом проекта (обычно она называется так же как и xcodeproj файл): ")
 	if codeProjectFolderName == "" {
 		codeProjectFolderName = "."
 	}
-	config.Set(configs.KeyIOSFolderNameCode, codeProjectFolderName)
-	config.Set(configs.KeyIOSTargetnameCode, codeProjectFolderName)
+	config.SetFolderNameCode(codeProjectFolderName)
+	config.SetTargetNameCode(codeProjectFolderName)
 
 	unitTestsFolderName := question.AskQuestionWithChooseFolderAnswer("\nВыберите папку с UNIT тестами: ")
 	if unitTestsFolderName != "" {
-		config.Set(configs.KeyIOSFolderNameUnitTests, unitTestsFolderName)
-		config.Set(configs.KeyIOSTargetnameUnitTests, unitTestsFolderName)
+		config.SetFolderNameUnitTests(unitTestsFolderName)
+		config.SetTargetNameUnitTests(unitTestsFolderName)
 	}
 
 	uiTestsFolderName := question.AskQuestionWithChooseFolderAnswer("\nВыберите папку с UI тестами: ")
 	if uiTestsFolderName != "" {
-		config.Set(configs.KeyIOSFolderNameUITests, uiTestsFolderName)
-		config.Set(configs.KeyIOSTargetnameUITests, uiTestsFolderName)
+		config.SetFolderNameUITests(uiTestsFolderName)
+		config.SetTargetNameUITests(uiTestsFolderName)
 	}
 
-	if config.GetBool(configs.KeyIOSDependenciesGemfileUse) && files.IsFileExist("Gemfile") {
+	if config.GetGemfileUse() && files.IsFileExist("Gemfile") {
 		bundle.Install()
 	}
 }

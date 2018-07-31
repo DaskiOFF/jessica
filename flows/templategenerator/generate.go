@@ -8,38 +8,37 @@ import (
 	textTemplate "text/template"
 	"time"
 
-	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
+func (flow *TemplateGeneratorFlow) generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
 	codeTemplates := v.Get(key)
 	if codeTemplates == nil {
 		return []AddedFile{}
 	}
 
 	listCodeTemplates := codeTemplates.([]interface{})
-	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
+	return flow.generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
+func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
 	addedFiles := []AddedFile{}
 
 	currentTime := time.Now()
-	templateInfoParams := params(moduleName, customKeys, answers)
+	templateInfoParams := flow.params(moduleName, customKeys, answers)
 	params := templateInfoParams
 	params["developer"] = MapKeys{
-		"name":        configs.GlobalConfig.GetString(configs.KeyUserName),
-		"companyName": configs.ProjectConfig.GetString(configs.KeyCompanyName),
+		"name":        flow.globalConfig.GetUsername(),
+		"companyName": flow.projectConfig.GetCompanyName(),
 	}
-	params["projectName"] = configs.ProjectConfig.Get(configs.KeyIOSProjectName)
+	params["projectName"] = flow.iosConfig.GetProjectName()
 	params["date"] = currentTime.Format("02.01.2006")
 	params["year"] = currentTime.Year()
 
-	templateFiles := newTemplateFiles(list, templateName, moduleName, params)
+	templateFiles := flow.newTemplateFiles(list, templateName, moduleName, params)
 	for _, templateFile := range templateFiles {
 		addedFiles = append(addedFiles, AddedFile{
 			Path:     templateFile.outputProjectPath,
@@ -70,7 +69,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 		writer := bufio.NewWriter(file)
 		params["fileName"] = templateFile.name
 
-		err = executeTemplate(templateFile.templatePath, writer, params)
+		err = flow.executeTemplate(templateFile.templatePath, writer, params)
 		if err != nil {
 			panic(err)
 		}
@@ -84,7 +83,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 	return addedFiles
 }
 
-func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
+func (flow *TemplateGeneratorFlow) params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
 	return MapKeys{
 		"custom":  customKeys,
 		"answers": answers,
@@ -98,7 +97,7 @@ func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
 	}
 }
 
-func executeTemplate(templateFileName string, writer io.Writer, params MapKeys) error {
+func (flow *TemplateGeneratorFlow) executeTemplate(templateFileName string, writer io.Writer, params MapKeys) error {
 	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err

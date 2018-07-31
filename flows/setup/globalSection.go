@@ -1,12 +1,11 @@
 package setup
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/question"
-	"github.com/spf13/viper"
 )
 
-func globalSection(config *viper.Viper) {
+func (flow *SetupFlow) globalSection(config *models.ConfigGlobal) {
 	username := question.AskQuestion("Ваше имя (для глобального): ", true)
-	config.Set(configs.KeyUserName, username)
+	config.SetUsername(username)
 }

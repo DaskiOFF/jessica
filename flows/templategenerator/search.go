@@ -6,25 +6,24 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
 )
 
-func templatesRootPath() string {
+func (flow *TemplateGeneratorFlow) templatesRootPath() string {
 	templatesRoot, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err.Error())
 		return ""
 	}
 
-	templatesFolderName := configs.ProjectConfig.GetString(configs.KeyTemplatesFolderName)
+	templatesFolderName := flow.projectConfig.GetTemplatesFolderName()
 	return filepath.Join(templatesRoot, templatesFolderName)
 }
 
-func searchTemplates() []string {
-	templatesRoot := templatesRootPath()
+func (flow *TemplateGeneratorFlow) searchTemplates() []string {
+	templatesRoot := flow.templatesRootPath()
 
-	folders := folders(templatesRoot)
+	folders := flow.folders(templatesRoot)
 	templatesFolders := make([]string, 0)
 	for _, folder := range folders {
 		path := filepath.Join(templatesRoot, folder, TemplateDescriptionFileName)
@@ -36,7 +35,7 @@ func searchTemplates() []string {
 	return templatesFolders
 }
 
-func folders(root string) []string {
+func (flow *TemplateGeneratorFlow) folders(root string) []string {
 	files, err := ioutil.ReadDir(root)
 	if err != nil {
 		fmt.Println(err)

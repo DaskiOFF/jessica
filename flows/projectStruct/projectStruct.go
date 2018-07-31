@@ -1,7 +1,8 @@
 package projectstruct
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/keys"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
@@ -13,6 +14,8 @@ var useCustomStruct bool
 var hasCustomStruct bool
 
 type ProjectStructFlow struct {
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
 }
 
 func (flow *ProjectStructFlow) Start(args []string) {
@@ -21,23 +24,23 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		return
 	}
 
-	updateFlags()
+	flow.updateFlags()
 
 	if args[0] == "gen" {
 		if !useCustomStruct {
-			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructUse + "'. Для конфигурации можно воспользоваться командой setup")
+			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + keys.KeyCustomProjectStructUse + "'. Для конфигурации можно воспользоваться командой setup")
 			return
 		}
 
 		if !hasCustomStruct {
-			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructDescription + "'. Для конфигурации можно воспользоваться командой setup")
+			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + keys.KeyCustomProjectStructDescription + "'. Для конфигурации можно воспользоваться командой setup")
 			return
 		}
 
-		generateProjectStruct()
-		createTemplateProjectStructDescriptionFile()
+		flow.generateProjectStruct()
+		flow.createTemplateProjectStructDescriptionFile()
 
-		print.PrintlnSuccessMessage("Отредактируйте файл " + templateFileName() + ", чтобы описать вашу структуру. Этот шаблон будет использоваться для генерации раздела структуры проекта в файле README.md")
+		print.PrintlnSuccessMessage("Отредактируйте файл " + flow.templateFileName() + ", чтобы описать вашу структуру. Этот шаблон будет использоваться для генерации раздела структуры проекта в файле README.md")
 	} else {
 		print.PrintlnAttentionMessage("Действие не найдено. Чтобы увидеть список действий воспользуйтесь командой help")
 	}
@@ -57,30 +60,33 @@ func (flow *ProjectStructFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
+func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
 	flow := ProjectStructFlow{}
+	flow.projectConfig = projectConfig
+	flow.iosConfig = iosConfig
+
 	return &flow
 }
 
-func updateFlags() {
-	useCustomStruct = configs.ProjectConfig.GetBool(configs.KeyCustomProjectStructUse)
-	hasCustomStruct = configs.ProjectConfig.IsSet(configs.KeyCustomProjectStructDescription)
+func (flow *ProjectStructFlow) updateFlags() {
+	useCustomStruct = flow.projectConfig.GetCustomProjectStructUse()
+	hasCustomStruct = flow.projectConfig.GetCustomProjectStructDescription() != ""
 }
 
-func templateFileName() string {
-	return configs.ProjectConfig.GetString(configs.KeyCustomProjectStructDescriptionTemplateFilename)
+func (flow *ProjectStructFlow) templateFileName() string {
+	return flow.projectConfig.GetCustomProjectStructDescriptionTemplateFilename()
 }
 
-func createTemplateProjectStructDescriptionFile() {
-	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStructDescription)
-	projectStructureString := projectStructToString(projectStructure, "  ", "  ")
+func (flow *ProjectStructFlow) createTemplateProjectStructDescriptionFile() {
+	projectStructure := flow.projectConfig.GetCustomProjectStructDescription()
+	projectStructureString := flow.projectStructToString(projectStructure, "  ", "  ")
 
 	content := `# Структура проекта
 - %*%{{ .projectName }}%*% – папка проекта
 ` + projectStructureString
 
 	content = jstrings.FixBackQuotes(content)
-	fileName := templateFileName()
+	fileName := flow.templateFileName()
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)
 		print.PrintlnSuccessMessage(fileName + " создан")

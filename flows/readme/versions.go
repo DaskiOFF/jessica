@@ -14,7 +14,7 @@ import (
 const xcodeVersionFileName = ".xcode-version"
 const swiftVersionFileName = ".swift-version"
 
-func readVersionFile(fileName string) (string, error) {
+func (flow *ReadmeFlow) readVersionFile(fileName string) (string, error) {
 	fileContent, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return "", err
@@ -26,18 +26,18 @@ func readVersionFile(fileName string) (string, error) {
 }
 
 // ReadXcodeVersion Чтение версии xcode из файла
-func readXcodeVersion() (string, error) {
-	return readVersionFile(xcodeVersionFileName)
+func (flow *ReadmeFlow) readXcodeVersion() (string, error) {
+	return flow.readVersionFile(xcodeVersionFileName)
 }
 
 // ReadSwiftVersion Чтение версии swift из файла
-func readSwiftVersion() (string, error) {
-	return readVersionFile(swiftVersionFileName)
+func (flow *ReadmeFlow) readSwiftVersion() (string, error) {
+	return flow.readVersionFile(swiftVersionFileName)
 }
 
 // CheckXcodeVersionFile Проверка существования файлa для версии xcode, если его нет,
 // то пользователя у пользователя запросится версия, которую он использует, и эта версия будет сохранена в соответствующий файл
-func checkXcodeVersionFile() {
+func (flow *ReadmeFlow) checkXcodeVersionFile() {
 	fileName := xcodeVersionFileName
 	var reader *bufio.Reader
 
@@ -53,7 +53,7 @@ func checkXcodeVersionFile() {
 
 // CheckSwiftVersionFile Проверка существования файлa для версии swift, если его нет,
 // то пользователя у пользователя запросится версия, которую он использует, и эта версия будет сохранена в соответствующий файл
-func checkSwiftVersionFile() {
+func (flow *ReadmeFlow) checkSwiftVersionFile() {
 	fileName := swiftVersionFileName
 	var reader *bufio.Reader
 

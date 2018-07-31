@@ -1,17 +1,19 @@
 package readme
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
 )
 
 type ReadmeFlow struct {
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
 }
 
 func (flow *ReadmeFlow) Start(args []string) {
-	checkFiles()
+	flow.checkFiles()
 
-	updateREADME()
+	flow.updateREADME()
 }
 
 func (flow *ReadmeFlow) Setup() {}
@@ -32,21 +34,24 @@ func (flow *ReadmeFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
+func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
 	flow := ReadmeFlow{}
+	flow.projectConfig = projectConfig
+	flow.iosConfig = iosConfig
+
 	return &flow
 }
 
-func checkFiles() {
-	if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
-		checkXcodeVersionFile()
-		checkSwiftVersionFile()
-		if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesGemfileUse) {
-			checkGemfile()
+func (flow *ReadmeFlow) checkFiles() {
+	if flow.projectConfig.GetProjectType() == "iOS" {
+		flow.checkXcodeVersionFile()
+		flow.checkSwiftVersionFile()
+		if flow.iosConfig.GetGemfileUse() {
+			flow.checkGemfile()
 		}
-		if configs.ProjectConfig.GetBool(configs.KeyIOSDependenciesPodfileUse) {
-			checkPodfile()
+		if flow.iosConfig.GetPodfileUse() {
+			flow.checkPodfile()
 		}
-		checkReadmeTpl()
+		flow.checkReadmeTpl()
 	}
 }

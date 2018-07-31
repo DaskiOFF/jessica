@@ -1,15 +1,14 @@
 package setup
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/question"
-	"github.com/spf13/viper"
 )
 
-func commonSection(config *viper.Viper) {
+func (flow *SetupFlow) commonSection(config *models.ConfigProject) {
 	companyName := question.AskQuestion("Название комании (для проекта): ", false)
-	config.Set(configs.KeyCompanyName, companyName)
+	config.SetCompanyName(companyName)
 
 	projectType := question.AskQuestionWithAnswers("Введите тип проекта [iOS, other]: ", []string{"iOS", "other"})
-	config.Set(configs.KeyProjectType, projectType)
+	config.SetProjectType(projectType)
 }

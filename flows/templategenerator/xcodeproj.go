@@ -22,7 +22,7 @@ type XcodeProjAdded struct {
 	TargetFiles       []XcodeProjTargetAddedFiles
 }
 
-func xcodeproj(addedTargetFiles []XcodeProjAdded) error {
+func (flow *TemplateGeneratorFlow) xcodeproj(addedTargetFiles []XcodeProjAdded) error {
 	err := command.Execute("which xcodeproj")
 	if err != nil {
 		err = command.Execute("sudo gem install xcodeproj")
@@ -31,7 +31,7 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) error {
 		}
 	}
 
-	templateString := templateRubyFile()
+	templateString := flow.templateRubyFile()
 	t := template.Must(template.New("ruby").Parse(templateString))
 
 	file, err := os.OpenFile("xcode.rb", os.O_CREATE|os.O_WRONLY, os.ModePerm)
@@ -65,7 +65,7 @@ func xcodeproj(addedTargetFiles []XcodeProjAdded) error {
 	return nil
 }
 
-func templateRubyFile() string {
+func (flow *TemplateGeneratorFlow) templateRubyFile() string {
 	return `#!/usr/bin/env ruby
 
 require 'xcodeproj'

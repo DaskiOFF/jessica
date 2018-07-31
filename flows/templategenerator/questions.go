@@ -8,7 +8,7 @@ type quest struct {
 	isRequired bool
 }
 
-func newQuestions(in []interface{}) []quest {
+func (flow *TemplateGeneratorFlow) newQuestions(in []interface{}) []quest {
 	questions := []quest{}
 
 	for _, questionInterface := range in {
@@ -31,7 +31,7 @@ func newQuestions(in []interface{}) []quest {
 	return questions
 }
 
-func askQuestions(questions []quest) map[string]interface{} {
+func (flow *TemplateGeneratorFlow) askQuestions(questions []quest) map[string]interface{} {
 	answers := make(map[string]interface{}, 0)
 
 	for _, quest := range questions {

@@ -4,29 +4,29 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/keys"
 	"github.com/daskioff/jessica/utils/print"
 )
 
-func generateProjectStruct() {
+func (flow *ProjectStructFlow) generateProjectStruct() {
 	if !useCustomStruct || !hasCustomStruct {
 		print.PrintlnAttentionMessage("Необходима конфигурация с помощью команды `struct setup`")
 		return
 	}
 
-	projectName := configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
+	projectName := flow.iosConfig.GetFolderNameCode()
 	if len(projectName) == 0 {
-		print.PrintlnAttentionMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + configs.KeyIOSFolderNameCode)
+		print.PrintlnAttentionMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + keys.KeyIOSFolderNameCode)
 		return
 	}
 
-	generateProjectStructInFolder(projectName)
+	flow.generateProjectStructInFolder(projectName)
 
 	print.PrintlnSuccessMessage("Структура проекта создана")
 }
 
-func generateProjectStructInFolder(root string) {
-	paths := projectPaths()
+func (flow *ProjectStructFlow) generateProjectStructInFolder(root string) {
+	paths := flow.projectPaths()
 	for _, path := range paths {
 		resultPath := filepath.Join(root, path)
 

@@ -1,4 +1,4 @@
-package configs
+package keys
 
 const (
 	KeyUserName = "user_name"
@@ -19,9 +19,9 @@ const (
 	KeyIOSDependenciesPodfileUse = "ios_dependencies_podfile_use"
 	KeyIOSProjectName            = "ios_project_name"
 	KeyIOSXcodeprojFilename      = "ios_xcodeproj_filename"
-	KeyIOSTargetnameCode         = "ios_target_name_code"
-	KeyIOSTargetnameUnitTests    = "ios_target_name_unit_tests"
-	KeyIOSTargetnameUITests      = "ios_target_name_ui_tests"
+	KeyIOSTargetNameCode         = "ios_target_name_code"
+	KeyIOSTargetNameUnitTests    = "ios_target_name_unit_tests"
+	KeyIOSTargetNameUITests      = "ios_target_name_ui_tests"
 	KeyIOSFolderNameCode         = "ios_folder_name_code"
 	KeyIOSFolderNameUnitTests    = "ios_folder_name_unit_tests"
 	KeyIOSFolderNameUITests      = "ios_folder_name_ui_tests"

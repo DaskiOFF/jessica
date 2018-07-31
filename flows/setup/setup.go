@@ -1,20 +1,23 @@
 package setup
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/utils/print"
 )
 
 type SetupFlow struct {
+	globalConfig  *models.ConfigGlobal
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
 }
 
 func (flow *SetupFlow) Start(args []string) {
-	setup()
+	flow.setup()
 }
 
 func (flow *SetupFlow) Setup() {
-	setup()
+	flow.setup()
 }
 
 func (flow *SetupFlow) Description() string {
@@ -28,33 +31,38 @@ func (flow *SetupFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
+func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
 	flow := SetupFlow{}
+	flow.globalConfig = globalConfig
+	flow.projectConfig = projectConfig
+	flow.iosConfig = iosConfig
+
 	return &flow
 }
 
-func setup() {
-	err := configs.ValidateProjectConfig()
-	if err == nil {
+func (flow *SetupFlow) setup() {
+	globalError := flow.globalConfig.Validate()
+	projectError := flow.projectConfig.Validate()
+	iosError := flow.iosConfig.Validate()
+
+	if globalError == nil && projectError == nil && iosError == nil {
 		print.PrintlnSuccessMessage("Файл уже сконфигурирован")
 		return
 	}
 
-	globalConfig := configs.GlobalConfig
-	localConfig := configs.ProjectConfig
-
 	// global config
-	globalSection(globalConfig)
+	flow.globalSection(flow.globalConfig)
 
 	// project config
-	commonSection(localConfig)
-	readmeSection(localConfig)
-	customProjectStructSection(localConfig)
-	templatesSection(localConfig)
-	if configs.ProjectConfig.GetString(configs.KeyProjectType) == "iOS" {
-		iosSection(localConfig)
+	flow.commonSection(flow.projectConfig)
+	flow.readmeSection(flow.projectConfig)
+	flow.customProjectStructSection(flow.projectConfig)
+	flow.templatesSection(flow.projectConfig)
+	if flow.projectConfig.GetProjectType() == "iOS" {
+		flow.iosSection(flow.iosConfig)
 	}
 
-	configs.WriteGlobal()
-	configs.WriteProject()
+	flow.globalConfig.Write()
+	flow.projectConfig.Write()
+	flow.iosConfig.Write()
 }

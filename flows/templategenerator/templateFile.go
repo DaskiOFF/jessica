@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 	textTemplate "text/template"
-
-	"github.com/daskioff/jessica/configs"
 )
 
 const (
@@ -27,12 +25,12 @@ type templateFile struct {
 	rewriteResult     int
 }
 
-func newTemplateFiles(in []interface{}, templateName string, moduleName string, params MapKeys) []templateFile {
+func (flow *TemplateGeneratorFlow) newTemplateFiles(in []interface{}, templateName string, moduleName string, params MapKeys) []templateFile {
 	templateFiles := []templateFile{}
 
-	params["projectName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
-	params["projectTestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUnitTests)
-	params["projectUITestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUITests)
+	params["projectName"] = flow.iosConfig.GetFolderNameCode()
+	params["projectTestsName"] = flow.iosConfig.GetFolderNameUnitTests()
+	params["projectUITestsName"] = flow.iosConfig.GetFolderNameUITests()
 
 	root, err := os.Getwd()
 	if err != nil {
@@ -46,7 +44,7 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string, 
 
 		templateFileResult.name = code["name"].(string)
 		if strings.Contains(templateFileResult.name, "{{") {
-			templateFileResult.name = executeStringTemplate("generator template name", templateFileResult.name, params)
+			templateFileResult.name = flow.executeStringTemplate("generator template name", templateFileResult.name, params)
 		} else {
 			templateFileResult.name = moduleName + templateFileResult.name
 		}
@@ -63,13 +61,13 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string, 
 
 		templateFileResult.templatePath = code["template_path"].(string)
 		if strings.Contains(templateFileResult.templatePath, "{{") {
-			templateFileResult.templatePath = executeStringTemplate("generator template templatePath", templateFileResult.templatePath, params)
+			templateFileResult.templatePath = flow.executeStringTemplate("generator template templatePath", templateFileResult.templatePath, params)
 		}
-		templateFileResult.templatePath = filepath.Join(templatesRootPath(), templateName, templateFileResult.templatePath)
+		templateFileResult.templatePath = filepath.Join(flow.templatesRootPath(), templateName, templateFileResult.templatePath)
 
 		templateFileResult.outputPathFolder = code["output_path"].(string)
 		if strings.Contains(templateFileResult.outputPathFolder, "{{") {
-			templateFileResult.outputPathFolder = executeStringTemplate("generator template outputPathFolder", templateFileResult.outputPathFolder, params)
+			templateFileResult.outputPathFolder = flow.executeStringTemplate("generator template outputPathFolder", templateFileResult.outputPathFolder, params)
 		}
 		templateFileResult.outputProjectPath = templateFileResult.outputPathFolder
 		templateFileResult.outputPathFolder = filepath.Join(root, templateFileResult.outputPathFolder)
@@ -82,7 +80,7 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string, 
 	return templateFiles
 }
 
-func executeStringTemplate(name string, stringTemplate string, params interface{}) string {
+func (flow *TemplateGeneratorFlow) executeStringTemplate(name string, stringTemplate string, params interface{}) string {
 	t, err := textTemplate.New(name).Parse(stringTemplate)
 	if err != nil {
 		panic(err)
