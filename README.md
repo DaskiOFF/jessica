@@ -84,7 +84,7 @@ brew uninstall --force daskioff/jessica/jessica
 
 ## gen
 - Генерация структуры проекта
-- Создание шаблона [templates_folder_name](#setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#setup) файла
+- Создание шаблона [custom_project_struct_description_template_filename](#setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#setup) файла
 - Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
 
 ### Пример описания структуры проекта
