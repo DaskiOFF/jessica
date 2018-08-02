@@ -11,7 +11,7 @@ func (flow *SetupFlow) setupGlobal(config *models.ConfigGlobal, isForce bool) {
 		return
 	}
 
-	if config.GetUsername() == "" || isForce {
+	if !config.HasUsername() || isForce {
 		username := question.AskQuestion("Ваше имя (для глобального): ", true)
 		config.SetUsername(username)
 	}

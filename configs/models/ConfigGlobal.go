@@ -33,6 +33,10 @@ func (c ConfigGlobal) SetUsername(value string) {
 	c.config.Set(keys.KeyUserName, value)
 }
 
+func (c ConfigGlobal) HasUsername() bool {
+	return c.config.IsSet(keys.KeyUserName)
+}
+
 func (c ConfigGlobal) GetUsername() string {
 	return c.config.GetString(keys.KeyUserName)
 }
