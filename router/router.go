@@ -18,6 +18,7 @@ type Router struct {
 	globalConfig  *models.ConfigGlobal
 	projectConfig *models.ConfigProject
 	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
 }
 
 func NewRouter() *Router {
@@ -25,11 +26,12 @@ func NewRouter() *Router {
 	router.globalConfig = configs.Global()
 	router.projectConfig = configs.Project()
 	router.iosConfig = configs.IOS()
+	router.otherConfig = configs.Other()
 
 	mapFlows := make(map[string]flows.Flow)
 	mapFlows["hi"] = factory.Hi(version)
 	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig)
-	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig)
+	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["struct"] = factory.Struct(router.projectConfig, router.iosConfig)
 	mapFlows["generator"] = factory.Generator(router.globalConfig, router.projectConfig, router.iosConfig)
 

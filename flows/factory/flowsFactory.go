@@ -22,8 +22,8 @@ func Readme(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) fl
 	return readme.NewFlow(projectConfig, iosConfig)
 }
 
-func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
-	return setup.NewFlow(globalConfig, projectConfig, iosConfig)
+func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+	return setup.NewFlow(globalConfig, projectConfig, iosConfig, otherConfig)
 }
 
 func Generator(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {

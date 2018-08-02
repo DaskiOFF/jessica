@@ -11,6 +11,7 @@ type SetupFlow struct {
 	globalConfig  *models.ConfigGlobal
 	projectConfig *models.ConfigProject
 	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
 }
 
 func (flow *SetupFlow) Start(args []string) {
@@ -30,7 +31,7 @@ func (flow *SetupFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
+func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
 	flow := SetupFlow{}
 	flow.globalConfig = globalConfig
 	flow.projectConfig = projectConfig
@@ -43,13 +44,17 @@ func (flow *SetupFlow) setup(isForce bool) {
 	flow.setupGlobal(flow.globalConfig, isForce)
 	flow.setupProject(flow.projectConfig, isForce)
 
-	if flow.projectConfig.GetProjectType() == "iOS" {
+	switch flow.projectConfig.GetProjectType() {
+	case "iOS":
 		flow.projectIOS(flow.iosConfig, isForce)
+	case "Other":
+		flow.projectOther(flow.otherConfig, isForce)
 	}
 
 	flow.globalConfig.Write()
 	flow.projectConfig.Write()
 	flow.iosConfig.Write()
+	flow.otherConfig.Write()
 
 	print.PrintlnSuccessMessage("Файл сконфигурирован")
 }

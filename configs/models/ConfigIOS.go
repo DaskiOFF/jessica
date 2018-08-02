@@ -26,7 +26,7 @@ func (c ConfigIOS) Validate() error {
 		!config.IsSet(keys.KeyIOSFolderNameCode) ||
 		!config.IsSet(keys.KeyIOSFolderNameUnitTests) {
 
-		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для iOS проекта")
+		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для проекта типа `iOS`")
 	}
 
 	return nil

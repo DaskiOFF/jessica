@@ -37,3 +37,7 @@ func Project() *models.ConfigProject {
 func IOS() *models.ConfigIOS {
 	return models.NewIOS(projectConfig)
 }
+
+func Other() *models.ConfigOther {
+	return models.NewOther(projectConfig)
+}

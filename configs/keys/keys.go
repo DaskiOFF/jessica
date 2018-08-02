@@ -25,4 +25,6 @@ const (
 	KeyIOSFolderNameCode         = "ios_folder_name_code"
 	KeyIOSFolderNameUnitTests    = "ios_folder_name_unit_tests"
 	KeyIOSFolderNameUITests      = "ios_folder_name_ui_tests"
+
+	KeyOtherProjectFolderName = "other_project_folder_name"
 )
