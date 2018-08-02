@@ -46,9 +46,6 @@ func (flow *ProjectStructFlow) Start(args []string) {
 	}
 }
 
-func (flow *ProjectStructFlow) Setup() {
-}
-
 func (flow *ProjectStructFlow) Description() string {
 	return `
 --------------------------------------------------------------------------------

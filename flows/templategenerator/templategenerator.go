@@ -167,8 +167,6 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 	}
 }
 
-func (flow *TemplateGeneratorFlow) Setup() {}
-
 func (flow *TemplateGeneratorFlow) Description() string {
 	return `
 --------------------------------------------------------------------------------

@@ -14,8 +14,6 @@ func (flow *HiFlow) Start(args []string) {
 	fmt.Println("Привет, моя версия " + flow.version)
 }
 
-func (flow *HiFlow) Setup() {}
-
 func (flow *HiFlow) Description() string {
 	return "Тестовый метод проверки работоспособности"
 }

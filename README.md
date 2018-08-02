@@ -12,7 +12,7 @@ brew reinstall daskioff/jessica/jessica
 brew uninstall --force daskioff/jessica/jessica
 ```
 
-Переходим в папку проекта и вызываем `jessica <command> <action> <args>`
+Переходим в папку проекта и вызываем `jessica <command> [action] [args]`
 
 ## Commands
 `jessica help <command>` - Помощь по команде
@@ -21,7 +21,7 @@ brew uninstall --force daskioff/jessica/jessica
 |----|---|
 |`hi`|Тестовая команда, которая поприветствует вас и напишет свою версию|
 |`version`|Выводит номер текущей версии приложения|
-|[setup](#setup)|Первичная настройка файла конфигурации|
+|[setup](#setup)|Настройка конфигурации|
 |[readme](#readme-command)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |[struct](#struct)|Создание и описание структуры проекта|
 |[generator](#generator)|Генерация файлов для проекта|
@@ -31,6 +31,10 @@ brew uninstall --force daskioff/jessica/jessica
 
 # Setup
 Первичная конфигурация
+
+|Params|Description|
+|----|---|
+|`-force`|Полное обновление конфигурации|
 
 Результатом команды являются два файла:
 - `~/.jessica.yml` – глобальный файл конфигурации
@@ -109,8 +113,8 @@ custom_project_struct_description:
 |Action|Description|
 |----|---|
 |`list`|Список шаблонов|
-|`gen [template name] [module name] [args] [custom keys]`|Генерация|
 |`pull git_url [branch]`|Клонирование репозитория в папку шаблонов|
+|`gen TEMPLATE_NAME MODULE_NAME [ARGS] [CUSTOM_KEYS]`|Генерация|
 
 ## list
 Находит и выводит список всех доступных шаблонов из папки шаблонов доступных для генерации с помощью действия `gen`
@@ -132,7 +136,7 @@ jessica generator pull https://github.com/daskioff/jessica_templates.git
 ## gen
 После указания действия `gen` необходимо указать имя шаблона и имя генерируемого модуля. Далее перечисляются аргументы, кастомные ключи и значения, которые доступны в шаблоне по ключу `{{.custom.имя_переданного_ключа}}`
 
-Например
+### Пример
 ```
 jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:value2
 ```
@@ -252,6 +256,11 @@ mock_files:
 |`companyName`|string|Имя компании из локального файла конфигурации|
 
 # Changelog
+### 1.3.4
+  - Обновлен README.md файл
+  - Команда [setup](#setup) запрашивает только недостающие данные
+  - Добавлен параметр [-force](#setup) к команде [setup](#setup), насильно перезапрашивающий данные конфигурации
+
 ### 1.3.3
   - Исправлены ссылки на разделы в README.md файле
   - Добавлена команда `version` для получения текущей версии

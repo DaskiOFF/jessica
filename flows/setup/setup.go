@@ -4,6 +4,7 @@ import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/utils/slices"
 )
 
 type SetupFlow struct {
@@ -13,19 +14,17 @@ type SetupFlow struct {
 }
 
 func (flow *SetupFlow) Start(args []string) {
-	flow.setup()
-}
+	isForce := slices.Contains(args, "-force")
 
-func (flow *SetupFlow) Setup() {
-	flow.setup()
+	flow.setup(isForce)
 }
 
 func (flow *SetupFlow) Description() string {
 	return `
 	--------------------------------------------------------------------------------
 	Первичная настройка файла конфигурации
-
-	Имя проекта (Название xcodeproj файла)
+	Params:
+		-force – Обновить всю конфигурацию
 	--------------------------------------------------------------------------------
 	`
 }
@@ -40,29 +39,17 @@ func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProj
 	return &flow
 }
 
-func (flow *SetupFlow) setup() {
-	globalError := flow.globalConfig.Validate()
-	projectError := flow.projectConfig.Validate()
-	iosError := flow.iosConfig.Validate()
+func (flow *SetupFlow) setup(isForce bool) {
+	flow.setupGlobal(flow.globalConfig, isForce)
+	flow.setupProject(flow.projectConfig, isForce)
 
-	if globalError == nil && projectError == nil && iosError == nil {
-		print.PrintlnSuccessMessage("Файл уже сконфигурирован")
-		return
-	}
-
-	// global config
-	flow.globalSection(flow.globalConfig)
-
-	// project config
-	flow.commonSection(flow.projectConfig)
-	flow.readmeSection(flow.projectConfig)
-	flow.customProjectStructSection(flow.projectConfig)
-	flow.templatesSection(flow.projectConfig)
 	if flow.projectConfig.GetProjectType() == "iOS" {
-		flow.iosSection(flow.iosConfig)
+		flow.projectIOS(flow.iosConfig, isForce)
 	}
 
 	flow.globalConfig.Write()
 	flow.projectConfig.Write()
 	flow.iosConfig.Write()
+
+	print.PrintlnSuccessMessage("Файл сконфигурирован")
 }
