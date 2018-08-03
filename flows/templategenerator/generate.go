@@ -11,21 +11,22 @@ import (
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
+	"github.com/daskioff/jessica/utils/xcodeproj"
 	"github.com/spf13/viper"
 )
 
-func (flow *TemplateGeneratorFlow) generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
+func (flow *TemplateGeneratorFlow) generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []xcodeproj.AddedFile {
 	codeTemplates := v.Get(key)
 	if codeTemplates == nil {
-		return []AddedFile{}
+		return []xcodeproj.AddedFile{}
 	}
 
 	listCodeTemplates := codeTemplates.([]interface{})
 	return flow.generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
 }
 
-func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
-	addedFiles := []AddedFile{}
+func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []xcodeproj.AddedFile {
+	addedFiles := []xcodeproj.AddedFile{}
 
 	currentTime := time.Now()
 	templateInfoParams := flow.params(moduleName, customKeys, answers)
@@ -40,7 +41,7 @@ func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{},
 
 	templateFiles := flow.newTemplateFiles(list, templateName, moduleName, params)
 	for _, templateFile := range templateFiles {
-		addedFiles = append(addedFiles, AddedFile{
+		addedFiles = append(addedFiles, xcodeproj.AddedFile{
 			Path:     templateFile.outputProjectPath,
 			Filename: templateFile.name,
 		})

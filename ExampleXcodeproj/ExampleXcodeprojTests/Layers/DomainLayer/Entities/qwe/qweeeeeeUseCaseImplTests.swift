@@ -9,7 +9,7 @@ class qweUseCaseImplTests: XCTestCase {
     // <no value>
     // <no value>
     // <no value>
-    var sut: PartialMockqwertyUseCaseImpl!
+    var sut: PartialMockqweeeeeeUseCaseImpl!
     
     var mockRepository: MockqweRepository!
     
@@ -19,7 +19,7 @@ class qweUseCaseImplTests: XCTestCase {
         
         mockRepository = MockqweRepository()
         
-        sut = PartialMockqwertyUseCaseImpl(mockRepository: MockqweRepository)
+        sut = PartialMockqweeeeeeUseCaseImpl(mockRepository: MockqweRepository)
     }
     
     override func tearDown() {

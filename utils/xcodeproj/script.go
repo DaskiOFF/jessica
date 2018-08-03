@@ -1,4 +1,4 @@
-package templategenerator
+package xcodeproj
 
 import (
 	"bufio"
@@ -22,7 +22,7 @@ type XcodeProjAdded struct {
 	TargetFiles       []XcodeProjTargetAddedFiles
 }
 
-func (flow *TemplateGeneratorFlow) xcodeproj(addedTargetFiles []XcodeProjAdded) error {
+func AddFilesToTarget(files []XcodeProjAdded) error {
 	err := command.Execute("which xcodeproj")
 	if err != nil {
 		err = command.Execute("sudo gem install xcodeproj")
@@ -31,7 +31,7 @@ func (flow *TemplateGeneratorFlow) xcodeproj(addedTargetFiles []XcodeProjAdded) 
 		}
 	}
 
-	templateString := flow.templateRubyFile()
+	templateString := templateRubyFile()
 	t := template.Must(template.New("ruby").Parse(templateString))
 
 	file, err := os.OpenFile("xcode.rb", os.O_CREATE|os.O_WRONLY, os.ModePerm)
@@ -41,7 +41,7 @@ func (flow *TemplateGeneratorFlow) xcodeproj(addedTargetFiles []XcodeProjAdded) 
 	defer file.Close()
 	writer := bufio.NewWriter(file)
 
-	err = t.Execute(writer, addedTargetFiles)
+	err = t.Execute(writer, files)
 	if err != nil {
 		log.Println("Генерация шаблона: ", err)
 	}
@@ -65,7 +65,7 @@ func (flow *TemplateGeneratorFlow) xcodeproj(addedTargetFiles []XcodeProjAdded) 
 	return nil
 }
 
-func (flow *TemplateGeneratorFlow) templateRubyFile() string {
+func templateRubyFile() string {
 	return `#!/usr/bin/env ruby
 
 require 'xcodeproj'
@@ -120,7 +120,7 @@ end
 def add_files_to_target(project, target_name, files)
 	target = obtain_target(project, target_name)
 	unless target
-		put 'Error target ' + target_name + ' not found'
+		puts 'Error target ' + target_name + ' not found'
 		return
 	end
 	

@@ -6,6 +6,7 @@ import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
+	"github.com/daskioff/jessica/utils/xcodeproj"
 )
 
 func Setup(config *models.ConfigIOS, isForce bool) {
@@ -40,6 +41,8 @@ func Setup(config *models.ConfigIOS, isForce bool) {
 		}
 		config.SetXcodeprojFilename(xcodeprojFilename)
 		config.SetProjectName(strings.Replace(xcodeprojFilename, ".xcodeproj", "", 1))
+
+		xcodeproj.Install()
 	}
 
 	if !config.HasTargetNameCode() || !config.HasFolderNameCode() || isForce {

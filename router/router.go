@@ -74,7 +74,7 @@ func (r *Router) Handle(args []string) error {
 			projectError := r.projectConfig.Validate()
 			iosError := r.iosConfig.Validate()
 
-			if globalError == nil && projectError == nil && iosError == nil {
+			if globalError != nil || projectError != nil || iosError != nil {
 				return errors.New("\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
 			}
 		}

@@ -1,10 +1,10 @@
 import Foundation
 import UseCase
 
-protocol qwertyUseCase: qweBaseUseCase {
+protocol qweeeeUseCase: qweBaseUseCase {
 }
 
-class qwertyUseCaseImpl: qweBaseUseCaseImpl, qweUseCase {
+class qweeeeUseCaseImpl: qweBaseUseCaseImpl, qweUseCase {
     
      // MARK: - observe
 //    override func observe() {

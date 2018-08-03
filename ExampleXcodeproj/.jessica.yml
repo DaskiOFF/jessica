@@ -1,6 +1,4 @@
 company_name: K
-custom_project_struct_description_template_filename: .project_struct.tpl.md
-custom_project_struct_use: true
 custom_project_struct_description:
 - Layers:
   - ApplicationLayer:
@@ -15,6 +13,8 @@ custom_project_struct_description:
     - Flows:
       - _AppCoordinator
     - Resources
+custom_project_struct_description_template_filename: .project_struct.tpl.md
+custom_project_struct_use: false
 ios_dependencies_gemfile_use: true
 ios_dependencies_podfile_use: true
 ios_folder_name_code: ExampleXcodeproj
@@ -26,4 +26,4 @@ ios_xcodeproj_filename: ExampleXcodeproj.xcodeproj
 project_type: iOS
 readme_template_filename: .readme.tpl.md
 templates_folder_name: TemplatesJessica
-templates_use: false
+templates_use: true

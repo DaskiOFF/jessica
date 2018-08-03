@@ -6,12 +6,15 @@ import (
 
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
-	"github.com/daskioff/jessica/utils/git"
 	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/utils/xcodeproj"
 
 	"github.com/spf13/viper"
 
 	"github.com/daskioff/jessica/flows"
+	"github.com/daskioff/jessica/flows/templategenerator/list"
+	"github.com/daskioff/jessica/flows/templategenerator/pull"
+	q "github.com/daskioff/jessica/flows/templategenerator/questions"
 )
 
 type MapKeys map[string]interface{}
@@ -31,34 +34,8 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 	}
 
 	if args[0] == "pull" {
-		args := args[1:]
-
-		if len(args) == 0 {
-			print.PrintlnErrorMessage("Вы не указали URL git репозитория")
-			return
-		} else {
-			url := args[0]
-			args := args[1:]
-
-			if !strings.HasPrefix(url, "http") {
-				url = "https://" + url
-			}
-
-			if !strings.HasSuffix(url, ".git") {
-				url = url + ".git"
-			}
-
-			branch := ""
-			if len(args) > 0 {
-				branch = args[0]
-			}
-
-			path := flow.projectConfig.GetTemplatesFolderName()
-			err := git.Clone(url, branch, path)
-			if err != nil {
-				panic(err)
-			}
-		}
+		pull.Execute(args[1:], flow.projectConfig.GetTemplatesFolderName())
+		return
 	}
 
 	err := flow.Validate()
@@ -68,21 +45,10 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 	}
 
 	templates := flow.searchTemplates()
-	if args[0] == "list" {
-		if len(templates) == 0 {
-			print.PrintlnAttentionMessage("Шаблоны не найдены")
-		} else {
-			list := ""
-			for _, template := range templates {
-				if len(list) == 0 {
-					list = template
-				} else {
-					list = list + "\n" + template
-				}
-			}
-			print.PrintlnInfoMessage(list)
-		}
-	} else if args[0] == "gen" {
+	switch args[0] {
+	case "list":
+		list.Show(templates)
+	case "gen":
 		if len(args) == 1 {
 			print.PrintlnAttentionMessage("Не указано имя шаблона для генерации")
 		} else {
@@ -122,41 +88,41 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 				}
 
 				questionsInterface := v.Get("questions")
-				questions := []quest{}
-				answers := make(map[string]interface{}, 0)
+				questions := []q.Quest{}
+				answers := map[string]interface{}{}
 				if questionsInterface != nil {
-					questions = flow.newQuestions(questionsInterface.([]interface{}))
-					answers = flow.askQuestions(questions)
+					questions = q.NewQuestions(questionsInterface.([]interface{}))
+					answers = q.AskQuestions(questions)
 				}
 
 				templateName := args[1]
 				codeAddedFiles := flow.generateTemplates(v, "code_files", templateName, args[2], customKeys, answers)
 
-				testCodeAddedFiles := []AddedFile{}
+				testCodeAddedFiles := []xcodeproj.AddedFile{}
 				if needGenerateTests {
 					testCodeAddedFiles = flow.generateTemplates(v, "test_files", templateName, args[2], customKeys, answers)
 				}
 
-				mockCodeAddedFiles := []AddedFile{}
+				mockCodeAddedFiles := []xcodeproj.AddedFile{}
 				if needGenerateMocks {
 					mockCodeAddedFiles = flow.generateTemplates(v, "mock_files", templateName, args[2], customKeys, answers)
 				}
 
 				if flow.projectConfig.GetProjectType() == "iOS" {
-					flow.xcodeproj([]XcodeProjAdded{
-						XcodeProjAdded{
+					xcodeproj.AddFilesToTarget([]xcodeproj.XcodeProjAdded{
+						xcodeproj.XcodeProjAdded{
 							flow.iosConfig.GetXcodeprojFilename(),
-							[]XcodeProjTargetAddedFiles{
-								XcodeProjTargetAddedFiles{
+							[]xcodeproj.XcodeProjTargetAddedFiles{
+								xcodeproj.XcodeProjTargetAddedFiles{
 									flow.iosConfig.GetTargetNameCode(),
 									codeAddedFiles,
 								},
-								XcodeProjTargetAddedFiles{
+								xcodeproj.XcodeProjTargetAddedFiles{
 									flow.iosConfig.GetTargetNameUnitTests(),
 									testCodeAddedFiles,
 								},
-								XcodeProjTargetAddedFiles{
-									flow.iosConfig.GetTargetNameUITests(),
+								xcodeproj.XcodeProjTargetAddedFiles{
+									flow.iosConfig.GetTargetNameUnitTests(),
 									mockCodeAddedFiles,
 								}}}})
 				}
@@ -171,9 +137,9 @@ func (flow *TemplateGeneratorFlow) Description() string {
 	return `
 --------------------------------------------------------------------------------
 	Генерация шаблонов
-		- list – Список шаблонов
-		- gen – Генерация шаблона
 		- pull – Скачать шаблоны с репозитория
+		- list – Вывести список шаблонов
+		- gen – Генерация шаблона
 --------------------------------------------------------------------------------`
 }
 

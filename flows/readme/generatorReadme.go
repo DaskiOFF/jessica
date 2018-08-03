@@ -100,17 +100,21 @@ func (flow *ReadmeFlow) checkReadmeTpl() {
 
 Последний раз проект собирался с версией **Swift {{ .swiftVersion }}** указанной в файле %*%.swift-version%*%
 
+{{if .gemFileDependencies}}
 ### Gemfile
 В %*%Gemfile%*% описаны зависимости инструментов. Для установки использовать команду %*%bundle install%*% ([Подробнее](https://bundler.io/))
 %***%
 {{ .gemFileDependencies }}
 %***%
+{{end}}
 
+{{if .podFileDependencies}}
 ### Podfile
 Зависимости проекта подключены через %*%cocoapods%*% и описаны в %*%Podfile%*%. Для установки использовать: %*%[bundle exec] pod install%*% или %*%[bundle exec] pod update%*%
 %***%
 {{ .podFileDependencies }}
-%***%`
+%***%
+{{end}}`
 
 	content = jstrings.FixBackQuotes(content)
 	fileName := flow.templateFileName()
