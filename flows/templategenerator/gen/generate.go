@@ -1,4 +1,4 @@
-package templategenerator
+package gen
 
 import (
 	"bufio"
@@ -8,6 +8,7 @@ import (
 	textTemplate "text/template"
 	"time"
 
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
@@ -15,31 +16,46 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (flow *TemplateGeneratorFlow) generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []xcodeproj.AddedFile {
+type MapKeys map[string]interface{}
+
+type generateParams struct {
+	customKeys    MapKeys
+	answers       MapKeys
+	globalConfig  *models.ConfigGlobal
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
+}
+
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, generateParams generateParams) []xcodeproj.AddedFile {
 	codeTemplates := v.Get(key)
 	if codeTemplates == nil {
 		return []xcodeproj.AddedFile{}
 	}
 
 	listCodeTemplates := codeTemplates.([]interface{})
-	return flow.generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
+	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, generateParams)
 }
 
-func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []xcodeproj.AddedFile {
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, generateParams generateParams) []xcodeproj.AddedFile {
 	addedFiles := []xcodeproj.AddedFile{}
 
 	currentTime := time.Now()
-	templateInfoParams := flow.params(moduleName, customKeys, answers)
+	templateInfoParams := params(moduleName, generateParams.customKeys, generateParams.answers)
 	params := templateInfoParams
 	params["developer"] = MapKeys{
-		"name":        flow.globalConfig.GetUsername(),
-		"companyName": flow.projectConfig.GetCompanyName(),
+		"name":        generateParams.globalConfig.GetUsername(),
+		"companyName": generateParams.projectConfig.GetCompanyName(),
 	}
-	params["projectName"] = flow.iosConfig.GetProjectName()
+	params["projectName"] = generateParams.iosConfig.GetProjectName()
 	params["date"] = currentTime.Format("02.01.2006")
 	params["year"] = currentTime.Year()
 
-	templateFiles := flow.newTemplateFiles(list, templateName, moduleName, params)
+	templateFiles := newTemplateFiles(list,
+		templateName,
+		moduleName,
+		generateParams.projectConfig.GetTemplatesFolderName(),
+		params)
 	for _, templateFile := range templateFiles {
 		addedFiles = append(addedFiles, xcodeproj.AddedFile{
 			Path:     templateFile.outputProjectPath,
@@ -70,7 +86,7 @@ func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{},
 		writer := bufio.NewWriter(file)
 		params["fileName"] = templateFile.name
 
-		err = flow.executeTemplate(templateFile.templatePath, writer, params)
+		err = executeTemplate(templateFile.templatePath, writer, params)
 		if err != nil {
 			panic(err)
 		}
@@ -84,7 +100,7 @@ func (flow *TemplateGeneratorFlow) generateTemplatesFromList(list []interface{},
 	return addedFiles
 }
 
-func (flow *TemplateGeneratorFlow) params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
+func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
 	return MapKeys{
 		"custom":  customKeys,
 		"answers": answers,
@@ -98,7 +114,7 @@ func (flow *TemplateGeneratorFlow) params(moduleName string, customKeys MapKeys,
 	}
 }
 
-func (flow *TemplateGeneratorFlow) executeTemplate(templateFileName string, writer io.Writer, params MapKeys) error {
+func executeTemplate(templateFileName string, writer io.Writer, params MapKeys) error {
 	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err
