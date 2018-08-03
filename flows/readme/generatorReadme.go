@@ -38,7 +38,13 @@ func (flow *ReadmeFlow) updateREADME() {
 		"swiftVersion":        swiftVersion,
 		"gemFileDependencies": gemFileDependencies,
 		"podFileDependencies": podFileDependencies,
-		"projectName":         flow.iosConfig.GetProjectName(),
+	}
+
+	switch flow.projectConfig.GetProjectType() {
+	case "iOS":
+		params["projectName"] = flow.iosConfig.GetProjectName()
+	case "Other":
+		params["projectName"] = flow.otherConfig.GetProjectName()
 	}
 
 	err = flow.executeTemplate(flow.templateFileName(), writer, params)

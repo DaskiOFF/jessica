@@ -3,6 +3,10 @@ package setup
 import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
+	"github.com/daskioff/jessica/flows/setup/global"
+	"github.com/daskioff/jessica/flows/setup/ios"
+	"github.com/daskioff/jessica/flows/setup/other"
+	"github.com/daskioff/jessica/flows/setup/project"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/slices"
 )
@@ -36,19 +40,20 @@ func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProj
 	flow.globalConfig = globalConfig
 	flow.projectConfig = projectConfig
 	flow.iosConfig = iosConfig
+	flow.otherConfig = otherConfig
 
 	return &flow
 }
 
 func (flow *SetupFlow) setup(isForce bool) {
-	flow.setupGlobal(flow.globalConfig, isForce)
-	flow.setupProject(flow.projectConfig, isForce)
+	global.Setup(flow.globalConfig, isForce)
+	project.Setup(flow.projectConfig, isForce)
 
 	switch flow.projectConfig.GetProjectType() {
 	case "iOS":
-		flow.projectIOS(flow.iosConfig, isForce)
+		ios.Setup(flow.iosConfig, isForce)
 	case "Other":
-		flow.projectOther(flow.otherConfig, isForce)
+		other.Setup(flow.otherConfig, isForce)
 	}
 
 	flow.globalConfig.Write()

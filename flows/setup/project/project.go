@@ -1,4 +1,4 @@
-package setup
+package project
 
 import (
 	"os"
@@ -10,19 +10,19 @@ import (
 	"github.com/daskioff/jessica/utils/question"
 )
 
-func (flow *SetupFlow) setupProject(config *models.ConfigProject, isForce bool) {
+func Setup(config *models.ConfigProject, isForce bool) {
 	err := config.Validate()
 	if err == nil && !isForce {
 		return
 	}
 
-	flow.commonSection(config, isForce)
-	flow.readmeSection(config, isForce)
-	flow.customProjectStructSection(config, isForce)
-	flow.templatesSection(config, isForce)
+	commonSection(config, isForce)
+	readmeSection(config, isForce)
+	customProjectStructSection(config, isForce)
+	templatesSection(config, isForce)
 }
 
-func (flow *SetupFlow) commonSection(config *models.ConfigProject, isForce bool) {
+func commonSection(config *models.ConfigProject, isForce bool) {
 	if !config.HasCompanyName() || isForce {
 		companyName := question.AskQuestion("Название комании (для проекта): ", false)
 		config.SetCompanyName(companyName)
@@ -34,14 +34,14 @@ func (flow *SetupFlow) commonSection(config *models.ConfigProject, isForce bool)
 	}
 }
 
-func (flow *SetupFlow) readmeSection(config *models.ConfigProject, isForce bool) {
+func readmeSection(config *models.ConfigProject, isForce bool) {
 	if !config.HasReadmeTemplateFilename() || isForce {
 		readmeFilename := ".readme.tpl.md"
 		config.SetReadmeTemplateFilename(readmeFilename)
 	}
 }
 
-func (flow *SetupFlow) customProjectStructSection(config *models.ConfigProject, isForce bool) {
+func customProjectStructSection(config *models.ConfigProject, isForce bool) {
 	if !config.HasCustomProjectStructUse() || isForce {
 		answer := question.AskQuestionWithBoolAnswer("Use custom project struct?")
 		config.SetCustomProjectStructUse(answer)
@@ -76,7 +76,7 @@ func (flow *SetupFlow) customProjectStructSection(config *models.ConfigProject, 
 ` + exampleStruct)
 }
 
-func (flow *SetupFlow) templatesSection(config *models.ConfigProject, isForce bool) {
+func templatesSection(config *models.ConfigProject, isForce bool) {
 	if !config.HasTemplatesUse() || isForce {
 		answer := question.AskQuestionWithBoolAnswer("Использовать шаблоны для генерации?")
 		config.SetTemplatesUse(answer)

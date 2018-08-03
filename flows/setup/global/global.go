@@ -1,12 +1,12 @@
-package setup
+package global
 
 import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/question"
 )
 
-func (flow *SetupFlow) setupGlobal(config *models.ConfigGlobal, isForce bool) {
-	err := flow.globalConfig.Validate()
+func Setup(config *models.ConfigGlobal, isForce bool) {
+	err := config.Validate()
 	if err == nil && !isForce {
 		return
 	}

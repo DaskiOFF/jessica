@@ -30,7 +30,7 @@ func NewRouter() *Router {
 
 	mapFlows := make(map[string]flows.Flow)
 	mapFlows["hi"] = factory.Hi(version)
-	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig)
+	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["struct"] = factory.Struct(router.projectConfig, router.iosConfig)
 	mapFlows["generator"] = factory.Generator(router.globalConfig, router.projectConfig, router.iosConfig)

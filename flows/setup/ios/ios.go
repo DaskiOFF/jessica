@@ -1,4 +1,4 @@
-package setup
+package ios
 
 import (
 	"strings"
@@ -8,7 +8,7 @@ import (
 	"github.com/daskioff/jessica/utils/question"
 )
 
-func (flow *SetupFlow) projectIOS(config *models.ConfigIOS, isForce bool) {
+func Setup(config *models.ConfigIOS, isForce bool) {
 	err := config.Validate()
 	if err == nil && !isForce {
 		return
@@ -17,11 +17,19 @@ func (flow *SetupFlow) projectIOS(config *models.ConfigIOS, isForce bool) {
 	if !config.HasGemfileUse() || isForce {
 		answer := question.AskQuestionWithBoolAnswer("Использовать Gemfile?")
 		config.SetGemfileUse(answer)
+
+		if answer {
+			checkGemfile()
+		}
 	}
 
 	if !config.HasPodfileUse() || isForce {
 		answer := question.AskQuestionWithBoolAnswer("Использовать Podfile?")
 		config.SetPodfileUse(answer)
+
+		if answer {
+			checkPodfile()
+		}
 	}
 
 	if !config.HasProjectName() || !config.HasXcodeprojFilename() || isForce {

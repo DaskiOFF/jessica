@@ -18,8 +18,8 @@ func Struct(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) fl
 	return projectstruct.NewFlow(projectConfig, iosConfig)
 }
 
-func Readme(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
-	return readme.NewFlow(projectConfig, iosConfig)
+func Readme(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+	return readme.NewFlow(projectConfig, iosConfig, otherConfig)
 }
 
 func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {

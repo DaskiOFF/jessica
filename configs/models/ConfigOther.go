@@ -29,6 +29,19 @@ func (c ConfigOther) Write() error {
 
 // ------------
 
+// Project Name
+func (c ConfigOther) SetProjectName(value string) {
+	c.config.Set(keys.KeyOtherProjectName, value)
+}
+
+func (c ConfigOther) HasProjectName() bool {
+	return c.config.IsSet(keys.KeyOtherProjectName)
+}
+
+func (c ConfigOther) GetProjectName() string {
+	return c.config.GetString(keys.KeyOtherProjectName)
+}
+
 // Project Folder
 func (c ConfigOther) SetProjectFolderName(value string) {
 	c.config.Set(keys.KeyOtherProjectFolderName, value)

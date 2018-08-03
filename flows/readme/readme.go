@@ -8,6 +8,7 @@ import (
 type ReadmeFlow struct {
 	projectConfig *models.ConfigProject
 	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
 }
 
 func (flow *ReadmeFlow) Start(args []string) {
@@ -32,10 +33,11 @@ func (flow *ReadmeFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
+func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
 	flow := ReadmeFlow{}
 	flow.projectConfig = projectConfig
 	flow.iosConfig = iosConfig
+	flow.otherConfig = otherConfig
 
 	return &flow
 }
@@ -44,12 +46,6 @@ func (flow *ReadmeFlow) checkFiles() {
 	if flow.projectConfig.GetProjectType() == "iOS" {
 		flow.checkXcodeVersionFile()
 		flow.checkSwiftVersionFile()
-		if flow.iosConfig.GetGemfileUse() {
-			flow.checkGemfile()
-		}
-		if flow.iosConfig.GetPodfileUse() {
-			flow.checkPodfile()
-		}
 		flow.checkReadmeTpl()
 	}
 }
