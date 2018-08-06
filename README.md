@@ -63,21 +63,23 @@ brew uninstall --force daskioff/jessica/jessica
 
 Пока есть недостающие данные – они будут запрашиваться, все последующие вызовы будут просто обновлять файл `README.md` по шаблону
 
-Будут запрошены:
-- Версия xcode, с которой проект последний раз собирался. Ответ будет сохранен в файл `.xcode-version`
-- Версия swift. Ответ будет сохранен в файл `.swift-version`
-
-Будут созданы:
-- Файл `Gemfile` с первоначальными зависимостями
-- Файл `Podfile` с первоначальными зависимостями
-- Файл [readme_template_filename](#setup) описывающий шаблон резльтирующего файла `README.md`
+Для iOS проекта
+  - Будут запрошены:
+    - Версия xcode, с которой проект последний раз собирался. Ответ будет сохранен в файл `.xcode-version`
+    - Версия swift. Ответ будет сохранен в файл `.swift-version`
+  - Будут созданы:
+    - Файл `Gemfile` с первоначальными зависимостями
+    - Файл `Podfile` с первоначальными зависимостями
+    - Файл [readme_template_filename](#setup) описывающий шаблон резльтирующего файла `README.md`
 
 Переменные используемые при генерации `README.md` из шаблона [readme_template_filename](#setup):
-- `xcodeVersion` – Версия xcode из файла
-- `swiftVersion` – Версия swift из файла
-- `gemFileDependencies` – Список зависимостей Gemfile
-- `podFileDependencies` – Список зависимостей проекта Podfile
-- `projectName` – Имя проекта
+  - Для всех типов проектов:
+    - `projectName` – Имя проекта
+  - Для iOS проекта:
+    - `xcodeVersion` – Версия xcode из файла
+    - `swiftVersion` – Версия swift из файла
+    - `gemFileDependencies` – Список зависимостей Gemfile
+    - `podFileDependencies` – Список зависимостей проекта Podfile
 
 При существовании шаблона описывающего структуру проекта [templates_folder_name](#setup), он подключается в конец файла [readme_template_filename](#setup)
 

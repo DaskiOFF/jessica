@@ -18,18 +18,17 @@ func (flow *ReadmeFlow) Start(args []string) {
 }
 
 func (flow *ReadmeFlow) Description() string {
-	return `
-	--------------------------------------------------------------------------------
-	Поддержка актуальности README.md файла. Генерируется по шаблону.
+	return `--------------------------------------------------------------------------------
+Поддержка актуальности README.md файла. Генерируется по шаблону.
+  Переменные шаблона:
+    projectName           – Имя проекта
 
-	Переменные шаблона:
-		xcodeVersion        – Версия xcode из файла
-		swiftVersion        – Версия swift из файла
-		gemFileDependencies – Список зависимостей Gemfile
-		podFileDependencies – Список зависимостей проекта Podfile
-		projectName         – Имя проекта
-	--------------------------------------------------------------------------------
-	`
+    Для iOS проекта:
+      xcodeVersion        – Версия xcode из файла
+      swiftVersion        – Версия swift из файла
+      gemFileDependencies – Список зависимостей Gemfile
+      podFileDependencies – Список зависимостей проекта Podfile
+--------------------------------------------------------------------------------`
 }
 
 // ----------------------------------------------------------------------------
@@ -46,6 +45,8 @@ func (flow *ReadmeFlow) checkFiles() {
 	if flow.projectConfig.GetProjectType() == "iOS" {
 		flow.checkXcodeVersionFile()
 		flow.checkSwiftVersionFile()
-		flow.checkReadmeTpl()
+		flow.checkReadmeTplIOS()
+	} else {
+		flow.checkReadmeTplOther()
 	}
 }

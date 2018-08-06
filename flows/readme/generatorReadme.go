@@ -14,14 +14,28 @@ import (
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
 func (flow *ReadmeFlow) updateREADME() {
-	gemFile, _ := flow.readGemfile()
-	gemFileDependencies := strings.Join(gemFile, "\n")
+	params := map[string]interface{}{}
 
-	podFile, _ := flow.readPodfile()
-	podFileDependencies := strings.Join(podFile, "\n")
+	if flow.projectConfig.GetProjectType() == "iOS" {
+		gemFile, _ := flow.readGemfile()
+		gemFileDependencies := strings.Join(gemFile, "\n")
 
-	xcodeVersion, _ := flow.readXcodeVersion()
-	swiftVersion, _ := flow.readSwiftVersion()
+		podFile, _ := flow.readPodfile()
+		podFileDependencies := strings.Join(podFile, "\n")
+
+		xcodeVersion, _ := flow.readXcodeVersion()
+		swiftVersion, _ := flow.readSwiftVersion()
+
+		params = map[string]interface{}{
+			"xcodeVersion":        xcodeVersion,
+			"swiftVersion":        swiftVersion,
+			"gemFileDependencies": gemFileDependencies,
+			"podFileDependencies": podFileDependencies,
+			"projectName":         flow.iosConfig.GetProjectName(),
+		}
+	} else {
+		params["projectName"] = flow.otherConfig.GetProjectName()
+	}
 
 	fileNameREADME := "README.md"
 	os.Remove(fileNameREADME)
@@ -33,19 +47,6 @@ func (flow *ReadmeFlow) updateREADME() {
 	defer file.Close()
 
 	writer := bufio.NewWriter(file)
-	params := map[string]interface{}{
-		"xcodeVersion":        xcodeVersion,
-		"swiftVersion":        swiftVersion,
-		"gemFileDependencies": gemFileDependencies,
-		"podFileDependencies": podFileDependencies,
-	}
-
-	switch flow.projectConfig.GetProjectType() {
-	case "iOS":
-		params["projectName"] = flow.iosConfig.GetProjectName()
-	case "Other":
-		params["projectName"] = flow.otherConfig.GetProjectName()
-	}
 
 	err = flow.executeTemplate(flow.templateFileName(), writer, params)
 	if err != nil {
@@ -85,7 +86,7 @@ func (flow *ReadmeFlow) executeTemplate(templateFileName string, writer io.Write
 }
 
 // CheckReadmeTpl Проверяет существование файла описывающего шаблон README, если его нет, то его создает и заполняет значением по умолчанию
-func (flow *ReadmeFlow) checkReadmeTpl() {
+func (flow *ReadmeFlow) checkReadmeTplIOS() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 
@@ -115,6 +116,21 @@ func (flow *ReadmeFlow) checkReadmeTpl() {
 {{ .podFileDependencies }}
 %***%
 {{end}}`
+
+	content = jstrings.FixBackQuotes(content)
+	fileName := flow.templateFileName()
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
+	}
+}
+
+func (flow *ReadmeFlow) checkReadmeTplOther() {
+	content := `**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl.md**
+
+# Описание проекта {{ .projectName }}
+
+# Краткие данные по проекту`
 
 	content = jstrings.FixBackQuotes(content)
 	fileName := flow.templateFileName()
