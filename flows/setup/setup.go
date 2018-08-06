@@ -19,17 +19,17 @@ type SetupFlow struct {
 }
 
 func (flow *SetupFlow) Start(args []string) {
-	isForce := slices.Contains(args, "--force")
+	isForce := slices.Contains(args, "--force") || slices.Contains(args, "--f")
 
 	flow.setup(isForce)
 }
 
 func (flow *SetupFlow) Description() string {
-	return `
---------------------------------------------------------------------------------
-	Первичная настройка файла конфигурации
-	Params:
-		--force – Обновить всю конфигурацию
+	return `--------------------------------------------------------------------------------
+Первичная настройка файла конфигурации
+
+  Параметры:
+    --force, --f – Обновить всю конфигурацию
 --------------------------------------------------------------------------------
 	`
 }

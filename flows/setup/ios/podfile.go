@@ -1,11 +1,10 @@
 package ios
 
 import (
+	"github.com/daskioff/jessica/flows/internal"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 )
-
-const podFileName = "Podfile"
 
 // Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
 func checkPodfile() {
@@ -65,10 +64,10 @@ post_install do |installer|
     end
 end`
 
-	fileName := podFileName
+	fileName := internal.PodfileFileName
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)
 		print.PrintlnSuccessMessage(fileName + " создан")
-		print.PrintlnAttentionMessage("Обновите имя таргета в Podfile")
+		print.PrintlnAttentionMessage("Обновите имя таргета в " + fileName)
 	}
 }

@@ -3,15 +3,16 @@ package readme
 import (
 	"io/ioutil"
 	"regexp"
-)
 
-const gemFileName = "Gemfile"
+	"github.com/daskioff/jessica/flows/internal"
+)
 
 // Read Читает Gemfile и выбирает из него список зависимостей
 func (flow *ReadmeFlow) readGemfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
-	fileContent, err := ioutil.ReadFile(gemFileName)
+	filename := internal.GemfileFileName
+	fileContent, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}

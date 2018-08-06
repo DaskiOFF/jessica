@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/daskioff/jessica/configs/models"
+	"github.com/daskioff/jessica/flows/internal"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
 	"github.com/daskioff/jessica/utils/xcodeproj"
@@ -34,13 +35,13 @@ func Setup(config *models.ConfigIOS, isForce bool) {
 	}
 
 	if !config.HasProjectName() || !config.HasXcodeprojFilename() || isForce {
-		xcodeprojFilename := question.AskQuestionWithChooseFileAnswer("Выберите .xcodeproj файл:", ".xcodeproj")
+		xcodeprojFilename := question.AskQuestionWithChooseFileAnswer("Выберите "+internal.IosProjectFileExtension+" файл:", internal.IosProjectFileExtension)
 		if xcodeprojFilename == "" {
 			print.PrintlnAttentionMessage("Пропущена настройка iOS проекта")
 			return
 		}
 		config.SetXcodeprojFilename(xcodeprojFilename)
-		config.SetProjectName(strings.Replace(xcodeprojFilename, ".xcodeproj", "", 1))
+		config.SetProjectName(strings.Replace(xcodeprojFilename, internal.IosProjectFileExtension, "", 1))
 
 		xcodeproj.Install()
 	}

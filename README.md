@@ -30,33 +30,42 @@ brew uninstall --force daskioff/jessica/jessica
 Пример находится в папке `ExampleXcodeProj` 
 
 # Setup
-Первичная конфигурация
+Конфигурация. 
+
+Запрашиваются только недостающие поля (для обновления всей конфигурации можно использовать параметры)
 
 |Params|Description|
 |----|---|
-|`--force`|Полное обновление конфигурации|
+|`--force, --f`|Полное обновление конфигурации|
 
-Результатом команды являются два файла:
-- `~/.jessica.yml` – глобальный файл конфигурации
-    - `user_name` – Имя пользователя
-- `[project_path]/.jessica.yml` – Файл конфигурации проекта
-    - `company_name` – Имя компании (Для шаблонов)
-    - `project_type` – Тип проекта [iOS|other]
-    - `readme_template_filename` – Имя файла для шаблона README файла
-    - `custom_project_struct_use` – Использовать или нет кастомную структуру проекта
-    - `custom_project_struct_description` – Описание структуры проекта
-    - `custom_project_struct_description_template_filename` – Имя файла с шаблоном описания структуры проекта
-    - `templates_use` – Использовать шаблоны или нет
-    - `templates_folder_name` – Имя папки содержащей шаблоны
-    - `ios_dependencies_gemfile_use` – Использовать Gemfile или нет
-    - `ios_dependencies_podfile_use` – Использовать Podfile или нет
-    - `ios_xcodeproj_filename` – Имя xcodeproj файла проекта
-    - `ios_target_name_code` – Название таргета кода проекта
-    - `ios_folder_name_code` – Имя папки с кодом проекта
-    - `ios_target_name_unit_tests` – Название таргета unit тестов проекта
-    - `ios_folder_name_unit_tests` – Имя папки unit тестов проекта
-    - `ios_target_name_ui_tests` – Название таргета ui тестов проекта
-    - `ios_folder_name_ui_tests` – Имя папки ui тестов проекта
+## Результатом команды являются два файла
+### ~/.jessica.yml – глобальный файл конфигурации
+  - `user_name` – Имя пользователя
+
+### [project_path]/.jessica.yml – Файл конфигурации проекта
+  - `company_name` – Имя компании (Для шаблонов)
+  - `project_type` – Тип проекта [iOS|other]
+  - `readme_template_filename` – Имя файла для шаблона README файла
+  - `custom_project_struct_use` – Использовать или нет кастомную структуру проекта
+  - `custom_project_struct_description` – Описание структуры проекта
+  - `custom_project_struct_description_template_filename` – Имя файла с шаблоном описания структуры проекта
+  - `templates_use` – Использовать шаблоны или нет
+  - `templates_folder_name` – Имя папки содержащей шаблоны
+
+##### Для проекта типа `iOS`
+  - `ios_dependencies_gemfile_use` – Использовать Gemfile или нет
+  - `ios_dependencies_podfile_use` – Использовать Podfile или нет
+  - `ios_xcodeproj_filename` – Имя xcodeproj файла проекта
+  - `ios_target_name_code` – Название таргета кода проекта
+  - `ios_folder_name_code` – Имя папки с кодом проекта
+  - `ios_target_name_unit_tests` – Название таргета unit тестов проекта
+  - `ios_folder_name_unit_tests` – Имя папки unit тестов проекта
+  - `ios_target_name_ui_tests` – Название таргета ui тестов проекта
+  - `ios_folder_name_ui_tests` – Имя папки ui тестов проекта
+
+##### Для проекта типа `other`
+  - `other_project_name` – Название проекта
+  - `other_project_folder_name` – Имя папки с кодом проекта
 
 # Readme command
 Поддержка актуальности `README.md` файла

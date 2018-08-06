@@ -36,7 +36,7 @@ func commonSection(config *models.ConfigProject, isForce bool) {
 
 func readmeSection(config *models.ConfigProject, isForce bool) {
 	if !config.HasReadmeTemplateFilename() || isForce {
-		readmeFilename := ".readme.tpl.md"
+		readmeFilename := internal.ReadmeTemplateFileNameDefault
 		config.SetReadmeTemplateFilename(readmeFilename)
 	}
 }
@@ -51,7 +51,7 @@ func customProjectStructSection(config *models.ConfigProject, isForce bool) {
 		return
 	}
 
-	descriptionFilename := ".project_struct.tpl.md"
+	descriptionFilename := internal.CustomStructFileNameDefault
 	config.SetCustomProjectStructDescriptionTemplateFilename(descriptionFilename)
 
 	print.PrintlnInfoMessage(internal.CustomStructDescriptionText())
@@ -67,7 +67,7 @@ func templatesSection(config *models.ConfigProject, isForce bool) {
 		return
 	}
 
-	templatesFolderName := "TemplatesJessica"
+	templatesFolderName := internal.TemplatesFolderNameDefault
 	config.SetTemplatesFolderName(templatesFolderName)
 
 	if !files.IsFileExist(templatesFolderName) {

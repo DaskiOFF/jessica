@@ -6,6 +6,11 @@ import (
 )
 
 func Setup(config *models.ConfigOther, isForce bool) {
+	err := config.Validate()
+	if err == nil && !isForce {
+		return
+	}
+
 	if !config.HasProjectName() || isForce {
 		codeProjectName := question.AskQuestion("\nВведите название проекта: ", true)
 		config.SetProjectName(codeProjectName)
