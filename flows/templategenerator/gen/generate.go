@@ -1,4 +1,4 @@
-package templategenerator
+package gen
 
 import (
 	"bufio"
@@ -8,40 +8,66 @@ import (
 	textTemplate "text/template"
 	"time"
 
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
+	"github.com/daskioff/jessica/utils/xcodeproj"
 	"github.com/spf13/viper"
 )
 
-func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
+type MapKeys map[string]interface{}
+
+type generateParams struct {
+	customKeys    MapKeys
+	answers       MapKeys
+	globalConfig  *models.ConfigGlobal
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
+}
+
+func generateTemplates(v *viper.Viper, key string, templateName string, moduleName string, generateParams generateParams) []xcodeproj.AddedFile {
 	codeTemplates := v.Get(key)
 	if codeTemplates == nil {
-		return []AddedFile{}
+		return []xcodeproj.AddedFile{}
 	}
 
 	listCodeTemplates := codeTemplates.([]interface{})
-	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, customKeys, answers)
+	return generateTemplatesFromList(listCodeTemplates, templateName, moduleName, generateParams)
 }
 
-func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, customKeys MapKeys, answers MapKeys) []AddedFile {
-	addedFiles := []AddedFile{}
+func generateTemplatesFromList(list []interface{}, templateName string, moduleName string, generateParams generateParams) []xcodeproj.AddedFile {
+	addedFiles := []xcodeproj.AddedFile{}
 
 	currentTime := time.Now()
-	templateInfoParams := params(moduleName, customKeys, answers)
+	templateInfoParams := params(moduleName, generateParams.customKeys, generateParams.answers)
 	params := templateInfoParams
 	params["developer"] = MapKeys{
-		"name":        configs.GlobalConfig.GetString(configs.KeyUserName),
-		"companyName": configs.ProjectConfig.GetString(configs.KeyCompanyName),
+		"name":        generateParams.globalConfig.GetUsername(),
+		"companyName": generateParams.projectConfig.GetCompanyName(),
 	}
-	params["projectName"] = configs.ProjectConfig.Get(configs.KeyIOSProjectName)
 	params["date"] = currentTime.Format("02.01.2006")
 	params["year"] = currentTime.Year()
 
-	templateFiles := newTemplateFiles(list, templateName, moduleName, params)
+	switch generateParams.projectConfig.GetProjectType() {
+	case "iOS":
+		params["projectName"] = generateParams.iosConfig.GetFolderNameCode()
+		params["projectTestsName"] = generateParams.iosConfig.GetFolderNameUnitTests()
+		params["projectUITestsName"] = generateParams.iosConfig.GetFolderNameUITests()
+	case "other":
+		params["projectName"] = generateParams.otherConfig.GetProjectFolderName()
+	default:
+		break
+	}
+
+	templateFiles := newTemplateFiles(list,
+		templateName,
+		moduleName,
+		generateParams.projectConfig.GetTemplatesFolderName(),
+		params)
 	for _, templateFile := range templateFiles {
-		addedFiles = append(addedFiles, AddedFile{
+		addedFiles = append(addedFiles, xcodeproj.AddedFile{
 			Path:     templateFile.outputProjectPath,
 			Filename: templateFile.name,
 		})

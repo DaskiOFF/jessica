@@ -1,4 +1,4 @@
-package templategenerator
+package gen
 
 import (
 	"bufio"
@@ -9,7 +9,7 @@ import (
 	"strings"
 	textTemplate "text/template"
 
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/flows/templategenerator/utils"
 )
 
 const (
@@ -27,12 +27,8 @@ type templateFile struct {
 	rewriteResult     int
 }
 
-func newTemplateFiles(in []interface{}, templateName string, moduleName string, params MapKeys) []templateFile {
+func newTemplateFiles(in []interface{}, templateName string, moduleName string, templatesFolderName string, params MapKeys) []templateFile {
 	templateFiles := []templateFile{}
-
-	params["projectName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameCode)
-	params["projectTestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUnitTests)
-	params["projectUITestsName"] = configs.ProjectConfig.GetString(configs.KeyIOSFolderNameUITests)
 
 	root, err := os.Getwd()
 	if err != nil {
@@ -65,7 +61,7 @@ func newTemplateFiles(in []interface{}, templateName string, moduleName string, 
 		if strings.Contains(templateFileResult.templatePath, "{{") {
 			templateFileResult.templatePath = executeStringTemplate("generator template templatePath", templateFileResult.templatePath, params)
 		}
-		templateFileResult.templatePath = filepath.Join(templatesRootPath(), templateName, templateFileResult.templatePath)
+		templateFileResult.templatePath = filepath.Join(utils.TemplatesRootPath(templatesFolderName), templateName, templateFileResult.templatePath)
 
 		templateFileResult.outputPathFolder = code["output_path"].(string)
 		if strings.Contains(templateFileResult.outputPathFolder, "{{") {

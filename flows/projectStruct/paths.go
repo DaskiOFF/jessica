@@ -2,16 +2,14 @@ package projectstruct
 
 import (
 	"path/filepath"
-
-	"github.com/daskioff/jessica/configs"
 )
 
-func projectPaths() []string {
-	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStructDescription)
-	return projectStructToPaths(projectStructure)
+func (flow *ProjectStructFlow) projectPaths() []string {
+	projectStructure := flow.projectConfig.GetCustomProjectStructDescription()
+	return flow.projectStructToPaths(projectStructure)
 }
 
-func projectStructToPaths(in interface{}) []string {
+func (flow *ProjectStructFlow) projectStructToPaths(in interface{}) []string {
 	switch v := in.(type) {
 
 	case string:
@@ -21,7 +19,7 @@ func projectStructToPaths(in interface{}) []string {
 		response := make([]string, 0)
 		for s, b := range v {
 			prefix, _ := s.(string)
-			for _, path := range projectStructToPaths(b) {
+			for _, path := range flow.projectStructToPaths(b) {
 				response = append(response, filepath.Join(prefix, path))
 			}
 		}
@@ -33,7 +31,7 @@ func projectStructToPaths(in interface{}) []string {
 	case []interface{}:
 		response := make([]string, 0)
 		for _, b := range v {
-			for _, path := range projectStructToPaths(b) {
+			for _, path := range flow.projectStructToPaths(b) {
 				response = append(response, path)
 			}
 		}

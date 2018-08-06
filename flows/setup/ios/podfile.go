@@ -1,4 +1,14 @@
-# Uncomment the next line to define a global platform for your project
+package ios
+
+import (
+	"github.com/daskioff/jessica/flows/internal"
+	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/print"
+)
+
+// Check Проверяет существование Podfile, если его нет, то его создает и заполняет значением по умолчанию
+func checkPodfile() {
+	content := `# Uncomment the next line to define a global platform for your project
 source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'
 use_frameworks!
@@ -52,4 +62,12 @@ post_install do |installer|
             config.build_settings['SWIFT_VERSION'] = '4.1'
         end
     end
-end
+end`
+
+	fileName := internal.PodfileFileName
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
+		print.PrintlnAttentionMessage("Обновите имя таргета в " + fileName)
+	}
+}

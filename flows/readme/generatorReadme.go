@@ -7,22 +7,35 @@ import (
 	"strings"
 	textTemplate "text/template"
 
-	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
 )
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
-func updateREADME() {
-	gemFile, _ := readGemfile()
-	gemFileDependencies := strings.Join(gemFile, "\n")
+func (flow *ReadmeFlow) updateREADME() {
+	params := map[string]interface{}{}
 
-	podFile, _ := readPodfile()
-	podFileDependencies := strings.Join(podFile, "\n")
+	if flow.projectConfig.GetProjectType() == "iOS" {
+		gemFile, _ := flow.readGemfile()
+		gemFileDependencies := strings.Join(gemFile, "\n")
 
-	xcodeVersion, _ := readXcodeVersion()
-	swiftVersion, _ := readSwiftVersion()
+		podFile, _ := flow.readPodfile()
+		podFileDependencies := strings.Join(podFile, "\n")
+
+		xcodeVersion, _ := flow.readXcodeVersion()
+		swiftVersion, _ := flow.readSwiftVersion()
+
+		params = map[string]interface{}{
+			"xcodeVersion":        xcodeVersion,
+			"swiftVersion":        swiftVersion,
+			"gemFileDependencies": gemFileDependencies,
+			"podFileDependencies": podFileDependencies,
+			"projectName":         flow.iosConfig.GetProjectName(),
+		}
+	} else {
+		params["projectName"] = flow.otherConfig.GetProjectName()
+	}
 
 	fileNameREADME := "README.md"
 	os.Remove(fileNameREADME)
@@ -34,23 +47,16 @@ func updateREADME() {
 	defer file.Close()
 
 	writer := bufio.NewWriter(file)
-	params := map[string]interface{}{
-		"xcodeVersion":        xcodeVersion,
-		"swiftVersion":        swiftVersion,
-		"gemFileDependencies": gemFileDependencies,
-		"podFileDependencies": podFileDependencies,
-		"projectName":         configs.ProjectConfig.Get(configs.KeyIOSProjectName),
-	}
 
-	err = executeTemplate(templateFileName(), writer, params)
+	err = flow.executeTemplate(flow.templateFileName(), writer, params)
 	if err != nil {
 		panic(err)
 	}
 
-	projectStructTemplateFilename := configs.ProjectConfig.GetString(configs.KeyCustomProjectStructDescriptionTemplateFilename)
+	projectStructTemplateFilename := flow.projectConfig.GetCustomProjectStructDescriptionTemplateFilename()
 	if files.IsFileExist(projectStructTemplateFilename) {
 		writer.WriteString("\n\n")
-		executeTemplate(projectStructTemplateFilename, writer, params)
+		flow.executeTemplate(projectStructTemplateFilename, writer, params)
 	}
 
 	err = writer.Flush()
@@ -61,11 +67,11 @@ func updateREADME() {
 	print.PrintlnSuccessMessage(fileNameREADME + " обновлен")
 }
 
-func templateFileName() string {
-	return configs.ProjectConfig.GetString(configs.KeyReadmeTemplateFilename)
+func (flow *ReadmeFlow) templateFileName() string {
+	return flow.projectConfig.GetReadmeTemplateFilename()
 }
 
-func executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
+func (flow *ReadmeFlow) executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
 	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err
@@ -80,7 +86,7 @@ func executeTemplate(templateFileName string, writer io.Writer, params map[strin
 }
 
 // CheckReadmeTpl Проверяет существование файла описывающего шаблон README, если его нет, то его создает и заполняет значением по умолчанию
-func checkReadmeTpl() {
+func (flow *ReadmeFlow) checkReadmeTplIOS() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 
@@ -95,20 +101,39 @@ func checkReadmeTpl() {
 
 Последний раз проект собирался с версией **Swift {{ .swiftVersion }}** указанной в файле %*%.swift-version%*%
 
+{{if .gemFileDependencies}}
 ### Gemfile
 В %*%Gemfile%*% описаны зависимости инструментов. Для установки использовать команду %*%bundle install%*% ([Подробнее](https://bundler.io/))
 %***%
 {{ .gemFileDependencies }}
 %***%
+{{end}}
 
+{{if .podFileDependencies}}
 ### Podfile
 Зависимости проекта подключены через %*%cocoapods%*% и описаны в %*%Podfile%*%. Для установки использовать: %*%[bundle exec] pod install%*% или %*%[bundle exec] pod update%*%
 %***%
 {{ .podFileDependencies }}
-%***%`
+%***%
+{{end}}`
 
 	content = jstrings.FixBackQuotes(content)
-	fileName := templateFileName()
+	fileName := flow.templateFileName()
+	if !files.IsFileExist(fileName) {
+		files.WriteToFile(fileName, content)
+		print.PrintlnSuccessMessage(fileName + " создан")
+	}
+}
+
+func (flow *ReadmeFlow) checkReadmeTplOther() {
+	content := `**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl.md**
+
+# Описание проекта {{ .projectName }}
+
+# Краткие данные по проекту`
+
+	content = jstrings.FixBackQuotes(content)
+	fileName := flow.templateFileName()
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)
 		print.PrintlnSuccessMessage(fileName + " создан")
