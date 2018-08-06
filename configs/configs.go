@@ -3,39 +3,41 @@ package configs
 import (
 	"os"
 
-	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/spf13/viper"
 )
 
 const configFileName = ".jessica.yml"
 
-var ProjectConfig *viper.Viper
-var GlobalConfig *viper.Viper
+var projectConfig *viper.Viper
+var globalConfig *viper.Viper
 
 func init() {
-	ProjectConfig = viper.New()
-	ProjectConfig.SetConfigFile(configFileName)
+	projectConfig = viper.New()
+	projectConfig.SetConfigFile(configFileName)
 
-	if err := ProjectConfig.ReadInConfig(); err != nil {
+	if err := projectConfig.ReadInConfig(); err != nil {
 	}
 
-	GlobalConfig = viper.New()
-	GlobalConfig.SetConfigFile(os.Getenv("HOME") + "/" + configFileName)
+	globalConfig = viper.New()
+	globalConfig.SetConfigFile(os.Getenv("HOME") + "/" + configFileName)
 
-	if err := GlobalConfig.ReadInConfig(); err != nil {
-	}
-}
-
-func WriteGlobal() {
-	err := GlobalConfig.WriteConfig()
-	if err != nil {
-		print.PrintlnErrorMessage("Ошибка сохранения глобального файла конфигурации: " + err.Error())
+	if err := globalConfig.ReadInConfig(); err != nil {
 	}
 }
 
-func WriteProject() {
-	err := ProjectConfig.WriteConfig()
-	if err != nil {
-		print.PrintlnErrorMessage("Ошибка сохранения локального файла конфигурации: " + err.Error())
-	}
+func Global() *models.ConfigGlobal {
+	return models.NewGlobal(globalConfig)
+}
+
+func Project() *models.ConfigProject {
+	return models.NewProject(projectConfig)
+}
+
+func IOS() *models.ConfigIOS {
+	return models.NewIOS(projectConfig)
+}
+
+func Other() *models.ConfigOther {
+	return models.NewOther(projectConfig)
 }

@@ -1,7 +1,9 @@
 package projectstruct
 
 import (
-	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/keys"
+	"github.com/daskioff/jessica/configs/models"
+	"github.com/daskioff/jessica/flows/internal"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
@@ -13,6 +15,9 @@ var useCustomStruct bool
 var hasCustomStruct bool
 
 type ProjectStructFlow struct {
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
 }
 
 func (flow *ProjectStructFlow) Start(args []string) {
@@ -21,68 +26,84 @@ func (flow *ProjectStructFlow) Start(args []string) {
 		return
 	}
 
-	updateFlags()
+	actionName := args[0]
+	args = args[1:]
 
-	if args[0] == "gen" {
-		if !useCustomStruct {
-			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructUse + "'. Для конфигурации можно воспользоваться командой setup")
-			return
-		}
-
-		if !hasCustomStruct {
-			print.PrintlnAttentionMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + configs.KeyCustomProjectStructDescription + "'. Для конфигурации можно воспользоваться командой setup")
-			return
-		}
-
-		generateProjectStruct()
-		createTemplateProjectStructDescriptionFile()
-
-		print.PrintlnSuccessMessage("Отредактируйте файл " + templateFileName() + ", чтобы описать вашу структуру. Этот шаблон будет использоваться для генерации раздела структуры проекта в файле README.md")
-	} else {
+	switch actionName {
+	case "gen":
+		flow.gen()
+	case "example":
+		flow.example()
+	default:
 		print.PrintlnAttentionMessage("Действие не найдено. Чтобы увидеть список действий воспользуйтесь командой help")
 	}
 }
 
-func (flow *ProjectStructFlow) Setup() {
-}
-
 func (flow *ProjectStructFlow) Description() string {
-	return `
---------------------------------------------------------------------------------
-	Генерация структуры файлов описаных в конфиге
+	return `--------------------------------------------------------------------------------
+Создание и описание структуры проекта.
 
-	Действия:
-		gen  - Генерация структуры и необходимых файлов
+  Действия:
+    gen     – Генерация структуры файлов описаных в конфиге
+    example – Пример описания файловой структуры в файле конфигурации
 --------------------------------------------------------------------------------`
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow() flows.Flow {
+func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
 	flow := ProjectStructFlow{}
+	flow.projectConfig = projectConfig
+	flow.iosConfig = iosConfig
+	flow.otherConfig = otherConfig
+
 	return &flow
 }
 
-func updateFlags() {
-	useCustomStruct = configs.ProjectConfig.GetBool(configs.KeyCustomProjectStructUse)
-	hasCustomStruct = configs.ProjectConfig.IsSet(configs.KeyCustomProjectStructDescription)
+func (flow *ProjectStructFlow) updateFlags() {
+	useCustomStruct = flow.projectConfig.GetCustomProjectStructUse()
+	hasCustomStruct = flow.projectConfig.GetCustomProjectStructDescription() != nil
 }
 
-func templateFileName() string {
-	return configs.ProjectConfig.GetString(configs.KeyCustomProjectStructDescriptionTemplateFilename)
+func (flow *ProjectStructFlow) templateFileName() string {
+	return flow.projectConfig.GetCustomProjectStructDescriptionTemplateFilename()
 }
 
-func createTemplateProjectStructDescriptionFile() {
-	projectStructure := configs.ProjectConfig.Get(configs.KeyCustomProjectStructDescription)
-	projectStructureString := projectStructToString(projectStructure, "  ", "  ")
+func (flow *ProjectStructFlow) createTemplateProjectStructDescriptionFile() {
+	projectStructure := flow.projectConfig.GetCustomProjectStructDescription()
+	projectStructureString := flow.projectStructToString(projectStructure, "  ", "  ")
 
 	content := `# Структура проекта
 - %*%{{ .projectName }}%*% – папка проекта
 ` + projectStructureString
 
 	content = jstrings.FixBackQuotes(content)
-	fileName := templateFileName()
+	fileName := flow.templateFileName()
 	if !files.IsFileExist(fileName) {
 		files.WriteToFile(fileName, content)
 		print.PrintlnSuccessMessage(fileName + " создан")
 	}
+}
+
+func (flow *ProjectStructFlow) gen() {
+	flow.updateFlags()
+
+	if !useCustomStruct {
+		print.PrintlnErrorMessage("Вы не можете генерировать файловую структуру, т.к. эта функция отключена в конфигурационном файле .jessica.yml по ключу '" + keys.KeyCustomProjectStructUse + "'. Для конфигурации можно воспользоваться командой setup")
+		return
+	}
+
+	if !hasCustomStruct {
+		print.PrintlnErrorMessage("Вы не можете генерировать файловую структуру, т.к. не описали ее в конфигурационном файле .jessica.yml по ключу '" + keys.KeyCustomProjectStructDescription + "'. Чтобы увидеть пример описания структуры воспользуйтесь действием `example`")
+		return
+	}
+
+	flow.generateProjectStruct()
+	flow.createTemplateProjectStructDescriptionFile()
+
+	print.PrintlnSuccessMessage("Отредактируйте файл " + flow.templateFileName() + ", чтобы описать вашу структуру. Этот шаблон будет использоваться для генерации раздела структуры проекта в файле README.md.")
+	print.PrintlnAttentionMessage("Внимание, при изменении структуры файл " + flow.templateFileName() + " не перезаписывается")
+}
+
+func (flow *ProjectStructFlow) example() {
+	print.PrintlnInfoMessage(internal.CustomStructDescriptionText())
 }

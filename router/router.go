@@ -4,26 +4,38 @@ import (
 	"errors"
 
 	"github.com/daskioff/jessica/configs"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/factory"
 	"github.com/daskioff/jessica/utils/print"
 )
 
-const version = "1.3.3"
+const version = "1.3.4"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
+
+	globalConfig  *models.ConfigGlobal
+	projectConfig *models.ConfigProject
+	iosConfig     *models.ConfigIOS
+	otherConfig   *models.ConfigOther
 }
 
 func NewRouter() *Router {
+	router := Router{}
+	router.globalConfig = configs.Global()
+	router.projectConfig = configs.Project()
+	router.iosConfig = configs.IOS()
+	router.otherConfig = configs.Other()
+
 	mapFlows := make(map[string]flows.Flow)
 	mapFlows["hi"] = factory.Hi(version)
-	mapFlows["readme"] = factory.Readme()
-	mapFlows["setup"] = factory.Setup()
-	mapFlows["struct"] = factory.Struct()
-	mapFlows["generator"] = factory.Generator()
+	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig, router.otherConfig)
+	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
+	mapFlows["struct"] = factory.Struct(router.projectConfig, router.iosConfig, router.otherConfig)
+	mapFlows["generator"] = factory.Generator(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
 
-	router := Router{mapFlows: mapFlows}
+	router.mapFlows = mapFlows
 
 	return &router
 }
@@ -58,9 +70,12 @@ func (r *Router) Handle(args []string) error {
 		print.PrintlnInfoMessage(flow.Description())
 	} else {
 		if command != "setup" && command != "hi" {
-			err := configs.ValidateProjectConfig()
-			if err != nil {
-				return errors.New(err.Error() + "\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+			globalError := r.globalConfig.Validate()
+			projectError := r.projectConfig.Validate()
+			iosError := r.iosConfig.Validate()
+
+			if globalError != nil || projectError != nil || iosError != nil {
+				return errors.New("\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
 			}
 		}
 

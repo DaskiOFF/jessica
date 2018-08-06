@@ -2,7 +2,7 @@ package projectstruct
 
 import "strings"
 
-func projectStructToString(in interface{}, currentSpace string, spaceStep string) string {
+func (flow *ProjectStructFlow) projectStructToString(in interface{}, currentSpace string, spaceStep string) string {
 	switch v := in.(type) {
 
 	case string:
@@ -13,7 +13,7 @@ func projectStructToString(in interface{}, currentSpace string, spaceStep string
 		for s, b := range v {
 			prefix, _ := s.(string)
 			response = response + currentSpace + "- " + prefix + "\n"
-			response = response + projectStructToString(b, currentSpace+spaceStep, spaceStep)
+			response = response + flow.projectStructToString(b, currentSpace+spaceStep, spaceStep)
 		}
 		return strings.TrimSuffix(response, "\n")
 
@@ -27,7 +27,7 @@ func projectStructToString(in interface{}, currentSpace string, spaceStep string
 	case []interface{}:
 		response := ""
 		for _, b := range v {
-			response = response + projectStructToString(b, currentSpace, spaceStep) + "\n"
+			response = response + flow.projectStructToString(b, currentSpace, spaceStep) + "\n"
 		}
 		return response
 
