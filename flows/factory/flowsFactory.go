@@ -14,8 +14,8 @@ func Hi(version string) flows.Flow {
 	return hi.NewFlow(version)
 }
 
-func Struct(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS) flows.Flow {
-	return projectstruct.NewFlow(projectConfig, iosConfig)
+func Struct(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+	return projectstruct.NewFlow(projectConfig, iosConfig, otherConfig)
 }
 
 func Readme(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {

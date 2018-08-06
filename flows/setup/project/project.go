@@ -3,8 +3,8 @@ package project
 import (
 	"os"
 
-	"github.com/daskioff/jessica/configs/keys"
 	"github.com/daskioff/jessica/configs/models"
+	"github.com/daskioff/jessica/flows/internal"
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
@@ -54,26 +54,7 @@ func customProjectStructSection(config *models.ConfigProject, isForce bool) {
 	descriptionFilename := ".project_struct.tpl.md"
 	config.SetCustomProjectStructDescriptionTemplateFilename(descriptionFilename)
 
-	const exampleStruct = keys.KeyCustomProjectStructDescription + `:
-  - AppLayer:
-		- Configs
-  - ServiceLayer
-  - DataLayer:
-		- Entities
-  - DomainLayer:
-		- Entities
-  - PresentationLayer:
-    - Resources
-		- Components
-		- Flows
-  - Support`
-
-	print.PrintlnInfoMessage(`
-Для создания генерируемой структуры вам необходимо описать ее в локальном файле конфигурации .jessica.yml
-Описываемая файловая структура будет создаваться внутри папки проекта
-	
-Например
-` + exampleStruct)
+	print.PrintlnInfoMessage(internal.CustomStructDescriptionText())
 }
 
 func templatesSection(config *models.ConfigProject, isForce bool) {

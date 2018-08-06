@@ -10,13 +10,22 @@ import (
 
 func (flow *ProjectStructFlow) generateProjectStruct() {
 	if !useCustomStruct || !hasCustomStruct {
-		print.PrintlnAttentionMessage("Необходима конфигурация с помощью команды `struct setup`")
+		print.PrintlnErrorMessage("Необходима конфигурация с помощью команды `struct setup`")
 		return
 	}
 
-	projectName := flow.iosConfig.GetFolderNameCode()
+	projectName := ""
+	keyNameForProjectName := ""
+	if flow.projectConfig.GetProjectType() == "iOS" {
+		projectName = flow.iosConfig.GetFolderNameCode()
+		keyNameForProjectName = keys.KeyIOSFolderNameCode
+	} else {
+		projectName = flow.otherConfig.GetProjectFolderName()
+		keyNameForProjectName = keys.KeyOtherProjectFolderName
+	}
+
 	if len(projectName) == 0 {
-		print.PrintlnAttentionMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + keys.KeyIOSFolderNameCode)
+		print.PrintlnErrorMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + keyNameForProjectName)
 		return
 	}
 

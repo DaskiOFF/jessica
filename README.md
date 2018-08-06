@@ -86,29 +86,31 @@ brew uninstall --force daskioff/jessica/jessica
 # Struct
 |Action|Description|
 |----|---|
-|`gen`|Генерация|
+|`gen`|Генерация структуры проекта описанной в конфигурационном файле проекта|
+|`example`|Пример описания структуры проекта в конфигурационном файле|
 
 ## gen
 - Генерация структуры проекта
-- Создание шаблона [custom_project_struct_description_template_filename](#setup) описания структуры проекта. В шаблоне доступны все теже переменные, что и для [readme_template_filename](#setup) файла
-- Создание папки для шаблонов, если был утвердительный ответ на соответствующий вопрос во время выполнения действия setup
+- Создание шаблона [custom_project_struct_description_template_filename](#setup) описания структуры проекта. В шаблоне доступны все те же переменные, что и для [readme_template_filename](#setup) файла
+
+## example
+Выводит пример описания структуры в конфигурационном файле
 
 ### Пример описания структуры проекта
 ```yml
 custom_project_struct_description:
-- Layers:
-  - ApplicationLayer:
-    - Config
-  - ServiceLayer
-  - DataLayer:
+  - Data:
     - Entities
-  - DomainLayer:
+  - Domain:
     - Entities
-  - PresentationLayer:
-    - Components
-    - Flows:
-      - _AppCoordinator
-    - Resources
+  - Presentation:
+    - Resources:
+      - Fonts
+    - Components:
+      - Cells
+    - Flows
+    - ViewControllers
+  - Support
 ```
 
 # Generator
