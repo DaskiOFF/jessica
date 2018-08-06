@@ -26,8 +26,11 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		return
 	}
 
-	if args[0] == "pull" {
-		pull.Execute(args[1:], flow.projectConfig.GetTemplatesFolderName())
+	actionName := args[0]
+	args = args[1:]
+
+	if actionName == "pull" {
+		pull.Execute(args, flow.projectConfig.GetTemplatesFolderName())
 		return
 	}
 
@@ -38,20 +41,20 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 		return
 	}
 
-	switch args[0] {
+	switch actionName {
 	case "list":
 		list.Show(templates)
 	case "gen":
-		gen.Execute(args[1:], utils.TemplatesRootPath(templatesFolderName), flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
+		gen.Execute(args, utils.TemplatesRootPath(templatesFolderName), flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
 	}
 }
 
 func (flow *TemplateGeneratorFlow) Description() string {
 	return `--------------------------------------------------------------------------------
-  Генерация шаблонов
-    - pull  – Скачать шаблоны с репозитория
-    - list  – Вывести список шаблонов
-    - gen   – Генерация шаблона
+Генератор
+  - pull  – Скачать шаблоны с репозитория
+  - list  – Вывести список шаблонов
+  - gen   – Генерация шаблона
 --------------------------------------------------------------------------------`
 }
 

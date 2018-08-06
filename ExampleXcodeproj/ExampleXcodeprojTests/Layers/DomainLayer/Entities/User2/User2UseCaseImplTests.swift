@@ -4,22 +4,22 @@ import Mirage
 import UseCase
 @testable import ExampleXcodeproj
 
-class qweUseCaseImplTests: XCTestCase {
+class User2UseCaseImplTests: XCTestCase {
 
     // <no value>
     // <no value>
     // <no value>
-    var sut: PartialMockqweeeeeeUseCaseImpl!
+    var sut: PartialMockUser2UseCaseImpl!
     
-    var mockRepository: MockqweRepository!
+    var mockRepository: MockUser2Repository!
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        mockRepository = MockqweRepository()
+        mockRepository = MockUser2Repository()
         
-        sut = PartialMockqweeeeeeUseCaseImpl(mockRepository: MockqweRepository)
+        sut = PartialMockUser2UseCaseImpl(mockRepository: MockUser2Repository)
     }
     
     override func tearDown() {
@@ -133,7 +133,7 @@ class qweUseCaseImplTests: XCTestCase {
         
         //  when
         XCTAssertThrowsError(try sut.validateParams(), "") { (error) in
-            XCTAssert(error is qweUseCaseNilParamError)
+            XCTAssert(error is User2UseCaseNilParamError)
         }
         
         //  then

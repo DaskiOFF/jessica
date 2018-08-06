@@ -47,9 +47,19 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 		"name":        generateParams.globalConfig.GetUsername(),
 		"companyName": generateParams.projectConfig.GetCompanyName(),
 	}
-	params["projectName"] = generateParams.iosConfig.GetProjectName()
 	params["date"] = currentTime.Format("02.01.2006")
 	params["year"] = currentTime.Year()
+
+	switch generateParams.projectConfig.GetProjectType() {
+	case "iOS":
+		params["projectName"] = generateParams.iosConfig.GetFolderNameCode()
+		params["projectTestsName"] = generateParams.iosConfig.GetFolderNameUnitTests()
+		params["projectUITestsName"] = generateParams.iosConfig.GetFolderNameUITests()
+	case "other":
+		params["projectName"] = generateParams.otherConfig.GetProjectFolderName()
+	default:
+		break
+	}
 
 	templateFiles := newTemplateFiles(list,
 		templateName,

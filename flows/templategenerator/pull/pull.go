@@ -11,27 +11,27 @@ func Execute(args []string, templatesFolderName string) {
 	if len(args) == 0 {
 		print.PrintlnErrorMessage("Вы не указали URL git репозитория")
 		return
-	} else {
-		url := args[0]
-		args := args[1:]
+	}
 
-		if !strings.HasPrefix(url, "http") {
-			url = "https://" + url
-		}
+	url := args[0]
+	args = args[1:]
 
-		if !strings.HasSuffix(url, ".git") {
-			url = url + ".git"
-		}
+	if !strings.HasPrefix(url, "http") {
+		url = "https://" + url
+	}
 
-		branch := ""
-		if len(args) > 0 {
-			branch = args[0]
-		}
+	if !strings.HasSuffix(url, ".git") {
+		url = url + ".git"
+	}
 
-		path := templatesFolderName
-		err := git.Clone(url, branch, path)
-		if err != nil {
-			panic(err)
-		}
+	branch := ""
+	if len(args) > 0 {
+		branch = args[0]
+	}
+
+	path := templatesFolderName
+	err := git.Clone(url, branch, path)
+	if err != nil {
+		panic(err)
 	}
 }
