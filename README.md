@@ -1,5 +1,5 @@
 # Jessica
-Last version: 1.3.3
+Last version: 1.3.4
 
 # Usage
 ```
