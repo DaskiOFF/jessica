@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/daskioff/jessica/configs/keys"
 	"github.com/spf13/viper"
@@ -16,17 +17,32 @@ func NewProject(config *viper.Viper) *ConfigProject {
 }
 
 func (c ConfigProject) Validate() error {
-	config := c.config
+	fields := []string{}
 
-	if !config.IsSet(keys.KeyCompanyName) ||
-		!config.IsSet(keys.KeyProjectType) ||
-		!config.IsSet(keys.KeyReadmeTemplateFilename) ||
-		!config.IsSet(keys.KeyCustomProjectStructUse) ||
-		!config.IsSet(keys.KeyCustomProjectStructDescriptionTemplateFilename) ||
-		!config.IsSet(keys.KeyTemplatesUse) ||
-		!config.IsSet(keys.KeyTemplatesFolderName) {
+	if !c.HasCompanyName() {
+		fields = append(fields, keys.KeyCompanyName)
+	}
+	if !c.HasProjectType() {
+		fields = append(fields, keys.KeyProjectType)
+	}
+	if !c.HasReadmeTemplateFilename() {
+		fields = append(fields, keys.KeyReadmeTemplateFilename)
+	}
+	if !c.HasCustomProjectStructUse() {
+		fields = append(fields, keys.KeyCustomProjectStructUse)
+	}
+	if !c.HasCustomProjectStructDescriptionTemplateFilename() {
+		fields = append(fields, keys.KeyCustomProjectStructDescriptionTemplateFilename)
+	}
+	if !c.HasTemplatesUse() {
+		fields = append(fields, keys.KeyTemplatesUse)
+	}
+	if !c.HasTemplatesFolderName() {
+		fields = append(fields, keys.KeyTemplatesFolderName)
+	}
 
-		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле проекта")
+	if len(fields) > 0 {
+		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле проекта (" + strings.Join(fields, ", ") + ")")
 	}
 
 	return nil
