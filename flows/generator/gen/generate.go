@@ -53,8 +53,19 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 	switch generateParams.projectConfig.GetProjectType() {
 	case "iOS":
 		params["projectName"] = generateParams.iosConfig.GetFolderNameCode()
-		params["projectTestsName"] = generateParams.iosConfig.GetFolderNameUnitTests()
-		params["projectUITestsName"] = generateParams.iosConfig.GetFolderNameUITests()
+
+		if generateParams.iosConfig.HasFolderNameUnitTests() {
+			params["projectTestsName"] = generateParams.iosConfig.GetFolderNameUnitTests()
+		} else {
+			params["projectTestsName"] = params["projectName"]
+		}
+
+		if generateParams.iosConfig.HasFolderNameUITests() {
+			params["projectUITestsName"] = generateParams.iosConfig.GetFolderNameUITests()
+		} else {
+			params["projectUITestsName"] = params["projectName"]
+		}
+
 	case "other":
 		params["projectName"] = generateParams.otherConfig.GetProjectFolderName()
 	default:

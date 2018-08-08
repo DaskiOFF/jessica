@@ -9,7 +9,7 @@ import (
 	"strings"
 	textTemplate "text/template"
 
-	"github.com/daskioff/jessica/flows/templategenerator/utils"
+	"github.com/daskioff/jessica/flows/generator/utils"
 )
 
 const (

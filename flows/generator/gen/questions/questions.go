@@ -1,4 +1,4 @@
-package templategenerator
+package generator
 
 import "github.com/daskioff/jessica/utils/question"
 

@@ -10,7 +10,7 @@ import (
 	"github.com/daskioff/jessica/utils/xcodeproj"
 	"github.com/spf13/viper"
 
-	q "github.com/daskioff/jessica/flows/templategenerator/gen/questions"
+	q "github.com/daskioff/jessica/flows/generator/gen/questions"
 )
 
 const TemplateDescriptionFileName = "templates.yml"
@@ -92,6 +92,11 @@ func Execute(args []string,
 	}
 
 	if projectConfig.GetProjectType() == "iOS" {
+		unitTestsTargetName := iosConfig.GetTargetNameCode()
+		if iosConfig.HasTargetNameUnitTests() {
+			unitTestsTargetName = iosConfig.GetTargetNameUnitTests()
+		}
+
 		xcodeproj.AddFilesToTarget([]xcodeproj.XcodeProjAdded{
 			xcodeproj.XcodeProjAdded{
 				XcodeprojFilePath: iosConfig.GetXcodeprojFilename(),
@@ -101,11 +106,11 @@ func Execute(args []string,
 						AddedFiles: codeAddedFiles,
 					},
 					xcodeproj.XcodeProjTargetAddedFiles{
-						TargetName: iosConfig.GetTargetNameUnitTests(),
+						TargetName: unitTestsTargetName,
 						AddedFiles: testCodeAddedFiles,
 					},
 					xcodeproj.XcodeProjTargetAddedFiles{
-						TargetName: iosConfig.GetTargetNameUnitTests(),
+						TargetName: unitTestsTargetName,
 						AddedFiles: mockCodeAddedFiles,
 					}}}})
 	}

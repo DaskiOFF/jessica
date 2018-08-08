@@ -1,9 +1,9 @@
-package templategenerator
+package generator
 
 import (
 	"path/filepath"
 
-	"github.com/daskioff/jessica/flows/templategenerator/utils"
+	"github.com/daskioff/jessica/flows/generator/utils"
 	"github.com/daskioff/jessica/utils/files"
 )
 

@@ -3,11 +3,11 @@ package factory
 import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
+	"github.com/daskioff/jessica/flows/generator"
 	"github.com/daskioff/jessica/flows/hi"
 	"github.com/daskioff/jessica/flows/projectstruct"
 	"github.com/daskioff/jessica/flows/readme"
 	"github.com/daskioff/jessica/flows/setup"
-	"github.com/daskioff/jessica/flows/templategenerator"
 )
 
 func Hi(version string) flows.Flow {
@@ -27,5 +27,5 @@ func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProjec
 }
 
 func Generator(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
-	return templategenerator.NewFlow(globalConfig, projectConfig, iosConfig, otherConfig)
+	return generator.NewFlow(globalConfig, projectConfig, iosConfig, otherConfig)
 }
