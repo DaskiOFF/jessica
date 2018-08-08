@@ -1,5 +1,5 @@
 # Jessica
-Last version: 1.3.4
+Last version: 1.3.5
 
 # Usage
 ```
@@ -294,6 +294,10 @@ questions:
 |`companyName`|string|Имя компании из локального файла конфигурации|
 
 # Changelog
+### 1.3.5
+  - Обновление шаблона .readme.tpl.md
+  - Обновление примера
+  
 ### 1.3.4
   - Обновлен README.md файл.
   - Команда [setup](#setup) запрашивает только недостающие данные.
