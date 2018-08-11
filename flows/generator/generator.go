@@ -1,14 +1,14 @@
-package templategenerator
+package generator
 
 import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/daskioff/jessica/flows"
-	"github.com/daskioff/jessica/flows/templategenerator/gen"
-	"github.com/daskioff/jessica/flows/templategenerator/list"
-	"github.com/daskioff/jessica/flows/templategenerator/pull"
-	"github.com/daskioff/jessica/flows/templategenerator/utils"
+	"github.com/daskioff/jessica/flows/generator/gen"
+	"github.com/daskioff/jessica/flows/generator/list"
+	"github.com/daskioff/jessica/flows/generator/pull"
+	"github.com/daskioff/jessica/flows/generator/utils"
 )
 
 type MapKeys map[string]interface{}

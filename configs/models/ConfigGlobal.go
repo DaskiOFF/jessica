@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/daskioff/jessica/configs/keys"
 	"github.com/spf13/viper"
@@ -16,8 +17,15 @@ func NewGlobal(config *viper.Viper) *ConfigGlobal {
 }
 
 func (c ConfigGlobal) Validate() error {
-	if !c.config.IsSet(keys.KeyUserName) {
-		return errors.New("Отсутствуют значения для некоторых полей в глобальном конфиг файле")
+
+	fields := []string{}
+
+	if !c.HasUsername() {
+		fields = append(fields, keys.KeyUserName)
+	}
+
+	if len(fields) > 0 {
+		return errors.New("Отсутствуют значения для некоторых полей в глобальном конфиг файле (" + strings.Join(fields, ", ") + ")")
 	}
 
 	return nil

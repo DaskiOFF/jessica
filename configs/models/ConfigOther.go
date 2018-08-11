@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/daskioff/jessica/configs/keys"
 	"github.com/spf13/viper"
@@ -16,8 +17,18 @@ func NewOther(config *viper.Viper) *ConfigOther {
 }
 
 func (c ConfigOther) Validate() error {
+	fields := []string{}
+
 	if !c.HasProjectFolderName() {
-		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для проекта типа `Other`")
+		fields = append(fields, keys.KeyOtherProjectFolderName)
+	}
+
+	if !c.HasProjectName() {
+		fields = append(fields, keys.KeyOtherProjectName)
+	}
+
+	if len(fields) > 0 {
+		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для проекта типа `Other` (" + strings.Join(fields, ", ") + ")")
 	}
 
 	return nil

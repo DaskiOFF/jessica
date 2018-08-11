@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/daskioff/jessica/configs/keys"
 	"github.com/spf13/viper"
@@ -16,17 +17,26 @@ func NewIOS(config *viper.Viper) *ConfigIOS {
 }
 
 func (c ConfigIOS) Validate() error {
-	config := c.config
+	fields := []string{}
 
-	if !config.IsSet(keys.KeyIOSDependenciesGemfileUse) ||
-		!config.IsSet(keys.KeyIOSDependenciesPodfileUse) ||
-		!config.IsSet(keys.KeyIOSXcodeprojFilename) ||
-		!config.IsSet(keys.KeyIOSTargetNameCode) ||
-		!config.IsSet(keys.KeyIOSTargetNameUnitTests) ||
-		!config.IsSet(keys.KeyIOSFolderNameCode) ||
-		!config.IsSet(keys.KeyIOSFolderNameUnitTests) {
+	if !c.HasGemfileUse() {
+		fields = append(fields, keys.KeyIOSDependenciesGemfileUse)
+	}
+	if !c.HasPodfileUse() {
+		fields = append(fields, keys.KeyIOSDependenciesPodfileUse)
+	}
+	if !c.HasXcodeprojFilename() {
+		fields = append(fields, keys.KeyIOSXcodeprojFilename)
+	}
+	if !c.HasTargetNameCode() {
+		fields = append(fields, keys.KeyIOSTargetNameCode)
+	}
+	if !c.HasFolderNameCode() {
+		fields = append(fields, keys.KeyIOSFolderNameCode)
+	}
 
-		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для проекта типа `iOS`")
+	if len(fields) > 0 {
+		return errors.New("Отсутствуют значения для некоторых полей в конфиг файле для проекта типа `iOS` (" + strings.Join(fields, ", ") + ")")
 	}
 
 	return nil

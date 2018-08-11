@@ -10,7 +10,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
-const version = "1.3.4"
+const version = "1.3.5"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
@@ -74,8 +74,21 @@ func (r *Router) Handle(args []string) error {
 			projectError := r.projectConfig.Validate()
 			iosError := r.iosConfig.Validate()
 
+			errorMessage := ""
+			if globalError != nil {
+				errorMessage = globalError.Error() + "\n"
+			}
+
+			if projectError != nil {
+				errorMessage = errorMessage + projectError.Error() + "\n"
+			}
+
+			if iosError != nil {
+				errorMessage = errorMessage + iosError.Error() + "\n"
+			}
+
 			if globalError != nil || projectError != nil || iosError != nil {
-				return errors.New("\nДля начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+				return errors.New(errorMessage + "Для начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
 			}
 		}
 
