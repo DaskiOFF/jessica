@@ -14,6 +14,11 @@ brew uninstall --force daskioff/jessica/jessica
 
 Переходим в папку проекта и вызываем `jessica <command> [action] [args]`
 
+# Example
+Пример находится в папке `ExampleXcodeProj` 
+
+Примеры шаблонов для команды `generator` можно посмотреть в разных ветках [репозитория](https://github.com/DaskiOFF/jessica_templates)
+
 ## Commands
 `jessica help <command>` - Помощь по команде
 
@@ -25,9 +30,6 @@ brew uninstall --force daskioff/jessica/jessica
 |[readme](#readme-command)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |[struct](#struct)|Создание и описание структуры проекта|
 |[generator](#generator)|Генерация файлов для проекта|
-
-# Example
-Пример находится в папке `ExampleXcodeProj` 
 
 # Setup
 Конфигурация. 
