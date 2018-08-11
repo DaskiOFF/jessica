@@ -1,5 +1,5 @@
 # Jessica
-Last version: 1.3.5
+Last version: 1.3.6
 
 # Usage
 ```
@@ -296,6 +296,9 @@ questions:
 |`companyName`|string|Имя компании из локального файла конфигурации|
 
 # Changelog
+### 1.3.6
+  - 
+
 ### 1.3.5
   - Обновление шаблона .readme.tpl.md
   - Обновление примера
