@@ -11,21 +11,21 @@ import (
 )
 
 func Hi(version string) flows.Flow {
-	return hi.NewFlow(version)
+	return hi.New(version)
 }
 
 func Struct(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
-	return projectstruct.NewFlow(projectConfig, iosConfig, otherConfig)
+	return projectstruct.New(projectConfig, iosConfig, otherConfig)
 }
 
 func Readme(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
-	return readme.NewFlow(projectConfig, iosConfig, otherConfig)
+	return readme.New(projectConfig, iosConfig, otherConfig)
 }
 
 func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
-	return setup.NewFlow(globalConfig, projectConfig, iosConfig, otherConfig)
+	return setup.New(globalConfig, projectConfig, iosConfig, otherConfig)
 }
 
 func Generator(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
-	return generator.NewFlow(globalConfig, projectConfig, iosConfig, otherConfig)
+	return generator.New(globalConfig, projectConfig, iosConfig, otherConfig)
 }

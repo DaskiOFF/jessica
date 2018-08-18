@@ -2,7 +2,6 @@ package readme
 
 import (
 	"github.com/daskioff/jessica/configs/models"
-	"github.com/daskioff/jessica/flows"
 )
 
 type ReadmeFlow struct {
@@ -32,7 +31,7 @@ func (flow *ReadmeFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+func New(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) *ReadmeFlow {
 	flow := ReadmeFlow{}
 	flow.projectConfig = projectConfig
 	flow.iosConfig = iosConfig

@@ -4,7 +4,6 @@ import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/print"
 
-	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/generator/gen"
 	"github.com/daskioff/jessica/flows/generator/list"
 	"github.com/daskioff/jessica/flows/generator/pull"
@@ -59,7 +58,7 @@ func (flow *TemplateGeneratorFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+func New(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) *TemplateGeneratorFlow {
 	flow := TemplateGeneratorFlow{}
 	flow.globalConfig = globalConfig
 	flow.projectConfig = projectConfig

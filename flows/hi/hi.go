@@ -2,8 +2,6 @@ package hi
 
 import (
 	"fmt"
-
-	"github.com/daskioff/jessica/flows"
 )
 
 type HiFlow struct {
@@ -22,7 +20,7 @@ func (flow *HiFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(version string) flows.Flow {
+func New(version string) *HiFlow {
 	flow := HiFlow{version}
 	return &flow
 }

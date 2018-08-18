@@ -7,8 +7,6 @@ import (
 	"github.com/daskioff/jessica/utils/files"
 	"github.com/daskioff/jessica/utils/jstrings"
 	"github.com/daskioff/jessica/utils/print"
-
-	"github.com/daskioff/jessica/flows"
 )
 
 var useCustomStruct bool
@@ -50,7 +48,7 @@ func (flow *ProjectStructFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+func New(projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) *ProjectStructFlow {
 	flow := ProjectStructFlow{}
 	flow.projectConfig = projectConfig
 	flow.iosConfig = iosConfig
