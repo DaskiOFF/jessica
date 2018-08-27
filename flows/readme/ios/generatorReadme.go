@@ -1,4 +1,4 @@
-package readme
+package ios
 
 import (
 	"bufio"
@@ -13,28 +13,24 @@ import (
 )
 
 // UpdateREADME Проверяет обновляет файл README.md согласно шаблону
-func (flow *ReadmeFlow) updateREADME() {
+func (flow *ReadmeIOSFlow) updateREADME() {
 	params := map[string]interface{}{}
 
-	if flow.projectConfig.GetProjectType() == "iOS" {
-		gemFile, _ := flow.readGemfile()
-		gemFileDependencies := strings.Join(gemFile, "\n")
+	gemFile, _ := flow.readGemfile()
+	gemFileDependencies := strings.Join(gemFile, "\n")
 
-		podFile, _ := flow.readPodfile()
-		podFileDependencies := strings.Join(podFile, "\n")
+	podFile, _ := flow.readPodfile()
+	podFileDependencies := strings.Join(podFile, "\n")
 
-		xcodeVersion, _ := flow.readXcodeVersion()
-		swiftVersion, _ := flow.readSwiftVersion()
+	xcodeVersion, _ := flow.readXcodeVersion()
+	swiftVersion, _ := flow.readSwiftVersion()
 
-		params = map[string]interface{}{
-			"xcodeVersion":        xcodeVersion,
-			"swiftVersion":        swiftVersion,
-			"gemFileDependencies": gemFileDependencies,
-			"podFileDependencies": podFileDependencies,
-			"projectName":         flow.iosConfig.GetProjectName(),
-		}
-	} else {
-		params["projectName"] = flow.otherConfig.GetProjectName()
+	params = map[string]interface{}{
+		"xcodeVersion":        xcodeVersion,
+		"swiftVersion":        swiftVersion,
+		"gemFileDependencies": gemFileDependencies,
+		"podFileDependencies": podFileDependencies,
+		"projectName":         flow.iosConfig.GetProjectName(),
 	}
 
 	fileNameREADME := "README.md"
@@ -67,11 +63,11 @@ func (flow *ReadmeFlow) updateREADME() {
 	print.PrintlnSuccessMessage(fileNameREADME + " обновлен")
 }
 
-func (flow *ReadmeFlow) templateFileName() string {
+func (flow *ReadmeIOSFlow) templateFileName() string {
 	return flow.projectConfig.GetReadmeTemplateFilename()
 }
 
-func (flow *ReadmeFlow) executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
+func (flow *ReadmeIOSFlow) executeTemplate(templateFileName string, writer io.Writer, params map[string]interface{}) error {
 	structTemplate, err := textTemplate.ParseFiles(templateFileName)
 	if err != nil {
 		return err
@@ -86,7 +82,7 @@ func (flow *ReadmeFlow) executeTemplate(templateFileName string, writer io.Write
 }
 
 // CheckReadmeTpl Проверяет существование файла описывающего шаблон README, если его нет, то его создает и заполняет значением по умолчанию
-func (flow *ReadmeFlow) checkReadmeTplIOS() {
+func (flow *ReadmeIOSFlow) checkReadmeTplIOS() {
 	content := `[![Swift Version {{ .swiftVersion }}](https://img.shields.io/badge/Swift-{{ .swiftVersion }}-blue.svg?style=flat)](https://developer.apple.com/swift)
 [![Recommend xcode version {{ .xcodeVersion }}](https://img.shields.io/badge/Xcode-{{ .xcodeVersion }}-blue.svg?style=flat)](https://developer.apple.com/ios)
 
@@ -118,21 +114,6 @@ func (flow *ReadmeFlow) checkReadmeTplIOS() {
 {{ .podFileDependencies }}
 %***%
 {{end}}`
-
-	content = jstrings.FixBackQuotes(content)
-	fileName := flow.templateFileName()
-	if !files.IsFileExist(fileName) {
-		files.WriteToFile(fileName, content)
-		print.PrintlnSuccessMessage(fileName + " создан")
-	}
-}
-
-func (flow *ReadmeFlow) checkReadmeTplOther() {
-	content := `**Это сгенерированный файл, для изменения контента редактируйте файл .readme.tpl.md**
-
-# Описание проекта {{ .projectName }}
-
-# Краткие данные по проекту`
 
 	content = jstrings.FixBackQuotes(content)
 	fileName := flow.templateFileName()

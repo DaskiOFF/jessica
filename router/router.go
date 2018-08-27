@@ -21,7 +21,7 @@ type Router struct {
 	otherConfig   *models.ConfigOther
 }
 
-func NewRouter() *Router {
+func New() *Router {
 	router := Router{}
 	router.globalConfig = configs.Global()
 	router.projectConfig = configs.Project()

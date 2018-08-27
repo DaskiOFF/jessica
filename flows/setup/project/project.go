@@ -6,7 +6,6 @@ import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows/internal"
 	"github.com/daskioff/jessica/utils/files"
-	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
 )
 
@@ -54,7 +53,6 @@ func customProjectStructSection(config *models.ConfigProject, isForce bool) {
 	descriptionFilename := internal.CustomStructFileNameDefault
 	config.SetCustomProjectStructDescriptionTemplateFilename(descriptionFilename)
 
-	print.PrintlnInfoMessage(internal.CustomStructDescriptionText())
 }
 
 func templatesSection(config *models.ConfigProject, isForce bool) {

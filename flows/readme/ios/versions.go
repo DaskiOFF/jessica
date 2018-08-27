@@ -1,4 +1,4 @@
-package readme
+package ios
 
 import (
 	"bufio"
@@ -14,7 +14,7 @@ import (
 const xcodeVersionFileName = ".xcode-version"
 const swiftVersionFileName = ".swift-version"
 
-func (flow *ReadmeFlow) readVersionFile(fileName string) (string, error) {
+func (flow *ReadmeIOSFlow) readVersionFile(fileName string) (string, error) {
 	fileContent, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return "", err
@@ -26,18 +26,18 @@ func (flow *ReadmeFlow) readVersionFile(fileName string) (string, error) {
 }
 
 // ReadXcodeVersion Чтение версии xcode из файла
-func (flow *ReadmeFlow) readXcodeVersion() (string, error) {
+func (flow *ReadmeIOSFlow) readXcodeVersion() (string, error) {
 	return flow.readVersionFile(xcodeVersionFileName)
 }
 
 // ReadSwiftVersion Чтение версии swift из файла
-func (flow *ReadmeFlow) readSwiftVersion() (string, error) {
+func (flow *ReadmeIOSFlow) readSwiftVersion() (string, error) {
 	return flow.readVersionFile(swiftVersionFileName)
 }
 
 // CheckXcodeVersionFile Проверка существования файлa для версии xcode, если его нет,
 // то пользователя у пользователя запросится версия, которую он использует, и эта версия будет сохранена в соответствующий файл
-func (flow *ReadmeFlow) checkXcodeVersionFile() {
+func (flow *ReadmeIOSFlow) checkXcodeVersionFile() {
 	fileName := xcodeVersionFileName
 	var reader *bufio.Reader
 
@@ -53,7 +53,7 @@ func (flow *ReadmeFlow) checkXcodeVersionFile() {
 
 // CheckSwiftVersionFile Проверка существования файлa для версии swift, если его нет,
 // то пользователя у пользователя запросится версия, которую он использует, и эта версия будет сохранена в соответствующий файл
-func (flow *ReadmeFlow) checkSwiftVersionFile() {
+func (flow *ReadmeIOSFlow) checkSwiftVersionFile() {
 	fileName := swiftVersionFileName
 	var reader *bufio.Reader
 

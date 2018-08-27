@@ -1,4 +1,4 @@
-package readme
+package ios
 
 import (
 	"io/ioutil"
@@ -8,7 +8,7 @@ import (
 )
 
 // Read Читает Gemfile и выбирает из него список зависимостей
-func (flow *ReadmeFlow) readGemfile() ([]string, error) {
+func (flow *ReadmeIOSFlow) readGemfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?m)^gem .*"$`)
 
 	filename := internal.GemfileFileName

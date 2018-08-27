@@ -16,7 +16,7 @@ func main() {
 
 	argsWithoutProg := os.Args[1:]
 
-	router := router.NewRouter()
+	router := router.New()
 	err := router.Handle(argsWithoutProg)
 	if err != nil {
 		print.PrintlnErrorMessage(err.Error())

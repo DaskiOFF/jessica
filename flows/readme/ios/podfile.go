@@ -1,4 +1,4 @@
-package readme
+package ios
 
 import (
 	"io/ioutil"
@@ -8,7 +8,7 @@ import (
 )
 
 // Read Читает Podfile и выбирает из него список зависимостей для каждого таргета
-func (flow *ReadmeFlow) readPodfile() ([]string, error) {
+func (flow *ReadmeIOSFlow) readPodfile() ([]string, error) {
 	var re = regexp.MustCompile(`(?ms)target (.*?)end`)
 
 	filename := internal.PodfileFileName
