@@ -98,6 +98,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			continue
 		}
 
+		os.Remove(templateFile.outputPathFile)
 		file, err := os.OpenFile(templateFile.outputPathFile, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 		if err != nil {
 			panic(err)
