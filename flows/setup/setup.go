@@ -2,7 +2,6 @@ package setup
 
 import (
 	"github.com/daskioff/jessica/configs/models"
-	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/setup/global"
 	"github.com/daskioff/jessica/flows/setup/ios"
 	"github.com/daskioff/jessica/flows/setup/other"
@@ -35,7 +34,7 @@ func (flow *SetupFlow) Description() string {
 }
 
 // ----------------------------------------------------------------------------
-func NewFlow(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
+func New(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) *SetupFlow {
 	flow := SetupFlow{}
 	flow.globalConfig = globalConfig
 	flow.projectConfig = projectConfig

@@ -2,7 +2,6 @@ package gen
 
 import (
 	"path/filepath"
-	"strings"
 
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
@@ -22,16 +21,16 @@ func Execute(args []string,
 	iosConfig *models.ConfigIOS,
 	otherConfig *models.ConfigOther) {
 
-	if len(args) < 2 {
-		print.PrintlnAttentionMessage("Не указано имя шаблона или название модуля для генерации")
+	if len(args) < 1 {
+		print.PrintlnAttentionMessage("Не указано имя шаблона")
 		return
 	}
 
-	templateName := args[0]
-	moduleName := args[1]
-	templateConfigPath := filepath.Join(templatesRootPath, templateName, TemplateDescriptionFileName)
+	p := NewGenParams(args)
+
+	templateConfigPath := filepath.Join(templatesRootPath, p.TemplateName, TemplateDescriptionFileName)
 	if !files.IsFileExist(templateConfigPath) {
-		print.PrintlnErrorMessage("Шаблон с именем " + args[0] + " не найден")
+		print.PrintlnErrorMessage("Шаблон с именем " + p.TemplateName + " не найден")
 		return
 	}
 
@@ -44,26 +43,6 @@ func Execute(args []string,
 		return
 	}
 
-	needGenerateTests := true
-	needGenerateMocks := true
-	customKeys := map[string]interface{}{}
-	if len(args) > 3 {
-		for _, arg := range args[3:] {
-			if arg == "--notest" {
-				needGenerateTests = false
-			}
-			if arg == "--nomock" {
-				needGenerateMocks = false
-			}
-
-			// custom keys
-			splitResult := strings.Split(arg, ":")
-			if len(splitResult) == 2 {
-				customKeys[splitResult[0]] = splitResult[1]
-			}
-		}
-	}
-
 	questionsInterface := v.Get("questions")
 	answers := map[string]interface{}{}
 	if questionsInterface != nil {
@@ -72,23 +51,23 @@ func Execute(args []string,
 	}
 
 	params := generateParams{
-		customKeys:    customKeys,
+		customKeys:    p.CustomKeys,
 		answers:       answers,
 		globalConfig:  globalConfig,
 		projectConfig: projectConfig,
 		iosConfig:     iosConfig,
 		otherConfig:   otherConfig,
 	}
-	codeAddedFiles := generateTemplates(v, "code_files", templateName, moduleName, params)
+	codeAddedFiles := generateTemplates(v, "code_files", p.TemplateName, p.ModuleName, params)
 
 	testCodeAddedFiles := []xcodeproj.AddedFile{}
-	if needGenerateTests {
-		testCodeAddedFiles = generateTemplates(v, "test_files", templateName, moduleName, params)
+	if p.NeedGenerateTests {
+		testCodeAddedFiles = generateTemplates(v, "test_files", p.TemplateName, p.ModuleName, params)
 	}
 
 	mockCodeAddedFiles := []xcodeproj.AddedFile{}
-	if needGenerateMocks {
-		mockCodeAddedFiles = generateTemplates(v, "mock_files", templateName, moduleName, params)
+	if p.NeedGenerateMock {
+		mockCodeAddedFiles = generateTemplates(v, "mock_files", p.TemplateName, p.ModuleName, params)
 	}
 
 	if projectConfig.GetProjectType() == "iOS" {
@@ -115,5 +94,5 @@ func Execute(args []string,
 					}}}})
 	}
 
-	print.PrintlnSuccessMessage(templateName + " сгенерирован")
+	print.PrintlnSuccessMessage(p.TemplateName + " сгенерирован")
 }

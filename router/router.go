@@ -10,7 +10,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
-const version = "1.3.5"
+const version = "1.4"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
@@ -21,7 +21,7 @@ type Router struct {
 	otherConfig   *models.ConfigOther
 }
 
-func NewRouter() *Router {
+func New() *Router {
 	router := Router{}
 	router.globalConfig = configs.Global()
 	router.projectConfig = configs.Project()
@@ -29,7 +29,6 @@ func NewRouter() *Router {
 	router.otherConfig = configs.Other()
 
 	mapFlows := make(map[string]flows.Flow)
-	mapFlows["hi"] = factory.Hi(version)
 	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["struct"] = factory.Struct(router.projectConfig, router.iosConfig, router.otherConfig)

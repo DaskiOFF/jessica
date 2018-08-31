@@ -98,6 +98,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			continue
 		}
 
+		os.Remove(templateFile.outputPathFile)
 		file, err := os.OpenFile(templateFile.outputPathFile, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 		if err != nil {
 			panic(err)
@@ -122,6 +123,11 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 }
 
 func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
+	nameFirstLower := ""
+	if len(moduleName) > 1 {
+		nameFirstLower = strings.ToLower(moduleName[:1]) + moduleName[1:]
+	}
+
 	return MapKeys{
 		"custom":  customKeys,
 		"answers": answers,
@@ -130,7 +136,7 @@ func params(moduleName string, customKeys MapKeys, answers MapKeys) MapKeys {
 			"nameUppercase":  strings.ToUpper(moduleName),
 			"nameLowercase":  strings.ToLower(moduleName),
 			"nameCapitalize": strings.Title(moduleName),
-			"nameFirstLower": strings.ToLower(moduleName[:1]) + moduleName[1:],
+			"nameFirstLower": nameFirstLower,
 		},
 	}
 }
