@@ -34,17 +34,14 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 	}
 
 	templatesFolderName := flow.projectConfig.GetTemplatesFolderName()
-	templates := searchTemplates(templatesFolderName, gen.TemplateDescriptionFileName)
-	if len(templates) == 0 {
-		print.PrintlnErrorMessage("В папке " + templatesFolderName + " шаблоны не найдены")
-		return
-	}
+	templatesRootPath := utils.TemplatesRootPath(templatesFolderName)
 
 	switch actionName {
 	case "list":
+		templates := utils.SearchTemplates(templatesRootPath, gen.TemplateDescriptionFileName)
 		list.Show(templates)
 	case "gen":
-		gen.Execute(args, utils.TemplatesRootPath(templatesFolderName), flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
+		gen.Execute(args, templatesRootPath, flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
 	}
 }
 
