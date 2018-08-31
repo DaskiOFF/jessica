@@ -29,7 +29,6 @@ func New() *Router {
 	router.otherConfig = configs.Other()
 
 	mapFlows := make(map[string]flows.Flow)
-	mapFlows["hi"] = factory.Hi(version)
 	mapFlows["readme"] = factory.Readme(router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["setup"] = factory.Setup(router.globalConfig, router.projectConfig, router.iosConfig, router.otherConfig)
 	mapFlows["struct"] = factory.Struct(router.projectConfig, router.iosConfig, router.otherConfig)

@@ -4,17 +4,11 @@ import (
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
 	"github.com/daskioff/jessica/flows/generator"
-	"github.com/daskioff/jessica/flows/hi"
 	"github.com/daskioff/jessica/flows/projectstruct"
 	readmeIOS "github.com/daskioff/jessica/flows/readme/ios"
 	readmeOther "github.com/daskioff/jessica/flows/readme/other"
 	"github.com/daskioff/jessica/flows/setup"
 )
-
-// Hi flow
-func Hi(version string) flows.Flow {
-	return hi.New(version)
-}
 
 // Setup flow
 func Setup(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject, iosConfig *models.ConfigIOS, otherConfig *models.ConfigOther) flows.Flow {
