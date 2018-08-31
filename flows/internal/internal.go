@@ -7,8 +7,6 @@ const (
 	CustomStructFileNameDefault   = ".project_struct.tpl.md"
 	ReadmeTemplateFileNameDefault = ".readme.tpl.md"
 	IosProjectFileExtension       = ".xcodeproj"
-	GemfileFileName               = "Gemfile"
-	PodfileFileName               = "Podfile"
 )
 
 func CustomStructDescriptionText() string {
