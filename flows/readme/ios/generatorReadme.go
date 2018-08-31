@@ -8,7 +8,9 @@ import (
 	textTemplate "text/template"
 
 	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/gemfile"
 	"github.com/daskioff/jessica/utils/jstrings"
+	"github.com/daskioff/jessica/utils/podfile"
 	"github.com/daskioff/jessica/utils/print"
 )
 
@@ -16,10 +18,10 @@ import (
 func (flow *ReadmeIOSFlow) updateREADME() {
 	params := map[string]interface{}{}
 
-	gemFile, _ := flow.readGemfile()
+	gemFile, _ := gemfile.Dependencies()
 	gemFileDependencies := strings.Join(gemFile, "\n")
 
-	podFile, _ := flow.readPodfile()
+	podFile, _ := podfile.Dependencies()
 	podFileDependencies := strings.Join(podFile, "\n")
 
 	xcodeVersion, _ := flow.readXcodeVersion()

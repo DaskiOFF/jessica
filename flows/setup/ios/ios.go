@@ -5,6 +5,8 @@ import (
 
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows/internal"
+	"github.com/daskioff/jessica/utils/gemfile"
+	"github.com/daskioff/jessica/utils/podfile"
 	"github.com/daskioff/jessica/utils/print"
 	"github.com/daskioff/jessica/utils/question"
 	"github.com/daskioff/jessica/utils/xcodeproj"
@@ -21,7 +23,9 @@ func Setup(config *models.ConfigIOS, isForce bool) {
 		config.SetGemfileUse(answer)
 
 		if answer {
-			checkGemfile()
+			if err := gemfile.CreateDefaultIOS(); err == nil {
+				print.PrintlnSuccessMessage(podfile.DefaultFilename + " создан")
+			}
 		}
 	}
 
@@ -30,7 +34,9 @@ func Setup(config *models.ConfigIOS, isForce bool) {
 		config.SetPodfileUse(answer)
 
 		if answer {
-			checkPodfile()
+			if err := podfile.CreateDefault(); err == nil {
+				print.PrintlnSuccessMessage(podfile.DefaultFilename + " создан")
+			}
 		}
 	}
 
