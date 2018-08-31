@@ -10,7 +10,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
-const version = "1.3.6"
+const version = "1.4"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
