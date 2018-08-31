@@ -30,7 +30,7 @@ func Execute(args []string,
 
 	templateConfigPath := filepath.Join(templatesRootPath, p.TemplateName, TemplateDescriptionFileName)
 	if !files.IsFileExist(templateConfigPath) {
-		print.PrintlnErrorMessage("Шаблон с именем " + args[0] + " не найден")
+		print.PrintlnErrorMessage("Шаблон с именем " + p.TemplateName + " не найден")
 		return
 	}
 
