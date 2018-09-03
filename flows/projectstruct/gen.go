@@ -7,6 +7,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
+// gen генерация структуры проекта и файла шаблона описывающего эту структуру
 func (flow *ProjectStructFlow) gen() {
 	flow.updateFlags()
 
@@ -27,15 +28,18 @@ func (flow *ProjectStructFlow) gen() {
 	print.PrintlnAttentionMessage("Внимание, при изменении структуры файл " + flow.templateFileName() + " не перезаписывается")
 }
 
+// updateFlags обновляет флаги из файла конфигурации проекта
 func (flow *ProjectStructFlow) updateFlags() {
 	useCustomStruct = flow.projectConfig.GetCustomProjectStructUse()
 	hasCustomStruct = flow.projectConfig.GetCustomProjectStructDescription() != nil
 }
 
+// templateFileName возвращает имя файла, в котором описывается структура проекта
 func (flow *ProjectStructFlow) templateFileName() string {
 	return flow.projectConfig.GetCustomProjectStructDescriptionTemplateFilename()
 }
 
+// createTemplateProjectStructDescriptionFile создание файла шаблона описывающего структуру проекта
 func (flow *ProjectStructFlow) createTemplateProjectStructDescriptionFile() {
 	projectStructure := flow.projectConfig.GetCustomProjectStructDescription()
 	projectStructureString := flow.projectStructToString(projectStructure, "  ", "  ")

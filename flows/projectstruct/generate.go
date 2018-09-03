@@ -10,27 +10,32 @@ import (
 )
 
 func (flow *ProjectStructFlow) generateProjectStruct() {
-	if !useCustomStruct || !hasCustomStruct {
-		print.PrintlnErrorMessage("Необходима конфигурация с помощью команды `struct setup`")
+	if !useCustomStruct {
+		print.PrintlnErrorMessage("В конфигурационном файле отключена генерация структуры проекта")
+		return
+	}
+	if !hasCustomStruct {
+		print.PrintlnErrorMessage("В конфигурационном файле не описана структура проекта")
 		return
 	}
 
-	projectName := ""
+	projectFolderPath := ""
 	keyNameForProjectName := ""
-	if flow.projectConfig.GetProjectType() == models.ConfigProjectTypeIOS {
-		projectName = flow.iosConfig.GetFolderNameCode()
+	switch flow.projectConfig.GetProjectType() {
+	case models.ConfigProjectTypeIOS:
+		projectFolderPath = flow.iosConfig.GetFolderNameCode()
 		keyNameForProjectName = keys.KeyIOSFolderNameCode
-	} else {
-		projectName = flow.otherConfig.GetProjectFolderName()
+	case models.ConfigProjectTypeOther:
+		projectFolderPath = flow.otherConfig.GetProjectFolderName()
 		keyNameForProjectName = keys.KeyOtherProjectFolderName
 	}
 
-	if len(projectName) == 0 {
+	if len(projectFolderPath) == 0 {
 		print.PrintlnErrorMessage("Пропущен шаг создания структуры проекта. Название папки с проектом не указано. В конфигурации ключ " + keyNameForProjectName)
 		return
 	}
 
-	flow.generateProjectStructInFolder(projectName)
+	flow.generateProjectStructInFolder(projectFolderPath)
 
 	print.PrintlnSuccessMessage("Структура проекта создана")
 }
