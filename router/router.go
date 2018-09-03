@@ -44,13 +44,14 @@ func (r *Router) Handle(args []string) error {
 	}
 
 	command := args[0]
-	if command == "version" {
-		print.PrintlnInfoMessage(version)
-		return nil
-	}
 
 	isHelp := false
-	if command == "help" {
+	switch command {
+	case "version":
+		print.PrintlnInfoMessage(version)
+		return nil
+
+	case "help":
 		if len(args) < 2 {
 			return errHelpNoArguments
 		}
@@ -65,15 +66,16 @@ func (r *Router) Handle(args []string) error {
 
 	if isHelp {
 		print.PrintlnInfoMessage(flow.Description())
-	} else {
-		if command != "setup" {
-			if err := r.validateConfigs(); err != nil {
-				return err
-			}
-		}
-
-		flow.Start(args[1:])
+		return nil
 	}
+
+	if command != "setup" {
+		if err := r.validateConfigs(); err != nil {
+			return err
+		}
+	}
+
+	flow.Start(args[1:])
 
 	return nil
 }
