@@ -1,7 +1,7 @@
 # Jessica
-Last version: 1.4.1
+Last version: 1.5
 
-# Usage
+## Installation
 ```
 brew tap daskioff/jessica
 brew install daskioff/jessica/jessica
@@ -12,9 +12,18 @@ brew reinstall daskioff/jessica/jessica
 brew uninstall --force daskioff/jessica/jessica
 ```
 
+## Autor
+
+DaskiOFF, waydeveloper@gmail.com
+
+## License
+
+Jessica is available under the MIT license. See the LICENSE file for more info.
+
+# Usage
 Переходим в папку проекта и вызываем `jessica <command> [action] [args]`
 
-# Example
+## Example
 Пример находится в папке `ExampleXcodeProj` 
 
 Примеры шаблонов для команды `generator` можно посмотреть в разных ветках [репозитория](https://github.com/DaskiOFF/jessica_templates)
@@ -178,7 +187,7 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 
 |Name|Type|Description|
 |---|---|---|
-|`name`|string|Суффикс генерируемого файла, префиксом будет переданное имя модуля (Если позиция названия модуля не указана явно)|
+|`name`|string|Суффикс генерируемого файла. Название модуля должно быть указано явно! (Например, `{{.moduleInfo.name}}`)|
 |`template_path`|string|Путь внутри папки шаблона, относительно файла, описывающего шаблон|
 |`output_path`|string|Выходной путь сгенерированного файла, возможно использование переменных|
 |`rewrite`|bool|Значение true или false, означающее стоит ли перезаписывать генерируемый файл, если файл с таким именем по сохраняемому пути уже существует. Если ключ не указан, то значение будет запрошено во время выполнения|
@@ -191,7 +200,8 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 - Все значения по ключу [Custom](#custom)
 - Все значения по ключу [Answers](#answers)
 - Все значения по ключу [ModuleInfo](#moduleinfo)
-- `projectName` – Имя папки проекта из файла конфигурации
+- `projectName` – Имя проекта, для которого генерируется
+- `projectCodeFolderPath` – Путь до папки с основным кодом проекта от корня
 - `projectTestsName` – Имя папки с тестами проекта из файла конфигурации (Для проектов типа iOS)
 - `projectUITestsName` – Имя папки с ui тестами проекта из файла конфигурации (Для проектов типа iOS)
 
@@ -215,7 +225,7 @@ questions:
     required: false}
 
 code_files: 
-  - {name: BaseUseCase.swift, 
+  - {name: {{.moduleInfo.name}}BaseUseCase.swift, 
     template_path: code/baseUseCase.swift, 
     output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}", 
     rewrite: true}
@@ -239,14 +249,23 @@ mock_files:
 ### Описание генерируемого файла
 Переменные необходимо использовать с помощью конструкции `{{.VariableName}}`. Подробнее про используемый шаблонизатор можно прочитать [здесь](https://golang.org/pkg/text/template/)
 
-Список доступных переменных, их типы и описания:
+#### Список доступных переменных, их типы и описания:
 
 |VariableName|Type|Description|
 |----|---|---|
-|`fileName`|string|Имя сгенерированного файла|
-|`projectName`|string|Имя проекта, для которого генерируется|
 |`date`|string|Текущая дата в формате dd.MM.yyyy|
 |`year`|int|Текущий год|
+|`fileName`|string|Имя сгенерированного файла|
+|`projectName`|string|Имя проекта, для которого генерируется|
+|`projectCodeFolderPath`|string|Путь до папки с основным кодом проекта от корня|
+
+#### Дополнительные переменные для iOS проекта:
+
+|VariableName|Type|Description|
+|----|---|---|
+|`projectTestsName`|string|Путь до папки с UNIT тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
+|`projectUITestsName`|string|Путь до папки с UI тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
+
 
 #### Custom
 Использовать `{{.custom.VariableName}}`
@@ -295,9 +314,10 @@ questions:
 |`companyName`|string|Имя компании из локального файла конфигурации|
 
 # Changelog
-### 1.4.1
+### 1.5
   - Исправлена ошибка создания проекта типа `other`
   - Рефакторинг
+  - При описании шаблона в поле `name` для генерируемого файла название модуля должно быть указано явно!
 
 ### 1.4
   - Удалена команда "hi".

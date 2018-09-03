@@ -2,6 +2,7 @@ package generator
 
 import (
 	"github.com/daskioff/jessica/configs/models"
+	"github.com/daskioff/jessica/utils/path"
 	"github.com/daskioff/jessica/utils/print"
 
 	"github.com/daskioff/jessica/flows/generator/gen"
@@ -28,20 +29,23 @@ func (flow *TemplateGeneratorFlow) Start(args []string) {
 	actionName := args[0]
 	args = args[1:]
 
-	if actionName == "pull" {
-		pull.Execute(args, flow.projectConfig.GetTemplatesFolderName())
-		return
+	templatesFolderName := flow.projectConfig.GetTemplatesFolderName()
+	templatesRootPath, err := path.InProjectRoot(templatesFolderName)
+	if err != nil {
+		panic(err)
 	}
 
-	templatesFolderName := flow.projectConfig.GetTemplatesFolderName()
-	templatesRootPath := utils.TemplatesRootPath(templatesFolderName)
-
 	switch actionName {
+	case "pull":
+		pull.Execute(args, templatesRootPath)
 	case "list":
-		templates := utils.SearchTemplates(templatesRootPath, gen.TemplateDescriptionFileName)
+		templates := utils.SearchTemplates(templatesRootPath, gen.DescriptionFileName)
 		list.Show(templates)
 	case "gen":
-		gen.Execute(args, templatesRootPath, flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
+		err := gen.Execute(args, templatesRootPath, flow.globalConfig, flow.projectConfig, flow.iosConfig, flow.otherConfig)
+		if err != nil {
+			print.PrintlnErrorMessage(err.Error())
+		}
 	}
 }
 

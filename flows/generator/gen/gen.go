@@ -1,73 +1,78 @@
 package gen
 
 import (
-	"path/filepath"
+	"errors"
+
+	"github.com/daskioff/jessica/flows/generator/gen/gentemplate"
 
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/files"
+	"github.com/daskioff/jessica/utils/path"
 	"github.com/daskioff/jessica/utils/print"
+	"github.com/daskioff/jessica/utils/question"
 	"github.com/daskioff/jessica/utils/xcodeproj"
-	"github.com/spf13/viper"
-
-	q "github.com/daskioff/jessica/flows/generator/gen/questions"
 )
 
-const TemplateDescriptionFileName = "templates.yml"
+// DescriptionFileName содержит имя файла описывающего шаблон
+const DescriptionFileName = "templates.yml"
 
+// Execute выполняет генерацию шаблона
 func Execute(args []string,
 	templatesRootPath string,
 	globalConfig *models.ConfigGlobal,
 	projectConfig *models.ConfigProject,
 	iosConfig *models.ConfigIOS,
-	otherConfig *models.ConfigOther) {
+	otherConfig *models.ConfigOther) error {
 
-	if len(args) < 1 {
-		print.PrintlnAttentionMessage("Не указано имя шаблона")
-		return
+	if len(args) == 0 {
+		return errors.New("Не указано имя шаблона")
 	}
 
-	p := NewGenParams(args)
-
-	templateConfigPath := filepath.Join(templatesRootPath, p.TemplateName, TemplateDescriptionFileName)
-	if !files.IsFileExist(templateConfigPath) {
-		print.PrintlnErrorMessage("Шаблон с именем " + p.TemplateName + " не найден")
-		return
-	}
-
-	v := viper.New()
-	v.SetConfigFile(templateConfigPath)
-
-	err := v.ReadInConfig()
+	templatesFolderName := projectConfig.GetTemplatesFolderName()
+	absTemplatesFolderPath, err := path.InProjectRoot(templatesFolderName)
 	if err != nil {
-		print.PrintlnErrorMessage(err.Error())
-		return
+		return err
 	}
 
-	questionsInterface := v.Get("questions")
+	generatorParams := NewParams(args)
+
+	absTemplateConfigPath, err := path.InProjectRoot(templatesFolderName, generatorParams.TemplateName, DescriptionFileName)
+	if err != nil {
+		return err
+	}
+
+	if !files.IsFileExist(absTemplateConfigPath) {
+		return errors.New("Шаблон с именем " + generatorParams.TemplateName + " не найден")
+	}
+
+	templateDescription, err := gentemplate.ParseDescription(absTemplateConfigPath)
+	if err != nil {
+		return err
+	}
+
 	answers := map[string]interface{}{}
-	if questionsInterface != nil {
-		questions := q.NewQuestions(questionsInterface.([]interface{}))
-		answers = q.AskQuestions(questions)
+	if len(templateDescription.Questions) > 0 {
+		answers = askQuestions(templateDescription.Questions)
 	}
 
-	params := generateParams{
-		customKeys:    p.CustomKeys,
-		answers:       answers,
-		globalConfig:  globalConfig,
-		projectConfig: projectConfig,
-		iosConfig:     iosConfig,
-		otherConfig:   otherConfig,
-	}
-	codeAddedFiles := generateTemplates(v, "code_files", p.TemplateName, p.ModuleName, params)
+	templatesParams := gentemplate.New(
+		absTemplatesFolderPath,
+		generatorParams.TemplateName,
+		generatorParams.ModuleName,
+		generatorParams.CustomKeys,
+		answers)
+	templatesParams.AppendFrom(globalConfig, projectConfig, iosConfig, otherConfig)
+
+	codeAddedFiles := generateFiles(templateDescription.CodeFiles, templatesParams)
 
 	testCodeAddedFiles := []xcodeproj.AddedFile{}
-	if p.NeedGenerateTests {
-		testCodeAddedFiles = generateTemplates(v, "test_files", p.TemplateName, p.ModuleName, params)
+	if generatorParams.NeedGenerateTests {
+		testCodeAddedFiles = generateFiles(templateDescription.TestFiles, templatesParams)
 	}
 
 	mockCodeAddedFiles := []xcodeproj.AddedFile{}
-	if p.NeedGenerateMock {
-		mockCodeAddedFiles = generateTemplates(v, "mock_files", p.TemplateName, p.ModuleName, params)
+	if generatorParams.NeedGenerateMock {
+		mockCodeAddedFiles = generateFiles(templateDescription.MockFiles, templatesParams)
 	}
 
 	if projectConfig.GetProjectType() == models.ConfigProjectTypeIOS {
@@ -94,5 +99,17 @@ func Execute(args []string,
 					}}}})
 	}
 
-	print.PrintlnSuccessMessage(p.TemplateName + " сгенерирован")
+	print.PrintlnSuccessMessage(generatorParams.TemplateName + " сгенерирован")
+	return nil
+}
+
+func askQuestions(questions []gentemplate.Question) map[string]interface{} {
+	answers := make(map[string]interface{}, 0)
+
+	for _, quest := range questions {
+		answer := question.AskQuestion(quest.Text, quest.IsRequired)
+		answers[quest.Key] = answer
+	}
+
+	return answers
 }
