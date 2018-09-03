@@ -46,19 +46,19 @@ func New(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigProject,
 
 func (flow *SetupFlow) setup(isForce bool) {
 	global.Setup(flow.globalConfig, isForce)
+	flow.globalConfig.Write()
+
 	project.Setup(flow.projectConfig, isForce)
+	flow.projectConfig.Write()
 
 	switch flow.projectConfig.GetProjectType() {
-	case "iOS":
+	case models.ConfigProjectTypeIOS:
 		ios.Setup(flow.iosConfig, isForce)
-	case "Other":
+		flow.iosConfig.Write()
+	case models.ConfigProjectTypeOther:
 		other.Setup(flow.otherConfig, isForce)
+		flow.otherConfig.Write()
 	}
-
-	flow.globalConfig.Write()
-	flow.projectConfig.Write()
-	flow.iosConfig.Write()
-	flow.otherConfig.Write()
 
 	print.PrintlnSuccessMessage("Файл сконфигурирован")
 }

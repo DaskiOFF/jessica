@@ -1,8 +1,6 @@
 package router
 
 import (
-	"errors"
-
 	"github.com/daskioff/jessica/configs"
 	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/flows"
@@ -10,7 +8,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
-const version = "1.4"
+const version = "1.4.1"
 
 type Router struct {
 	mapFlows map[string]flows.Flow
@@ -68,26 +66,9 @@ func (r *Router) Handle(args []string) error {
 	if isHelp {
 		print.PrintlnInfoMessage(flow.Description())
 	} else {
-		if command != "setup" && command != "hi" {
-			globalError := r.globalConfig.Validate()
-			projectError := r.projectConfig.Validate()
-			iosError := r.iosConfig.Validate()
-
-			errorMessage := ""
-			if globalError != nil {
-				errorMessage = globalError.Error() + "\n"
-			}
-
-			if projectError != nil {
-				errorMessage = errorMessage + projectError.Error() + "\n"
-			}
-
-			if iosError != nil {
-				errorMessage = errorMessage + iosError.Error() + "\n"
-			}
-
-			if globalError != nil || projectError != nil || iosError != nil {
-				return errors.New(errorMessage + "Для начала необходимо настроить конфигурацию вызвав команду `jessica setup`")
+		if command != "setup" {
+			if err := r.validateConfigs(); err != nil {
+				return err
 			}
 		}
 

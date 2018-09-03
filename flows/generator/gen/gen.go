@@ -70,7 +70,7 @@ func Execute(args []string,
 		mockCodeAddedFiles = generateTemplates(v, "mock_files", p.TemplateName, p.ModuleName, params)
 	}
 
-	if projectConfig.GetProjectType() == "iOS" {
+	if projectConfig.GetProjectType() == models.ConfigProjectTypeIOS {
 		unitTestsTargetName := iosConfig.GetTargetNameCode()
 		if iosConfig.HasTargetNameUnitTests() {
 			unitTestsTargetName = iosConfig.GetTargetNameUnitTests()

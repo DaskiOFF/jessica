@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/daskioff/jessica/configs/keys"
+	"github.com/daskioff/jessica/configs/models"
 	"github.com/daskioff/jessica/utils/print"
 )
 
@@ -16,7 +17,7 @@ func (flow *ProjectStructFlow) generateProjectStruct() {
 
 	projectName := ""
 	keyNameForProjectName := ""
-	if flow.projectConfig.GetProjectType() == "iOS" {
+	if flow.projectConfig.GetProjectType() == models.ConfigProjectTypeIOS {
 		projectName = flow.iosConfig.GetFolderNameCode()
 		keyNameForProjectName = keys.KeyIOSFolderNameCode
 	} else {

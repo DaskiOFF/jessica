@@ -51,7 +51,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 	params["year"] = currentTime.Year()
 
 	switch generateParams.projectConfig.GetProjectType() {
-	case "iOS":
+	case models.ConfigProjectTypeIOS:
 		params["projectName"] = generateParams.iosConfig.GetFolderNameCode()
 
 		if generateParams.iosConfig.HasFolderNameUnitTests() {
@@ -66,7 +66,7 @@ func generateTemplatesFromList(list []interface{}, templateName string, moduleNa
 			params["projectUITestsName"] = params["projectName"]
 		}
 
-	case "other":
+	case models.ConfigProjectTypeOther:
 		params["projectName"] = generateParams.otherConfig.GetProjectFolderName()
 	default:
 		break
