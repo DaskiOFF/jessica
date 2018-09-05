@@ -17,6 +17,7 @@ type Params struct {
 	DeveloperInfo map[string]interface{}
 	CommonInfo    map[string]interface{}
 	ModuleInfo    map[string]interface{}
+	Variables     map[string]interface{}
 
 	ProjectInfo map[string]interface{}
 }
@@ -26,7 +27,8 @@ func New(
 	templateName string,
 	moduleName string,
 	customKeys map[string]interface{},
-	answers map[string]interface{}) *Params {
+	answers map[string]interface{},
+	variables map[string]interface{}) *Params {
 
 	tp := Params{
 		AbsTemplateFolderPath: absTemplateFolderPath,
@@ -38,6 +40,7 @@ func New(
 		DeveloperInfo: map[string]interface{}{},
 
 		ProjectInfo: map[string]interface{}{},
+		Variables:   variables,
 	}
 
 	tp.CommonInfo = commonInfo()

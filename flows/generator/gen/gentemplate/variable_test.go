@@ -9,32 +9,30 @@ func Test_ParseVariablesLikeMap(t *testing.T) {
 	anyString := "anyString"
 
 	data := []struct {
-		data     map[interface{}]interface{}
-		variable *Variable
+		data     map[string]interface{}
+		variable map[string]interface{}
 		err      error
 	}{
 		{
-			data: map[interface{}]interface{}{
+			data: map[string]interface{}{
 				anyKey: anyString,
 			},
-			variable: &Variable{
-				Key:   anyKey,
-				Value: anyString,
+			variable: map[string]interface{}{
+				anyKey: anyString,
 			},
 			err: nil,
 		},
 		{
-			data: map[interface{}]interface{}{
+			data: map[string]interface{}{
 				anyKey: anyString + anyString,
 			},
-			variable: &Variable{
-				Key:   anyKey,
-				Value: anyString + anyString,
+			variable: map[string]interface{}{
+				anyKey: anyString + anyString,
 			},
 			err: nil,
 		},
 		{
-			data:     map[interface{}]interface{}{},
+			data:     map[string]interface{}{},
 			variable: nil,
 			err:      nil,
 		},
@@ -53,14 +51,16 @@ func Test_ParseVariablesLikeMap(t *testing.T) {
 		}
 
 		if len(result) == 0 {
-			if d.variable != nil {
-				t.Error("Expected result is not empty, got ", len(result))
+			if d.variable != nil && len(d.variable) != 0 {
+				t.Error("Expected result is not empty, got ", d.variable)
 			}
 			return
 		}
 
-		if result[0].Key != d.variable.Key || result[0].Value != d.variable.Value {
-			t.Errorf("Expected data %v == %v, got %v", d.data, d.variable, result)
+		for k, v := range d.variable {
+			if result[k] != v {
+				t.Errorf("Expected data %v == %v, got %v", d.data, d.variable, result)
+			}
 		}
 	}
 }
@@ -70,16 +70,15 @@ func Test_ParseVariablesLikeSlice(t *testing.T) {
 
 	data := []struct {
 		data     []interface{}
-		variable *Variable
+		variable map[string]interface{}
 		err      error
 	}{
 		{
 			data: []interface{}{
 				anyString,
 			},
-			variable: &Variable{
-				Key:   "_0",
-				Value: anyString,
+			variable: map[string]interface{}{
+				"_0": anyString,
 			},
 			err: nil,
 		},
@@ -87,9 +86,8 @@ func Test_ParseVariablesLikeSlice(t *testing.T) {
 			data: []interface{}{
 				anyString + anyString,
 			},
-			variable: &Variable{
-				Key:   "_0",
-				Value: anyString + anyString,
+			variable: map[string]interface{}{
+				"_0": anyString + anyString,
 			},
 			err: nil,
 		},
@@ -107,20 +105,10 @@ func Test_ParseVariablesLikeSlice(t *testing.T) {
 			t.Error("Expected err == d.err, got ", err.Error())
 		}
 
-		if d.variable == nil && len(result) > 0 {
-			t.Error("Expected result is empty, got ", len(result))
-			return
-		}
-
-		if len(result) == 0 {
-			if d.variable != nil {
-				t.Error("Expected result is not empty, got ", len(result))
+		for k, v := range d.variable {
+			if result[k] != v {
+				t.Errorf("Expected data %v == %v, got %v", d.data, d.variable, result)
 			}
-			return
-		}
-
-		if result[0].Key != d.variable.Key || result[0].Value != d.variable.Value {
-			t.Errorf("Expected data %v == %v, got %v", d.data, d.variable, result)
 		}
 	}
 }

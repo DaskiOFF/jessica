@@ -60,7 +60,8 @@ func Execute(args []string,
 		generatorParams.TemplateName,
 		generatorParams.ModuleName,
 		generatorParams.CustomKeys,
-		answers)
+		answers,
+		templateDescription.Variables)
 	templatesParams.AppendFrom(globalConfig, projectConfig, iosConfig, otherConfig)
 
 	codeAddedFiles := generateFiles(templateDescription.CodeFiles, templatesParams)

@@ -167,11 +167,15 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 ### Описание файла, описывающего шаблон
 Название шаблона – это имя папки с файлом `templates.yml`, которая находится в общей папке шаблонов проекта [templates_folder_name](#setup).
 
-Структура файла `templates.yml`. Доступно 4 секции:
+Структура файла `templates.yml`. Доступно 5 секций:
+1. `variables` – optional
 1. `questions` – optional
 1. `code_files` – required
 1. `test_files` – optional
 1. `mock_files` – optional
+
+#### Variables
+Секция содержит переменные, которые можно использовать по ключу `{{.var.VariableName}}`. Формат описания переменных можно увидеть в примере ниже.
 
 #### Questions
 Секция содержит вопросы, ответы на которые можно использовать в шаблоне по ключу `{{.answers.KeyName}}`. Формат описания вопроса в файле шаблона:
@@ -207,6 +211,10 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 
 #### Пример файла, описывающего шаблон
 ```yml
+variables:
+  basePathData: Layers/DataLayer/Entities
+  key2: val2
+
 questions:
   - {key: versionApi,
     text: "Enter API version: ",
@@ -227,12 +235,12 @@ questions:
 code_files: 
   - {name: {{.moduleInfo.name}}BaseUseCase.swift, 
     template_path: code/baseUseCase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}", 
+    output_path: "{{.projectName}}/{{.var.basePathData}}/base/{{.moduleInfo.name}}", 
     rewrite: true}
 
   - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCase.swift", 
     template_path: code/usecase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}/usecases", 
+    output_path: "{{.projectName}}{{.var.basePathData}}{{.moduleInfo.name}}/usecases", 
     rewrite: false}
 
 test_files: 
@@ -266,6 +274,10 @@ mock_files:
 |`projectTestsName`|string|Путь до папки с UNIT тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
 |`projectUITestsName`|string|Путь до папки с UI тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
 
+#### Variables
+Использовать `{{.var.VariableName}}`
+
+Содержит ключи и значения, описанные в файле шаблона в секции `variables`, тип значения всегда `string`
 
 #### Custom
 Использовать `{{.custom.VariableName}}`
@@ -318,6 +330,7 @@ questions:
   - Исправлена ошибка создания проекта типа `other`
   - Рефакторинг
   - При описании шаблона в поле `name` для генерируемого файла название модуля должно быть указано явно!
+  - Добавлена секция переменных (`variables`) в файл описания шаблона. [Подробнее](#variables).
 
 ### 1.4
   - Удалена команда "hi".

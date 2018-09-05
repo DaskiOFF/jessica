@@ -42,6 +42,7 @@
 		ED221B0435C292AA1BD6E59C /* User2eeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427094C5AAB1143EC78EC11B /* User2eeUseCase.swift */; };
 		F57194565317A6650B8CAC82 /* User2UseCaseImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046CE435D49313A98D808960 /* User2UseCaseImplTests.swift */; };
 		F708FB51883FE6B3DAC5AE8C /* qwerrUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330B88531EA6DA387F14F6B5 /* qwerrUseCase.swift */; };
+		F98C2A7F44130EAC8167D619 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B1CF38DFBF0788A6F177E5 /* test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		6CBD39CE6A6FE7D8642213EA /* qweqUseCaseImplTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = qweqUseCaseImplTests.swift; sourceTree = "<group>"; };
 		857581B7380256B9DE9B1EB3 /* qweqUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = qweqUseCase.swift; sourceTree = "<group>"; };
 		9222EFD9A15217695DBF05D9 /* qwerUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = qwerUseCase.swift; sourceTree = "<group>"; };
+		93B1CF38DFBF0788A6F177E5 /* test.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		96A8617CFFE65E53BDC2E56F /* qweeeeeeUseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = qweeeeeeUseCase.swift; sourceTree = "<group>"; };
 		AF7B341809BC376903FCE040 /* qwewUseCaseImplTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = qwewUseCaseImplTests.swift; sourceTree = "<group>"; };
 		B18F46A346B294D573069ABC /* PartialMockUser2UseCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PartialMockUser2UseCase.swift; sourceTree = "<group>"; };
@@ -214,6 +216,15 @@
 			path = rrt;
 			sourceTree = "<group>";
 		};
+		7572DC8D777002B29C5D87E9 /* . */ = {
+			isa = PBXGroup;
+			children = (
+				93B1CF38DFBF0788A6F177E5 /* test.swift */,
+			);
+			name = .;
+			path = .;
+			sourceTree = "<group>";
+		};
 		8211FD81A2224171ADF44C5C /* rrt */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +320,7 @@
 				BBDB0A6C21073CF8006996BF /* ExampleXcodeprojTests */,
 				BBDB0A5621073CF7006996BF /* Products */,
 				91147A9593DD72AACD471905 /* &lt;no value&gt; */,
+				7572DC8D777002B29C5D87E9 /* . */,
 			);
 			sourceTree = "<group>";
 		};
@@ -543,6 +555,7 @@
 				5285332077AC33909D0D06F2 /* User2BaseUseCase.swift in Sources */,
 				ED221B0435C292AA1BD6E59C /* User2eeUseCase.swift in Sources */,
 				285A20A36D053C84B0801FC1 /* User2UseCase.swift in Sources */,
+				F98C2A7F44130EAC8167D619 /* test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

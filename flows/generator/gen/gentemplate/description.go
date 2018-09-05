@@ -5,7 +5,7 @@ import (
 )
 
 type Description struct {
-	Variables []Variable
+	Variables map[string]interface{}
 	Questions []Question
 	CodeFiles []GeneratedFile
 	TestFiles []GeneratedFile
@@ -25,9 +25,9 @@ func ParseDescription(filePath string) (*Description, error) {
 		Questions: []Question{},
 	}
 
-	variables := v.Get("var")
+	variables := v.Get("variables")
 	if variables != nil {
-		td.Variables, err = parseVariables(variables.([]interface{}))
+		td.Variables, err = parseVariables(variables)
 	}
 
 	questions := v.Get("questions")
