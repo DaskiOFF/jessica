@@ -2,6 +2,7 @@ package projectstruct
 
 import "strings"
 
+// projectStructToString создание описания для для структуры проекта в виде строки
 func (flow *ProjectStructFlow) projectStructToString(in interface{}, currentSpace string, spaceStep string) string {
 	switch v := in.(type) {
 

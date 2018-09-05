@@ -19,6 +19,7 @@ func CreateDefault() error {
 	content := `# Uncomment the next line to define a global platform for your project
 source 'https://github.com/cocoapods/specs.git'
 platform :ios, '9.0'
+swift_version = '4.1'
 use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
@@ -41,6 +42,10 @@ target 'YOUR_TARGET_NAME' do
 	# pod 'RKUIExtensions', '~> 0.1' # https://github.com/DaskiOFF/RKUIExtensions
 	pod 'RKAutoLayout', '~> 0.1' # https://github.com/DaskiOFF/RKAutoLayout
 	pod 'RKCoordinator', '~> 0.1' # https://github.com/DaskiOFF/RKCoordinator
+	
+	target 'YOUR_TARGET_NAME_Tests' do
+        	inherit! :search_paths
+   	end
 end
 
 post_install do |installer|

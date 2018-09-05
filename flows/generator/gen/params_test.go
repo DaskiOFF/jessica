@@ -6,10 +6,10 @@ import (
 	"github.com/daskioff/jessica/flows/generator/gen"
 )
 
-func TestNewGenParamsWithAllTypesSequentialOrder(t *testing.T) {
+func Test_NewParams_WithAllTypesSequentialOrder(t *testing.T) {
 	args := []string{"usecase", "App", "--notest", "--nomock", "ck1:cv1", "ck2:cv2"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)
@@ -40,10 +40,10 @@ func TestNewGenParamsWithAllTypesSequentialOrder(t *testing.T) {
 	}
 }
 
-func TestNewGenParamsWithAllTypesNonSequentialOrder(t *testing.T) {
+func Test_NewParams_WithAllTypesNonSequentialOrder(t *testing.T) {
 	args := []string{"usecase", "App", "ck2:cv2", "--nomock", "ck1:cv1", "--notest"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)
@@ -74,10 +74,10 @@ func TestNewGenParamsWithAllTypesNonSequentialOrder(t *testing.T) {
 	}
 }
 
-func TestNewGenParamsWithoutModuleName(t *testing.T) {
+func Test_NewParams_WithoutModuleName(t *testing.T) {
 	args := []string{"usecase", "--notest", "--nomock", "ck1:cv1", "ck2:cv2"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)
@@ -108,10 +108,10 @@ func TestNewGenParamsWithoutModuleName(t *testing.T) {
 	}
 }
 
-func TestNewGenParamsWithoutNoTest(t *testing.T) {
+func Test_NewParams_WithoutNoTest(t *testing.T) {
 	args := []string{"usecase", "App", "--nomock", "ck1:cv1", "ck2:cv2"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)
@@ -142,10 +142,10 @@ func TestNewGenParamsWithoutNoTest(t *testing.T) {
 	}
 }
 
-func TestNewGenParamsWithoutNoMock(t *testing.T) {
+func Test_NewParams_WithoutNoMock(t *testing.T) {
 	args := []string{"usecase", "App", "--notest", "ck1:cv1", "ck2:cv2"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)
@@ -176,10 +176,10 @@ func TestNewGenParamsWithoutNoMock(t *testing.T) {
 	}
 }
 
-func TestNewGenParamsWithoutCustomKeys(t *testing.T) {
+func Test_NewParams_WithoutCustomKeys(t *testing.T) {
 	args := []string{"usecase", "App", "--notest", "--nomock"}
 
-	p := gen.NewGenParams(args)
+	p := gen.NewParams(args)
 
 	if p.TemplateName != "usecase" {
 		t.Error("Expected TemplateName == usecase, got ", p.TemplateName)

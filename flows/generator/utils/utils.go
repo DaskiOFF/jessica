@@ -1,23 +1,12 @@
 package utils
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/daskioff/jessica/utils/files"
 )
 
-func TemplatesRootPath(templatesFolderName string) string {
-	templatesRoot, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err.Error())
-		return ""
-	}
-
-	return filepath.Join(templatesRoot, templatesFolderName)
-}
-
+// SearchTemplates возвращает список папок, находящихся в папке `templatesRoot` содержащих файл описания шаблона `templateDescriptionFileName`
 func SearchTemplates(templatesRoot string, templateDescriptionFileName string) []string {
 	folders := files.Folders(templatesRoot)
 

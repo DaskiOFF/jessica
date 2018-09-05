@@ -36,5 +36,5 @@ func Generator(globalConfig *models.ConfigGlobal, projectConfig *models.ConfigPr
 
 // Private
 func isIOSProject(projectConfig *models.ConfigProject) bool {
-	return projectConfig.GetProjectType() == "iOS"
+	return projectConfig.GetProjectType() == models.ConfigProjectTypeIOS
 }

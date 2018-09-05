@@ -8,6 +8,15 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	// ConfigProjectTypeUnknown is `unknown` project type
+	ConfigProjectTypeUnknown int = iota
+	// ConfigProjectTypeIOS is `iOS` project type
+	ConfigProjectTypeIOS
+	// ConfigProjectTypeOther is `Other` project type
+	ConfigProjectTypeOther
+)
+
 type ConfigProject struct {
 	config *viper.Viper
 }
@@ -68,16 +77,34 @@ func (c ConfigProject) GetCompanyName() string {
 }
 
 // Project type
-func (c ConfigProject) SetProjectType(value string) {
-	c.config.Set(keys.KeyProjectType, value)
+// SetProjectType setup project type from `value` (ConfigProjectType) to config
+func (c ConfigProject) SetProjectType(value int) {
+	switch value {
+	case ConfigProjectTypeIOS:
+		c.config.Set(keys.KeyProjectType, "iOS")
+	case ConfigProjectTypeOther:
+		c.config.Set(keys.KeyProjectType, "other")
+	case ConfigProjectTypeUnknown:
+		c.config.Set(keys.KeyProjectType, nil)
+	}
 }
 
 func (c ConfigProject) HasProjectType() bool {
 	return c.config.IsSet(keys.KeyProjectType)
 }
 
-func (c ConfigProject) GetProjectType() string {
-	return c.config.GetString(keys.KeyProjectType)
+// GetProjectType return ConfigProjectType
+func (c ConfigProject) GetProjectType() int {
+	typeString := strings.ToLower(c.config.GetString(keys.KeyProjectType))
+
+	switch typeString {
+	case "ios":
+		return ConfigProjectTypeIOS
+	case "other":
+		return ConfigProjectTypeOther
+	}
+
+	return ConfigProjectTypeUnknown
 }
 
 // Readme

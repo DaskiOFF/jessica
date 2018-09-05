@@ -29,7 +29,13 @@ func commonSection(config *models.ConfigProject, isForce bool) {
 
 	if !config.HasProjectType() || isForce {
 		projectType := question.AskQuestionWithAnswers("Введите тип проекта [iOS, other]: ", []string{"iOS", "other"})
-		config.SetProjectType(projectType)
+
+		switch projectType {
+		case "iOS":
+			config.SetProjectType(models.ConfigProjectTypeIOS)
+		case "other":
+			config.SetProjectType(models.ConfigProjectTypeOther)
+		}
 	}
 }
 
@@ -46,13 +52,8 @@ func customProjectStructSection(config *models.ConfigProject, isForce bool) {
 		config.SetCustomProjectStructUse(answer)
 	}
 
-	if !config.GetCustomProjectStructUse() {
-		return
-	}
-
 	descriptionFilename := internal.CustomStructFileNameDefault
 	config.SetCustomProjectStructDescriptionTemplateFilename(descriptionFilename)
-
 }
 
 func templatesSection(config *models.ConfigProject, isForce bool) {

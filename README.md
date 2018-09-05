@@ -1,37 +1,58 @@
 # Jessica
-Last version: 1.4
+Last version: 1.5
 
-# Usage
+## Installation
 ```
 brew tap daskioff/jessica
 brew install daskioff/jessica/jessica
+```
 
+## Upgrade
+```
 brew upgrade daskioff/jessica/jessica
+```
 
+## Reinstall and Uninstall
+```
 brew reinstall daskioff/jessica/jessica
 brew uninstall --force daskioff/jessica/jessica
 ```
 
-Переходим в папку проекта и вызываем `jessica <command> [action] [args]`
-
-# Example
-Пример находится в папке `ExampleXcodeProj` 
-
-Примеры шаблонов для команды `generator` можно посмотреть в разных ветках [репозитория](https://github.com/DaskiOFF/jessica_templates)
-
-## Commands
+# Commands
 `jessica help <command>` - Помощь по команде
 
 |Command|Description|
 |----|---|
 |`version`|Выводит номер текущей версии приложения|
-|[setup](#setup)|Настройка конфигурации|
+|[setup](#setup)|Конфигурация проекта|
 |[readme](#readme-command)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |[struct](#struct)|Создание и описание структуры проекта|
 |[generator](#generator)|Генерация файлов для проекта|
 
+# Usage
+
+Формат `jessica <command> [action] [args]`
+
+## Шаг 1
+`jessica setup`
+
+## Шаг 2 (Если нужна поддержка README.md)
+`jessica readme`
+
+## Шаг 3 (Если необходимо генерировать шаблоны)
+
+```
+jessica generator pull github.com/daskioff/jessica_templates newapp`
+jessica generator gen newapp
+```
+
+## Example
+Пример находится в папке `ExampleXcodeProj` 
+
+Примеры шаблонов для команды `generator` можно посмотреть в разных ветках [репозитория](https://github.com/DaskiOFF/jessica_templates)
+
 # Setup
-Конфигурация. 
+Конфигурация проекта, чтобы использовать остальные команды кроме `version` и `setup`.
 
 Запрашиваются только недостающие поля (для обновления всей конфигурации можно использовать параметры)
 
@@ -58,15 +79,15 @@ brew uninstall --force daskioff/jessica/jessica
   - `ios_dependencies_podfile_use` – Использовать Podfile или нет
   - `ios_xcodeproj_filename` – Имя xcodeproj файла проекта
   - `ios_target_name_code` – Название таргета кода проекта
-  - `ios_folder_name_code` – Имя папки с кодом проекта
+  - `ios_folder_name_code` – Путь до папки с кодом проекта
   - `ios_target_name_unit_tests` – Название таргета unit тестов проекта
-  - `ios_folder_name_unit_tests` – Имя папки unit тестов проекта
+  - `ios_folder_name_unit_tests` – Путь до папки unit тестов проекта
   - `ios_target_name_ui_tests` – Название таргета ui тестов проекта
-  - `ios_folder_name_ui_tests` – Имя папки ui тестов проекта
+  - `ios_folder_name_ui_tests` – Путь до папки ui тестов проекта
 
 ##### Для проекта типа `other`
   - `other_project_name` – Название проекта
-  - `other_project_folder_name` – Имя папки с кодом проекта
+  - `other_project_folder_name` – Путь до папки с кодом проекта
 
 # Readme command
 Поддержка актуальности `README.md` файла
@@ -94,6 +115,8 @@ brew uninstall --force daskioff/jessica/jessica
 Если файл описания структуры [templates_folder_name](#setup) существует, он подключается в конец файла [readme_template_filename](#setup)
 
 # Struct
+Создание и описание структуры проекта.
+
 |Action|Description|
 |----|---|
 |`gen`|Генерация структуры проекта, описанной в конфигурационном файле проекта|
@@ -124,6 +147,8 @@ custom_project_struct_description:
 ```
 
 # Generator
+Генерация файлов из шаблонов для проекта.
+
 |Action|Description|
 |----|---|
 |`list`|Список шаблонов|
@@ -158,11 +183,21 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 ### Описание файла, описывающего шаблон
 Название шаблона – это имя папки с файлом `templates.yml`, которая находится в общей папке шаблонов проекта [templates_folder_name](#setup).
 
-Структура файла `templates.yml`. Доступно 4 секции:
+Структура файла `templates.yml`. Доступно 5 секций:
+1. `variables` – optional
 1. `questions` – optional
 1. `code_files` – required
 1. `test_files` – optional
 1. `mock_files` – optional
+
+#### Variables
+Секция содержит переменные, которые можно использовать по ключу `{{.var.VariableName}}`. 
+
+```yml
+variables:
+  key1: value1
+  key2: "{{.var.key1}}value2"
+```
 
 #### Questions
 Секция содержит вопросы, ответы на которые можно использовать в шаблоне по ключу `{{.answers.KeyName}}`. Формат описания вопроса в файле шаблона:
@@ -178,7 +213,7 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 
 |Name|Type|Description|
 |---|---|---|
-|`name`|string|Суффикс генерируемого файла, префиксом будет переданное имя модуля (Если позиция названия модуля не указана явно)|
+|`name`|string|Суффикс генерируемого файла. Название модуля должно быть указано явно! (Например, `{{.moduleInfo.name}}`)|
 |`template_path`|string|Путь внутри папки шаблона, относительно файла, описывающего шаблон|
 |`output_path`|string|Выходной путь сгенерированного файла, возможно использование переменных|
 |`rewrite`|bool|Значение true или false, означающее стоит ли перезаписывать генерируемый файл, если файл с таким именем по сохраняемому пути уже существует. Если ключ не указан, то значение будет запрошено во время выполнения|
@@ -188,15 +223,23 @@ jessica generator gen repository User --nomock userCusomKey1:Value1 userCustom2:
 - `--nomock` – для отключения генерации секции `mock_files`
 
 #### Шаблонные значения
+- Все значения по ключу [Variables](#variables)
 - Все значения по ключу [Custom](#custom)
 - Все значения по ключу [Answers](#answers)
 - Все значения по ключу [ModuleInfo](#moduleinfo)
-- `projectName` – Имя папки проекта из файла конфигурации
-- `projectTestsName` – Имя папки с тестами проекта из файла конфигурации (Для проектов типа iOS)
-- `projectUITestsName` – Имя папки с ui тестами проекта из файла конфигурации (Для проектов типа iOS)
+- `projectName` – Имя проекта, для которого генерируется
+- `projectCodeFolderPath` – Путь до папки с основным кодом проекта от корня
+- `projectTestsName` – Имя таргета с тестами проекта из файла конфигурации (Для проектов типа iOS)
+- `projectTestsCodeFolderPath` – Путь до папки с тестами проекта из файла конфигурации (Для проектов типа iOS)
+- `projectUITestsName` – Имя таргета с ui тестами проекта из файла конфигурации (Для проектов типа iOS)
+- `projectUITestsCodeFolderPath` – Путь до папки с ui тестами проекта из файла конфигурации (Для проектов типа iOS)
 
 #### Пример файла, описывающего шаблон
 ```yml
+variables:
+  basePathData: Layers/DataLayer/Entities
+  key2: "{{.var.basePathData}}/val2"
+
 questions:
   - {key: versionApi,
     text: "Enter API version: ",
@@ -215,14 +258,14 @@ questions:
     required: false}
 
 code_files: 
-  - {name: BaseUseCase.swift, 
+  - {name: {{.moduleInfo.name}}BaseUseCase.swift, 
     template_path: code/baseUseCase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}", 
+    output_path: "{{.projectCodeFolderPath}}/{{.var.basePathData}}/base/{{.moduleInfo.name}}", 
     rewrite: true}
 
   - {name: "{{.moduleInfo.name}}{{.answers.suffix}}UseCase.swift", 
     template_path: code/usecase.swift, 
-    output_path: "{{.projectName}}/Layers/DataLayer/Entities/{{.moduleInfo.name}}/usecases", 
+    output_path: "{{.projectCodeFolderPath}}/{{.var.basePathData}}/base/{{.moduleInfo.name}}/usecases", 
     rewrite: false}
 
 test_files: 
@@ -239,14 +282,29 @@ mock_files:
 ### Описание генерируемого файла
 Переменные необходимо использовать с помощью конструкции `{{.VariableName}}`. Подробнее про используемый шаблонизатор можно прочитать [здесь](https://golang.org/pkg/text/template/)
 
-Список доступных переменных, их типы и описания:
+#### Список доступных переменных, их типы и описания:
 
 |VariableName|Type|Description|
 |----|---|---|
-|`fileName`|string|Имя сгенерированного файла|
-|`projectName`|string|Имя проекта, для которого генерируется|
 |`date`|string|Текущая дата в формате dd.MM.yyyy|
 |`year`|int|Текущий год|
+|`fileName`|string|Имя сгенерированного файла|
+|`projectName`|string|Имя проекта, для которого генерируется|
+|`projectCodeFolderPath`|string|Путь до папки с основным кодом проекта от корня|
+
+#### Дополнительные переменные для iOS проекта:
+
+|VariableName|Type|Description|
+|----|---|---|
+|`projectTestsName`|string|Имя таргета с UNIT тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectName|
+|`projectTestsCodeFolderPath`|string|Путь до папки с UNIT тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
+|`projectUITestsName`|string|Имя таргета с UI тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectName|
+|`projectUITestsCodeFolderPath`|string|Путь до папки с UI тестами, если задан в конфиге, иначе значение совпадает со значением по ключу projectCodeFolderPath|
+
+#### Variables
+Использовать `{{.var.VariableName}}`
+
+Содержит ключи и значения, описанные в файле шаблона в секции `variables`, тип значения всегда `string`
 
 #### Custom
 Использовать `{{.custom.VariableName}}`
@@ -294,37 +352,13 @@ questions:
 |`name`|string|Имя разработчика из глобального файла конфигурации|
 |`companyName`|string|Имя компании из локального файла конфигурации|
 
+## Autor
+
+DaskiOFF, waydeveloper@gmail.com
+
+## License
+
+Jessica is available under the MIT license. See the LICENSE file for more info.
+
 # Changelog
-### 1.4
-  - Удалена команда "hi".
-  - Исправлена логика перезаписи файлов при генерации.
-  - При генерации имя модуля стало опциональным.
-
-### 1.3.5
-  - Обновление шаблона .readme.tpl.md.
-  - Обновление примера.
-  - Обновил информативность ошибок о неполных конфигах.
-  - Для iOS проекта, если не установлены данные для unit тестов или UI тестов, то будут подставляться данные для обычного проекта.
-  - templategenerator переименован в generator.
-  
-### 1.3.4
-  - Обновлен README.md файл.
-  - Команда [setup](#setup) запрашивает только недостающие данные.
-  - Добавлен параметр [--force, --f](#setup) к команде [setup](#setup) принудительно перезапрашивающий данные конфигурации.
-  - Обновлено описание команд.
-  - Исправлены параметры шаблонизатора.
-
-### 1.3.3
-  - Исправлены ссылки на разделы в README.md файле.
-  - Добавлена команда `version` для получения текущей версии.
-  - Установка недостающих зависимостей (bundle, xcodeproj).
-
-### 1.3.2
-  - Исправлены ошибки генератора при отсутствии некоторых секций.
-  
-### 1.3.1
-  - Обновлен номер версии.
-  - Обновлен README.md файл. Добавлены ссылки на разделы.
-
-### 1.3
-  - Добавлено действие `pull` для `generator`. [Подробнее](#pull).
+[Open Changelog](/CHANGELOG.md)

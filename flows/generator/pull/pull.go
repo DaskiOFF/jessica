@@ -7,7 +7,7 @@ import (
 	"github.com/daskioff/jessica/utils/print"
 )
 
-func Execute(args []string, templatesFolderName string) {
+func Execute(args []string, absTemplatesFolderPath string) {
 	if len(args) == 0 {
 		print.PrintlnErrorMessage("Вы не указали URL git репозитория")
 		return
@@ -29,7 +29,7 @@ func Execute(args []string, templatesFolderName string) {
 		branch = args[0]
 	}
 
-	path := templatesFolderName
+	path := absTemplatesFolderPath
 	err := git.Clone(url, branch, path)
 	if err != nil {
 		panic(err)

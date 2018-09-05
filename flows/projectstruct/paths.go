@@ -4,11 +4,14 @@ import (
 	"path/filepath"
 )
 
+// projectPaths возвращает список путей, которые необходимо создать.
+// Например: ["app/classes/models", "app/classes/flows"]
 func (flow *ProjectStructFlow) projectPaths() []string {
 	projectStructure := flow.projectConfig.GetCustomProjectStructDescription()
 	return flow.projectStructToPaths(projectStructure)
 }
 
+// projectStructToPaths генерирует по описанию структуры проекта из файла конфигурации списка путей для создаваемый папок
 func (flow *ProjectStructFlow) projectStructToPaths(in interface{}) []string {
 	switch v := in.(type) {
 

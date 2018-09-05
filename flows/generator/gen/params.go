@@ -2,7 +2,8 @@ package gen
 
 import "strings"
 
-type GenParams struct {
+// Params описывает аргументы переданные с действием генератора
+type Params struct {
 	TemplateName      string
 	ModuleName        string
 	NeedGenerateTests bool
@@ -10,8 +11,9 @@ type GenParams struct {
 	CustomKeys        map[string]interface{}
 }
 
-func NewGenParams(args []string) GenParams {
-	p := GenParams{}
+// NewParams возвращает объект Params заполненный данными из `args`
+func NewParams(args []string) Params {
+	p := Params{}
 
 	p.TemplateName = args[0]
 
