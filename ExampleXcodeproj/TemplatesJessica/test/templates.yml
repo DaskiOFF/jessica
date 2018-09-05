@@ -1,9 +1,9 @@
 variables:
-  key1: val1
+  key1: "{{.var.key2}}val1"
   key2: val2
 
 code_files: 
   - {name: test.swift, 
     template_path: test.swift, 
-    output_path: ".", 
+    output_path: "{{.var.key1}}/{{.var.key2}}", 
     rewrite: true}

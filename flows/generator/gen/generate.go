@@ -2,6 +2,7 @@ package gen
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -34,6 +35,24 @@ func generateFiles(generatedFiles []gentemplate.GeneratedFile, templatesParams *
 func generateFile(generatedFile *gentemplate.GeneratedFile, templatesParams *gentemplate.Params) *xcodeproj.AddedFile {
 
 	params := templatesParams.Map()
+
+	variables := params["var"]
+	fmt.Println(variables)
+	if variables != nil {
+		switch variables.(type) {
+		case map[string]interface{}:
+			lv := variables.(map[string]interface{})
+			fmt.Println(lv)
+			if len(lv) != 0 {
+				for k, v := range lv {
+					resultTemplate := template.ExecuteString(k, v.(string), params)
+					lv[k] = resultTemplate
+				}
+				fmt.Println(lv)
+				params["var"] = lv
+			}
+		}
+	}
 
 	projectRoot, err := path.ProjectRoot()
 	if err != nil {
