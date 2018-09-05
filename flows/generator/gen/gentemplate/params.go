@@ -100,15 +100,19 @@ func iosParams(config *models.ConfigIOS) map[string]interface{} {
 	params["projectCodeFolderPath"] = config.GetFolderNameCode()
 
 	if config.HasFolderNameUnitTests() {
-		params["projectTestsName"] = config.GetFolderNameUnitTests()
+		params["projectTestsName"] = config.GetTargetNameUnitTests()
+		params["projectTestsCodeFolderPath"] = config.GetFolderNameUnitTests()
 	} else {
-		params["projectTestsName"] = params["projectCodeFolderPath"]
+		params["projectTestsName"] = params["projectName"]
+		params["projectTestsCodeFolderPath"] = params["projectCodeFolderPath"]
 	}
 
 	if config.HasFolderNameUITests() {
-		params["projectUITestsName"] = config.GetFolderNameUITests()
+		params["projectUITestsName"] = config.GetTargetNameUITests()
+		params["projectUITestsCodeFolderPath"] = config.GetFolderNameUITests()
 	} else {
-		params["projectUITestsName"] = params["projectCodeFolderPath"]
+		params["projectUITestsName"] = params["projectName"]
+		params["projectUITestsCodeFolderPath"] = params["projectCodeFolderPath"]
 	}
 
 	return params
