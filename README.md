@@ -1,5 +1,5 @@
 # Jessica
-Last version: 1.5
+Last version: 1.5.1
 
 ## Installation
 ```
