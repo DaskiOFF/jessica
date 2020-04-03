@@ -19,19 +19,19 @@ brew uninstall --force daskioff/jessica/jessica
 ```
 
 # Commands
-`jessica help <command>` - Помощь по команде
+`jessica help <command>` - Подробная информация по команде
 
 |Command|Description|
 |----|---|
-|`version`|Выводит номер текущей версии приложения|
+|`version`|Выводит текущую версию|
 |[setup](#setup)|Конфигурация проекта|
 |[readme](#readme-command)|Создание необходимых файлов и шаблонов для генерации `README.md` файла|
 |[struct](#struct)|Создание и описание структуры проекта|
-|[generator](#generator)|Генерация файлов для проекта|
+|[generator](#generator)|с|
 
 # Usage
 
-Формат `jessica <command> [action] [args]`
+Формат `jessica <command> [action] [arguments]`
 
 ## Шаг 1
 `jessica setup`
