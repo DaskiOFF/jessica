@@ -40,7 +40,7 @@ func New() *Router {
 // Handle Обрабатывает аргументы переданные программе и направляет на нужный flow
 func (r *Router) Handle(args []string) error {
 	if len(args) == 0 {
-		return errNoArguments
+		panic("Нельзя вызывать без аргументов")
 	}
 
 	command := args[0]
